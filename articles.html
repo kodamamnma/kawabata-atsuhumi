@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>記事一覧 | 鹿児島地域交通通信社</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+:root {
+  --main:        #1B3A6B;
+  --main-dark:   #122851;
+  --main-light:  #EEF3FA;
+  --sub:         #2E5FA3;
+  --sub-light:   #D0DCF0;
+  --accent:      #E07B1A;
+  --accent-dark: #B85E0D;
+  --text-1:      #0F1B2E;
+  --text-2:      #4A5568;
+  --text-3:      #7A8A9E;
+  --border:      #D8E4F0;
+  --bg:          #F4F7FB;
+  --white:       #FFFFFF;
+  --shadow:      0 1px 4px rgba(27,58,107,0.10);
+  --shadow-hov:  0 4px 12px rgba(27,58,107,0.16);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif; background: var(--bg); color: var(--text-1); -webkit-font-smoothing: antialiased; }
+a { color: var(--sub); text-decoration: none; }
+a:hover { color: var(--main); text-decoration: underline; }
+button { font-family: inherit; cursor: pointer; }
+
+/* === レスポンシブ用クラス === */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  column-gap: 20px;
+}
+.layout-grid > *:not(.sidebar-content) {
+  grid-column: 1;
+  min-width: 0;
+}
+.sidebar-content {
+  grid-column: 2;
+  grid-row: 1 / span 20;
+}
+@media screen and (max-width: 767px) {
+  .layout-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-content {
+    order: 10;
+  }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+/* ─── Color tokens ─── */
+const C = {
+  main: '#1B3A6B', mainDark: '#122851', mainLight: '#EEF3FA',
+  sub: '#2E5FA3', subLight: '#D0DCF0',
+  accent: '#E07B1A', accentDark: '#B85E0D',
+  t1: '#0F1B2E', t2: '#4A5568', t3: '#7A8A9E',
+  border: '#D8E4F0', bg: '#F4F7FB', white: '#FFFFFF',
+};
+
+const CAT_COLORS = {
+  '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
+  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', 'その他': C.t2,
+};
+
+const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント'];
+
+const WIX = 'https://static.wixstatic.com/media/';
+const IMGS = {
+  orenjiShokudo: WIX + '5c3d68_d3607e0bed854215949bde07a0d50443~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_d3607e0bed854215949bde07a0d50443~mv2.jpg',
+  chagington:    WIX + '5c3d68_f1c0c291c0524258b294d22504d110c5~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_f1c0c291c0524258b294d22504d110c5~mv2.jpg',
+  fda:           WIX + '5c3d68_934c2e0bba0442e5a23866867d38ec57~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_934c2e0bba0442e5a23866867d38ec57~mv2.jpg',
+  kirishima:     WIX + '5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp/v1/fill/w_600,h_400,al_c,q_90,enc_avif,quality_auto/5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp',
+  corporate:     WIX + '5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg/v1/fill/w_600,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg',
+};
+
+const ALL_ARTICLES = [
+  {
+    cat: '鉄道', title: '観光列車「おれんじ食堂」、指宿枕崎線・枕崎駅へ初乗り入れ　ツアー客が列車の旅楽しむ',
+    time: '4月26日 18:30', tone: 'a', badge: '独自', src: IMGS.orenjiShokudo,
+    summary: '肥薩おれんじ鉄道の観光列車「おれんじ食堂」を用いた特別運行が4月25日・26日の2日間実施された。通常乗り入れない指宿枕崎線の枕崎駅へ初めて入線した。',
+    href: 'article.html',
+  },
+  {
+    cat: '鉄道', title: '鹿児島市電「チャギントン電車」4月28日で運行終了　約4年の歴史に幕',
+    time: '4月28日 10:00', tone: 'b', badge: '速報', src: IMGS.chagington,
+    summary: '鹿児島市交通局は、イギリスの人気鉄道アニメ「チャギントン」のラッピング電車の運行を4月28日（火）をもって終了すると発表した。2022年2月から約4年間走り続けた。',
+    href: 'article.html',
+  },
+  {
+    cat: '航空', title: '国内線にも波及する燃油高騰、FDA静岡＝鹿児島線は5月発券分3,000円',
+    time: '4月25日 14:00', tone: 'c', src: IMGS.fda,
+    summary: 'FDAは2026年5月1日〜31日発券分の燃油特別付加運賃を発表。鹿児島県と本州を結ぶ静岡＝鹿児島線を含むCグループは1区間3,000円となる。',
+    href: 'article.html',
+  },
+  {
+    cat: 'バス', title: '霧島神宮アクセスバス、4月1日よりダイヤ改正　土日祝の夕方増便で利便性向上',
+    time: '4月1日 09:00', tone: 'd', src: IMGS.kirishima,
+    summary: '霧島市は鹿児島空港〜霧島神宮を結ぶアクセスバスのダイヤ改正を実施。土日祝の17時20分発を新設し、始発を9時30分発に変更した。',
+    href: 'article.html',
+  },
+  {
+    cat: '鉄道', title: '指宿枕崎線・山川〜枕崎間、JR九州が存廃協議の意向を表明',
+    time: '4月20日', tone: 'e',
+    summary: 'JR九州は利用者数が極めて少ない指宿枕崎線の山川〜枕崎間について、沿線自治体との存廃協議を開始する意向を示した。',
+  },
+  {
+    cat: 'バス', title: '鹿児島市内路線バス、夜間便の一部運休を5月より実施　運転士不足が原因',
+    time: '4月18日', tone: 'a',
+  },
+  {
+    cat: '船舶', title: '桜島フェリー、GW期間中の増便ダイヤを発表　最大10分間隔で運行',
+    time: '4月15日', tone: 'b',
+  },
+  {
+    cat: '地域話題', title: '出水商業高校生がおれんじ食堂ツアーをプロデュース　受付からガイドまで担当',
+    time: '4月26日', tone: 'f', src: IMGS.orenjiShokudo,
+  },
+  {
+    cat: '船舶', title: '鹿児島〜沖縄フェリー「マルエーフェリー」、新造船を2027年に投入へ',
+    time: '4月12日', tone: 'e',
+    summary: 'マルエーフェリーは、鹿児島〜奄美〜沖縄航路に2027年就航予定の新造フェリーの概要を発表。環境性能を大幅に向上させた次世代船となる。',
+  },
+  {
+    cat: '地域話題', title: '鹿児島中央駅前広場リニューアル完成　観光客・市民の交流拠点に',
+    time: '4月5日', tone: 'c',
+    summary: '鹿児島市の玄関口である鹿児島中央駅前広場のリニューアル工事が完成。公共交通との乗り継ぎ利便性が向上し、新たなにぎわいの場として期待される。',
+  },
+  {
+    cat: '航空', title: '鹿児島〜台北（桃園）線、春季から増便　LCCが週4便体制へ',
+    time: '4月3日', tone: 'd',
+  },
+  {
+    cat: 'バス', title: '鹿児島県、BRT（バス高速輸送）導入の検討会を設置　廃線区間の代替手段として',
+    time: '3月28日', tone: 'a',
+  },
+  {
+    cat: '鉄道', title: '南九州西回り自動車道の延伸でバス路線新設　阿久根〜川内間が約40分短縮',
+    time: '4月10日', tone: 'c',
+  },
+  {
+    cat: '航空', title: '鹿児島空港、2025年度旅客数が過去最高更新　国際線の回復顕著',
+    time: '4月8日', tone: 'd',
+  },
+  {
+    cat: '鹿児島のイベント', title: '桜島火の島まつり2026、7月開催決定　海上花火と迫力の噴火を同時体験',
+    time: '5月1日', tone: 'c',
+    summary: '鹿児島市は2026年の「桜島火の島まつり」を7月27日に開催すると発表。海上花火大会と桜島の自然景観を楽しめる夏の恒例イベント。',
+  },
+  {
+    cat: '鹿児島のイベント', title: '鹿児島おはら祭2026、11月に開催　全国から踊り連1万人規模',
+    time: '4月22日', tone: 'd',
+  },
+];
+
+/* ─── Img ─── */
+const Img = ({ h, tone = 'a', style = {}, src }) => {
+  const pals = {
+    a: ['#b8c8d8','#d8e4ec'], b: ['#b8c8b8','#d4e0d4'],
+    c: ['#c8c4b4','#e0dcd0'], d: ['#c4b8c8','#dcd4e0'],
+    e: ['#b8c0d0','#ced8e4'], f: ['#c8b8a8','#e0d4c4'],
+  };
+  const [c1, c2] = pals[tone] || pals.a;
+  const [err, setErr] = React.useState(false);
+  if (src && !err)
+    return <img src={src} onError={() => setErr(true)} style={{ height: h, flexShrink: 0, objectFit: 'cover', display: 'block', ...style }} />;
+  return <div style={{ height: h, background: `linear-gradient(135deg,${c1},${c2})`, flexShrink: 0, ...style }} />;
+};
+
+/* ─── Badge ─── */
+const Badge = ({ children, color }) => (
+  <span style={{
+    display: 'inline-block', fontSize: 10, fontWeight: 700, padding: '2px 7px',
+    borderRadius: 2, lineHeight: 1.4, background: color || C.main, color: '#fff', flexShrink: 0,
+  }}>{children}</span>
+);
+
+/* ─── LikeShare ─── */
+const LikeShare = ({ title, href }) => {
+  const [liked, setLiked] = React.useState(false);
+  const [likes, setLikes] = React.useState(Math.floor(Math.random() * 30) + 1);
+  const handleLike = e => { e.preventDefault(); e.stopPropagation(); setLiked(!liked); setLikes(p => liked ? p - 1 : p + 1); };
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(href || window.location.href)}`;
+  return (
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 8 }} onClick={e => e.preventDefault()}>
+      <button onClick={handleLike} style={{
+        display: 'flex', alignItems: 'center', gap: 4, padding: '4px 10px',
+        borderRadius: 20, border: `1px solid ${liked ? C.accent : C.border}`,
+        background: liked ? '#FFF4EA' : 'transparent', color: liked ? C.accent : C.t3,
+        fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+      }}>
+        <span style={{ fontSize: 13 }}>{liked ? '♥' : '♡'}</span>{likes}
+      </button>
+      <a href={tweetUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{
+        display: 'flex', alignItems: 'center', gap: 4, padding: '4px 10px',
+        borderRadius: 20, border: `1px solid ${C.border}`, background: 'transparent',
+        color: C.t3, fontSize: 11, fontWeight: 700, textDecoration: 'none',
+      }}
+        onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#000'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.t3; e.currentTarget.style.borderColor = C.border; }}
+      >
+        <span style={{ fontSize: 12, fontWeight: 900 }}>𝕏</span> シェア
+      </a>
+    </div>
+  );
+};
+
+/* ─── CardH ─── */
+const CardH = ({ cat, title, time, badge, tone = 'a', summary, src, href }) => (
+  <a href={href || '#'} target={href ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none' }}>
+    <div style={{
+      background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)',
+      display: 'flex', overflow: 'hidden', cursor: 'pointer',
+    }}
+      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
+      onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
+    >
+      <Img h={92} tone={tone} src={src} style={{ width: 120 }} />
+      <div style={{ padding: '10px 13px', flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', gap: 5, marginBottom: 5, flexWrap: 'wrap' }}>
+          <Badge color={CAT_COLORS[cat] || C.main}>{cat}</Badge>
+          {badge && <Badge color={badge === '速報' ? C.accent : badge === '独自' ? '#6B3FA0' : C.sub}>{badge}</Badge>}
+        </div>
+        <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 13, fontWeight: 700, lineHeight: 1.45, color: C.t1, marginBottom: summary ? 5 : 0 }}>{title}</div>
+        {summary && <div style={{ fontSize: 11, color: C.t2, lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{summary}</div>}
+        <div style={{ fontSize: 10, color: C.t3, marginTop: 5 }}>{time}</div>
+        <LikeShare title={title} href={href} />
+      </div>
+    </div>
+  </a>
+);
+
+/* ─── Header ─── */
+const Header = ({ menuOpen, setMenuOpen }) => (
+  <header style={{ background: C.white, borderBottom: `4px solid ${C.main}`, position: 'sticky', top: 0, zIndex: 200 }}>
+    <div style={{ background: C.main, color: 'rgba(255,255,255,0.75)', padding: '4px 0' }}>
+      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 'clamp(8px, 2.5vw, 11px)', whiteSpace: 'nowrap' }}>公共交通と地域文化を世の中へ</span>
+        <div style={{ display: 'flex', gap: 16 }}>
+          {[['X (Twitter)', 'https://twitter.com/humitabphotnews'], ['Instagram', 'https://www.instagram.com/humitabiphoto/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
+            <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px, 2.5vw, 11px)' }}>{lbl}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+      <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+        <div style={{ width: 5, height: 44, background: C.accent, borderRadius: 2 }}></div>
+        <div>
+          <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 'clamp(13px, 4.5vw, 20px)', fontWeight: 700, color: C.main, lineHeight: 1.1, letterSpacing: -0.5, whiteSpace: 'nowrap' }}>鹿児島地域交通通信社</div>
+          <div style={{ fontSize: 'clamp(7px, 2vw, 10px)', color: C.t3, letterSpacing: 1, marginTop: 1, whiteSpace: 'nowrap' }}>Kagoshima regional transport news agency</div>
+        </div>
+      </a>
+      <button onClick={() => setMenuOpen(!menuOpen)} style={{
+        background: 'none', border: 'none', padding: '2px 4px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, cursor: 'pointer',
+      }}>
+        <div style={{ width: 24, height: 18, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <span style={{ display: 'block', width: 24, height: 2.5, background: C.main, borderRadius: 2, transition: 'all 0.3s ease', transform: menuOpen ? 'translateY(7.75px) rotate(45deg)' : 'none' }}></span>
+          <span style={{ display: 'block', width: 24, height: 2.5, background: C.main, borderRadius: 2, transition: 'all 0.3s ease', opacity: menuOpen ? 0 : 1 }}></span>
+          <span style={{ display: 'block', width: 24, height: 2.5, background: C.main, borderRadius: 2, transition: 'all 0.3s ease', transform: menuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none' }}></span>
+        </div>
+        <span style={{ fontSize: 9, color: C.t2, fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>メニュー</span>
+      </button>
+    </div>
+  </header>
+);
+
+/* ─── MobileMenu ─── */
+const MobileMenu = ({ open, onClose, onCategoryChange }) => {
+  React.useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  if (!open) return null;
+
+  const menuSections = [
+    {
+      title: 'カテゴリ',
+      items: [
+        { label: 'すべての記事', action: () => { onCategoryChange('すべて'); onClose(); } },
+        { label: '🚃 鉄道', action: () => { onCategoryChange('鉄道'); onClose(); } },
+        { label: '✈️ 航空', action: () => { onCategoryChange('航空'); onClose(); } },
+        { label: '🚢 船舶', action: () => { onCategoryChange('船舶'); onClose(); } },
+        { label: '🚌 バス', action: () => { onCategoryChange('バス'); onClose(); } },
+        { label: '📍 地域話題', action: () => { onCategoryChange('地域話題'); onClose(); } },
+      ],
+    },
+    {
+      title: 'コンテンツ',
+      items: [
+        { label: '記事一覧', href: 'articles.html' },
+        { label: '概要案内', href: 'about.html' },
+      ],
+    },
+  ];
+
+  return (
+    <div style={{
+      position: 'fixed', top: 85, left: 0, right: 0, bottom: 0, zIndex: 190,
+      background: 'rgba(15,27,46,0.55)',
+      transition: 'opacity 0.3s ease',
+    }} onClick={onClose}>
+      <div style={{
+        position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360,
+        height: '100%', background: C.white, overflowY: 'auto',
+        boxShadow: '-4px 0 24px rgba(15,27,46,0.15)',
+        padding: '20px 0 32px',
+      }} onClick={e => e.stopPropagation()}>
+        {/* Menu sections */}
+        {menuSections.map((section, si) => (
+          <div key={si} style={{ padding: '0 24px', marginBottom: 24 }}>
+            <div style={{
+              fontSize: 11, fontWeight: 700, color: C.t3, letterSpacing: '0.1em',
+              textTransform: 'uppercase', marginBottom: 10, paddingBottom: 6,
+              borderBottom: `2px solid ${C.border}`,
+            }}>{section.title}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {section.items.map((item, ii) => (
+                item.href ? (
+                  <a key={ii} href={item.href} onClick={onClose} style={{
+                    display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+                    borderRadius: 6, fontSize: 14, color: C.t1, textDecoration: 'none',
+                    transition: 'background 0.15s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {item.dot && <span style={{ width: 8, height: 8, borderRadius: '50%', background: item.dot, flexShrink: 0 }}></span>}
+                    {item.label}
+                  </a>
+                ) : (
+                  <button key={ii} onClick={item.action} style={{
+                    display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+                    borderRadius: 6, fontSize: 14, color: C.t1, background: 'none',
+                    border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%',
+                    fontFamily: 'inherit', transition: 'background 0.15s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {item.label}
+                  </button>
+                )
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Contact section */}
+        <div style={{ padding: '0 24px', marginBottom: 24 }}>
+          <div style={{
+            background: C.main, borderRadius: 8, padding: 20, color: '#fff',
+          }}>
+            <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>E-MAIL</div>
+            <a href="mailto:humitabiphoto@gmail.com" style={{
+              display: 'block', background: C.accent, color: '#fff', borderRadius: 6,
+              padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center',
+              wordBreak: 'break-all', textDecoration: 'none',
+            }}>humitabiphoto@gmail.com</a>
+            <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── CategoryNav ─── */
+const CategoryNav = ({ active, onChange }) => (
+  <nav style={{ background: C.white, borderBottom: `1px solid ${C.border}`, overflowX: 'auto' }}>
+    <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex' }}>
+      {CATS.map(c => (
+        <button key={c} onClick={() => onChange(c)} style={{
+          padding: '10px 16px', fontSize: 13, fontWeight: active === c ? 700 : 500,
+          color: active === c ? C.main : C.t2,
+          background: 'none', border: 'none',
+          borderBottom: active === c ? `3px solid ${C.main}` : '3px solid transparent',
+          whiteSpace: 'nowrap',
+        }}>{c}</button>
+      ))}
+    </div>
+  </nav>
+);
+
+/* ─── Sidebar ─── */
+const Sidebar = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>当社について</div>
+      <img src={IMGS.corporate} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }} />
+      <div style={{ padding: 14 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
+        <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
+          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。
+        </div>
+        <a href="about.html" style={{ display: 'block', textAlign: 'center', background: C.main, color: '#fff', borderRadius: 4, padding: '8px 0', fontSize: 12, fontWeight: 700 }}>概要案内を読む →</a>
+      </div>
+    </div>
+
+    <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>公式SNS・メディア</div>
+      <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {[
+          { lbl: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews', color: '#000' },
+          { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/humitabiphoto/', color: '#C13584' },
+          { lbl: 'TikTok — 動画コンテンツ', href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', color: '#010101' },
+          { lbl: 'note — 過去の交通記事', href: 'https://note.com/humitabinewsphot', color: '#1A1A1A' },
+        ].map(({ lbl, href, color }) => (
+          <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', borderRadius: 4, background: C.bg, fontSize: 12, color: C.t1, border: `1px solid ${C.border}` }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }}></span>
+            {lbl}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
+      <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
+      <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
+      <a href="mailto:humitabiphoto@gmail.com" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all' }}>humitabiphoto@gmail.com</a>
+      <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+    </div>
+  </div>
+);
+
+/* ─── Footer ─── */
+const Footer = () => (
+  <footer style={{ background: C.mainDark, marginTop: 48, padding: '32px 0 20px' }}>
+    <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px' }}>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ width: 4, height: 32, background: C.accent, borderRadius: 2 }}></div>
+        <div>
+          <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 16, fontWeight: 700, color: '#fff' }}>鹿児島地域交通通信社</div>
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: 1 }}>Kagoshima regional transport news agency</div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
+        {[
+          ['X（旧Twitter）', 'https://twitter.com/humitabphotnews'],
+          ['Instagram', 'https://www.instagram.com/humitabiphoto/'],
+          ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto'],
+          ['お問い合わせ', 'contact.html'],
+          ['プライバシーポリシー', 'privacy.html'],
+        ].map(([lbl, href]) => (
+          <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>{lbl}</a>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>© 鹿児島地域交通通信社 All Rights Reserved.</div>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>E-MAIL: humitabiphoto@gmail.com</div>
+      </div>
+    </div>
+  </footer>
+);
+
+/* ═══════════════════════════════════
+   MAIN APP
+══════════════════════════════════ */
+function App() {
+  const [cat, setCat] = useState('すべて');
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const filtered = cat === 'すべて' ? ALL_ARTICLES : ALL_ARTICLES.filter(a => a.cat === cat);
+
+  return (
+    <div>
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} onCategoryChange={c => setCat(c)} />
+      <CategoryNav active={cat} onChange={c => setCat(c)} />
+
+      {/* パンくず */}
+      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ maxWidth: 1160, margin: '0 auto', padding: '8px 16px', display: 'flex', gap: 6, alignItems: 'center', fontSize: 12, color: C.t3 }}>
+          <a href="index.html" style={{ color: C.sub }}>トップ</a>
+          <span>›</span>
+          <span style={{ color: C.t1 }}>記事一覧</span>
+          {cat !== 'すべて' && <><span>›</span><span style={{ color: C.t1 }}>{cat}</span></>}
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 1160, margin: '0 auto', padding: '20px 16px 0' }}>
+        <div className="layout-grid">
+
+          {/* 記事リスト */}
+          <div>
+            {/* ページヘッダー */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16, borderLeft: `4px solid ${C.main}`, paddingLeft: 10 }}>
+              <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 18, fontWeight: 700, color: C.t1 }}>
+                {cat === 'すべて' ? '記事一覧' : cat}
+              </h1>
+              <span style={{ fontSize: 12, color: C.t3 }}>{filtered.length}件</span>
+            </div>
+
+            {/* カード一覧 */}
+            {filtered.length > 0 ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+                {filtered.map((a, i) => <CardH key={i} {...a} />)}
+              </div>
+            ) : (
+              <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '48px 0', textAlign: 'center', marginBottom: 24 }}>
+                <div style={{ fontSize: 14, color: C.t3 }}>このカテゴリの記事はまだありません</div>
+              </div>
+            )}
+
+          </div>
+
+          {/* サイドバー */}
+          <aside className="sidebar-content">
+            <Sidebar />
+          </aside>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

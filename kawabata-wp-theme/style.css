@@ -1,0 +1,42 @@
+/*
+Theme Name: 鹿児島地域交通通信社
+Theme URI: https://www.kagoshima-news.jp
+Description: 鹿児島地域交通通信社 ニュースサイト WordPress テーマ
+Version: 1.0.1
+Author: 鹿児島地域交通通信社
+License: All Rights Reserved
+Text Domain: kawabata
+*/
+
+:root {
+  --main:        #1B3A6B;
+  --main-dark:   #122851;
+  --main-light:  #EEF3FA;
+  --sub:         #2E5FA3;
+  --sub-light:   #D0DCF0;
+  --accent:      #E07B1A;
+  --accent-dark: #B85E0D;
+  --text-1:      #0F1B2E;
+  --text-2:      #4A5568;
+  --text-3:      #7A8A9E;
+  --border:      #D8E4F0;
+  --bg:          #F4F7FB;
+  --white:       #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text-1); }
+a { color: var(--sub); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+.layout-grid { display: grid; grid-template-columns: 1fr 280px; column-gap: 20px; }
+.layout-grid > *:not(.sidebar-content) { grid-column: 1; min-width: 0; }
+.sidebar-content { grid-column: 2; grid-row: 1 / span 20; }
+.featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.genre-showcase { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+@media screen and (max-width: 767px) {
+  .layout-grid { display: flex; flex-direction: column; }
+  .sidebar-content { display: none; }
+  .featured-grid { grid-template-columns: 1fr; }
+}

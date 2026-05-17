@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>記事タイトル | 鹿児島地域交通通信社</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+:root {
+  --main:        #1B3A6B;
+  --main-dark:   #122851;
+  --main-light:  #EEF3FA;
+  --sub:         #2E5FA3;
+  --sub-light:   #D0DCF0;
+  --accent:      #E07B1A;
+  --accent-dark: #B85E0D;
+  --text-1:      #0F1B2E;
+  --text-2:      #4A5568;
+  --text-3:      #7A8A9E;
+  --border:      #D8E4F0;
+  --bg:          #F4F7FB;
+  --white:       #FFFFFF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif; background: var(--bg); color: var(--text-1); -webkit-font-smoothing: antialiased; }
+a { color: var(--sub); text-decoration: none; }
+a:hover { color: var(--main); }
+button { font-family: inherit; cursor: pointer; }
+
+/* === レスポンシブ用クラス === */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  column-gap: 24px;
+}
+.layout-grid > *:not(.sidebar-content) {
+  grid-column: 1;
+  min-width: 0;
+}
+.sidebar-content {
+  grid-column: 2;
+  grid-row: 1 / span 20;
+}
+@media screen and (max-width: 767px) {
+  .layout-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-content {
+    order: 10;
+  }
+}
+
+/* 記事本文スタイル */
+.article-body p {
+  font-size: 15px;
+  line-height: 2.0;
+  color: #1a2940;
+  margin-bottom: 20px;
+}
+.article-body h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--main);
+  margin: 32px 0 14px;
+  padding: 10px 16px;
+  border-left: 4px solid var(--accent);
+  background: var(--main-light);
+  border-radius: 0 4px 4px 0;
+}
+.article-body h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 24px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+}
+.article-body figure {
+  margin: 24px 0;
+}
+.article-body figure img {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+}
+.article-body figcaption {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 6px;
+  text-align: center;
+  line-height: 1.6;
+}
+.article-body blockquote {
+  border-left: 4px solid var(--sub);
+  padding: 12px 20px;
+  background: var(--main-light);
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.85;
+}
+.article-body ul, .article-body ol {
+  padding-left: 22px;
+  margin-bottom: 18px;
+}
+.article-body li {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #1a2940;
+  margin-bottom: 4px;
+}
+.article-body .info-box {
+  background: #FFF8F0;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+.article-body .info-box-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.article-body .info-box p {
+  font-size: 13px;
+  margin-bottom: 0;
+  color: var(--text-2);
+}
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+}
+.article-body th {
+  background: var(--main);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+}
+.article-body td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.article-body tr:nth-child(even) td {
+  background: var(--main-light);
+}
+
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const C = {
+  main: '#1B3A6B', mainDark: '#122851', mainLight: '#EEF3FA',
+  sub: '#2E5FA3', subLight: '#D0DCF0',
+  accent: '#E07B1A', accentDark: '#B85E0D',
+  t1: '#0F1B2E', t2: '#4A5568', t3: '#7A8A9E',
+  border: '#D8E4F0', bg: '#F4F7FB', white: '#FFFFFF',
+};
+
+const WIX = 'https://static.wixstatic.com/media/';
+const IMGS = {
+  orenjiShokudo: WIX + '5c3d68_d3607e0bed854215949bde07a0d50443~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_d3607e0bed854215949bde07a0d50443~mv2.jpg',
+  chagington:    WIX + '5c3d68_f1c0c291c0524258b294d22504d110c5~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_f1c0c291c0524258b294d22504d110c5~mv2.jpg',
+  fda:           WIX + '5c3d68_934c2e0bba0442e5a23866867d38ec57~mv2.jpg/v1/fill/w_600,h_400,fp_0.50_0.50,q_90,enc_avif,quality_auto/5c3d68_934c2e0bba0442e5a23866867d38ec57~mv2.jpg',
+  kirishima:     WIX + '5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp/v1/fill/w_600,h_400,al_c,q_90,enc_avif,quality_auto/5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp',
+  corporate:     WIX + '5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg/v1/fill/w_600,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg',
+  editor:        WIX + '5c3d68_d2ea175804654ae7894f27896c971760~mv2.jpeg/v1/fill/w_425,h_471,al_c,q_80,enc_avif,quality_auto/5c3d68_d2ea175804654ae7894f27896c971760~mv2.jpeg',
+};
+
+const CAT_COLORS = {
+  '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
+  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', 'その他': C.t2,
+};
+
+/* ─── 記事データ（テンプレート。実際の記事に書き換えてください） ─── */
+const ARTICLE = {
+  cat: '鉄道',
+  badge: '独自',
+  title: '観光列車「おれんじ食堂」、指宿枕崎線・枕崎駅へ初乗り入れ　ツアー客が列車の旅楽しむ',
+  published: '2026年4月26日 18:30',
+  updated: '2026年4月27日 09:00',
+  author: '川畑 篤史',
+  authorTitle: '鹿児島地域交通通信社 編集長',
+  tags: ['おれんじ鉄道', '指宿枕崎線', '枕崎', '観光列車', '鹿児島'],
+  src: IMGS.orenjiShokudo,
+  caption: '枕崎駅に停車する観光列車「おれんじ食堂」（2026年4月26日撮影）',
+  href: 'article.html',
+};
+
+/* ─── サイドバー用最新ニュース ─── */
+const LATEST = [
+  { cat: '鉄道', title: '鹿児島市電「チャギントン電車」4月28日で運行終了　約4年の歴史に幕', time: '4月28日 10:00', badge: '速報', src: IMGS.chagington, href: 'article.html' },
+  { cat: '航空', title: '国内線にも波及する燃油高騰、FDA静岡＝鹿児島線は5月発券分3,000円', time: '4月25日 14:00', src: IMGS.fda, href: 'article.html' },
+  { cat: 'バス', title: '霧島神宮アクセスバス、4月1日よりダイヤ改正　土日祝の夕方増便', time: '4月1日 09:00', src: IMGS.kirishima, href: 'article.html' },
+  { cat: '鉄道', title: '指宿枕崎線・山川〜枕崎間、JR九州が存廃協議の意向を表明', time: '4月20日', href: '#' },
+  { cat: '船舶', title: '鹿児島〜沖縄フェリー「マルエーフェリー」、新造船を2027年に投入へ', time: '4月12日', href: '#' },
+];
+
+/* ─── 編集長一押し ─── */
+const EDITOR_PICKS = [
+  { cat: '鉄道', title: '指宿枕崎線・山川〜枕崎間、JR九州が存廃協議の意向を表明', time: '4月20日', src: null, href: '#', summary: 'JR九州は利用者数が極めて少ない同区間について、沿線自治体との存廃協議を開始する意向を示した。' },
+];
+
+/* ─── 同カテゴリ関連記事 ─── */
+const RELATED = [
+  { cat: '鉄道', title: '肥薩おれんじ鉄道、2025年度乗車人数が前年比12%増　観光需要が牽引', time: '3月10日', src: IMGS.orenjiShokudo, href: '#' },
+  { cat: '鉄道', title: '鹿児島市電、新型低床車両を2027年度導入予定　バリアフリー化へ', time: '3月2日', src: null, href: '#' },
+  { cat: '鉄道', title: '九州新幹線、GW期間の予約率が過去最高水準に', time: '4月15日', src: null, href: '#' },
+];
+
+
+
+/* ─── サブコンポーネント ─── */
+const Badge = ({ children, color }) => (
+  <span style={{
+    display: 'inline-block', fontSize: 10, fontWeight: 700, padding: '2px 7px',
+    borderRadius: 2, lineHeight: 1.4, background: color || C.main, color: '#fff', flexShrink: 0,
+  }}>{children}</span>
+);
+
+const Img = ({ h, w = '100%', src, style = {}, tone = 'a' }) => {
+  const pals = { a: ['#b8c8d8','#d8e4ec'], b: ['#b8c8b8','#d4e0d4'], c: ['#c8c4b4','#e0dcd0'], d: ['#c4b8c8','#dcd4e0'] };
+  const [c1, c2] = pals[tone] || pals.a;
+  const [err, setErr] = useState(false);
+  if (src && !err)
+    return <img src={src} onError={() => setErr(true)} style={{ height: h, width: w, objectFit: 'cover', display: 'block', ...style }} />;
+  return <div style={{ height: h, width: w, background: `linear-gradient(135deg,${c1},${c2})`, flexShrink: 0, ...style }} />;
+};
+
+/* ─── ヘッダー ─── */
+const Header = ({ menuOpen, setMenuOpen }) => (
+  <header style={{ background: C.white, borderBottom: `4px solid ${C.main}`, position: 'sticky', top: 0, zIndex: 200 }}>
+    <div style={{ background: C.main, color: 'rgba(255,255,255,0.75)', padding: '4px 0' }}>
+      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 'clamp(8px,2.5vw,11px)', whiteSpace: 'nowrap' }}>公共交通と地域文化を世の中へ</span>
+        <div style={{ display: 'flex', gap: 16 }}>
+          {[['X (Twitter)','https://twitter.com/humitabphotnews'],['Instagram','https://www.instagram.com/humitabiphoto/'],['TikTok','https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl,href]) => (
+            <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px,2.5vw,11px)' }}>{lbl}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+        <div style={{ width: 5, height: 44, background: C.accent, borderRadius: 2 }}></div>
+        <div>
+          <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 'clamp(13px,4.5vw,20px)', fontWeight: 700, color: C.main, lineHeight: 1.1, letterSpacing: -0.5, whiteSpace: 'nowrap' }}>鹿児島地域交通通信社</div>
+          <div style={{ fontSize: 'clamp(7px,2vw,10px)', color: C.t3, letterSpacing: 1, marginTop: 1, whiteSpace: 'nowrap' }}>Kagoshima regional transport news agency</div>
+        </div>
+      </a>
+      <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: 'none', border: 'none', padding: '2px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+        <div style={{ width: 24, height: 18, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {[0,1,2].map(i => (
+            <span key={i} style={{ display: 'block', width: 24, height: 2.5, background: C.main, borderRadius: 2, transition: 'all 0.3s ease',
+              transform: i===0&&menuOpen ? 'translateY(7.75px) rotate(45deg)' : i===2&&menuOpen ? 'translateY(-7.75px) rotate(-45deg)' : 'none',
+              opacity: i===1&&menuOpen ? 0 : 1,
+            }}></span>
+          ))}
+        </div>
+        <span style={{ fontSize: 9, color: C.t2, fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>メニュー</span>
+      </button>
+    </div>
+  </header>
+);
+
+/* ─── モバイルメニュー ─── */
+const MobileMenu = ({ open, onClose }) => {
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  if (!open) return null;
+
+  const menuSections = [
+    {
+      title: 'カテゴリ',
+      items: [
+        { label: 'すべての記事', href: 'index.html' },
+        { label: '🚃 鉄道', href: 'index.html?cat=鉄道' },
+        { label: '✈️ 航空', href: 'index.html?cat=航空' },
+        { label: '🚢 船舶', href: 'index.html?cat=船舶' },
+        { label: '🚌 バス', href: 'index.html?cat=バス' },
+        { label: '📍 地域話題', href: 'index.html?cat=地域話題' },
+      ],
+    },
+    {
+      title: 'コンテンツ',
+      items: [
+        { label: '記事一覧', href: 'articles.html' },
+        { label: '概要案内', href: 'about.html' },
+      ],
+    },
+  ];
+
+  return (
+    <div style={{
+      position: 'fixed', top: 85, left: 0, right: 0, bottom: 0, zIndex: 190,
+      background: 'rgba(15,27,46,0.55)',
+      transition: 'opacity 0.3s ease',
+    }} onClick={onClose}>
+      <div style={{
+        position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360,
+        height: '100%', background: C.white, overflowY: 'auto',
+        boxShadow: '-4px 0 24px rgba(15,27,46,0.15)',
+        padding: '20px 0 32px',
+      }} onClick={e => e.stopPropagation()}>
+        {/* Menu sections */}
+        {menuSections.map((section, si) => (
+          <div key={si} style={{ padding: '0 24px', marginBottom: 24 }}>
+            <div style={{
+              fontSize: 11, fontWeight: 700, color: C.t3, letterSpacing: '0.1em',
+              textTransform: 'uppercase', marginBottom: 10, paddingBottom: 6,
+              borderBottom: `2px solid ${C.border}`,
+            }}>{section.title}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {section.items.map((item, ii) => (
+                item.href ? (
+                  <a key={ii} href={item.href} onClick={onClose} style={{
+                    display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+                    borderRadius: 6, fontSize: 14, color: C.t1, textDecoration: 'none',
+                    transition: 'background 0.15s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {item.dot && <span style={{ width: 8, height: 8, borderRadius: '50%', background: item.dot, flexShrink: 0 }}></span>}
+                    {item.label}
+                  </a>
+                ) : (
+                  <button key={ii} onClick={item.action} style={{
+                    display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+                    borderRadius: 6, fontSize: 14, color: C.t1, background: 'none',
+                    border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%',
+                    fontFamily: 'inherit', transition: 'background 0.15s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {item.label}
+                  </button>
+                )
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Contact section */}
+        <div style={{ padding: '0 24px', marginBottom: 24 }}>
+          <div style={{
+            background: C.main, borderRadius: 8, padding: 20, color: '#fff',
+          }}>
+            <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>E-MAIL</div>
+            <a href="mailto:humitabiphoto@gmail.com" style={{
+              display: 'block', background: C.accent, color: '#fff', borderRadius: 6,
+              padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center',
+              wordBreak: 'break-all', textDecoration: 'none',
+            }}>humitabiphoto@gmail.com</a>
+            <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── フッター ─── */
+const Footer = () => (
+  <footer style={{ background: C.mainDark, marginTop: 48, padding: '32px 0 20px' }}>
+    <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px' }}>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ width: 4, height: 32, background: C.accent, borderRadius: 2 }}></div>
+        <div>
+          <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 16, fontWeight: 700, color: '#fff' }}>鹿児島地域交通通信社</div>
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: 1 }}>Kagoshima regional transport news agency</div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
+        {[['X（旧Twitter）','https://twitter.com/humitabphotnews'],['Instagram','https://www.instagram.com/humitabiphoto/'],['TikTok','https://www.tiktok.com/@humitabitrafficnewsphoto'],['お問い合わせ','contact.html'],['プライバシーポリシー','privacy.html']].map(([lbl,href]) => (
+          <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>{lbl}</a>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>© 鹿児島地域交通通信社 All Rights Reserved.</div>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>E-MAIL: humitabiphoto@gmail.com</div>
+      </div>
+    </div>
+  </footer>
+);
+
+/* ─── サイドバー ─── */
+const Sidebar = () => {
+  const SideHead = ({ children, color = C.main }) => (
+    <div style={{ background: color, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>{children}</div>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+      {/* 最新ニュース */}
+      <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+        <SideHead>最新ニュース</SideHead>
+        <div style={{ padding: '8px 0' }}>
+          {LATEST.map((item, i) => (
+            <a key={i} href={item.href || '#'} target={item.href && item.href !== '#' ? '_blank' : undefined} rel="noreferrer"
+              style={{ display: 'flex', gap: 10, padding: '9px 14px', textDecoration: 'none', borderBottom: i < LATEST.length - 1 ? `1px solid ${C.border}` : 'none', alignItems: 'flex-start' }}
+              onMouseEnter={e => e.currentTarget.style.background = C.bg}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              {item.src
+                ? <img src={item.src} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: 64, height: 46, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
+                : <div style={{ width: 64, height: 46, background: C.mainLight, borderRadius: 3, flexShrink: 0 }} />
+              }
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', gap: 4, marginBottom: 3, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 2, background: CAT_COLORS[item.cat] || C.main, color: '#fff', flexShrink: 0 }}>{item.cat}</span>
+                  {item.badge && <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 2, background: C.accent, color: '#fff' }}>{item.badge}</span>}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 500, lineHeight: 1.5, color: C.t1, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{item.title}</div>
+                <div style={{ fontSize: 10, color: C.t3, marginTop: 3 }}>{item.time}</div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div style={{ padding: '8px 14px 12px' }}>
+          <a href="index.html" style={{ display: 'block', textAlign: 'center', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, padding: '7px 0', fontSize: 12, color: C.sub, fontWeight: 700 }}>記事一覧を見る →</a>
+        </div>
+      </div>
+
+      {/* 編集長一押し */}
+      <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+        <div style={{ background: '#6B3FA0', color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>✍️ 編集長一押しの記事</div>
+        <div style={{ padding: '8px 0' }}>
+          {EDITOR_PICKS.map((item, i) => (
+            <a key={i} href={item.href || '#'}
+              style={{ display: 'block', padding: '10px 14px', textDecoration: 'none', borderBottom: i < EDITOR_PICKS.length - 1 ? `1px solid ${C.border}` : 'none' }}
+              onMouseEnter={e => e.currentTarget.style.background = C.bg}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 2, background: CAT_COLORS[item.cat] || C.main, color: '#fff' }}>{item.cat}</span>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.55, color: C.t1, marginBottom: 4 }}>{item.title}</div>
+              {item.summary && <div style={{ fontSize: 11, color: C.t2, lineHeight: 1.65, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{item.summary}</div>}
+              <div style={{ fontSize: 10, color: C.t3, marginTop: 4 }}>{item.time}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* 当社について */}
+      <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+        <SideHead>当社について</SideHead>
+        <img src={IMGS.corporate} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 90, objectFit: 'cover', display: 'block' }} />
+        <div style={{ padding: 14 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
+          <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。</div>
+          <a href="about.html" style={{ display: 'block', textAlign: 'center', background: C.main, color: '#fff', borderRadius: 4, padding: '8px 0', fontSize: 12, fontWeight: 700 }}>概要案内を読む →</a>
+        </div>
+      </div>
+
+      {/* SNS */}
+      <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+        <SideHead>公式SNS・メディア</SideHead>
+        <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { lbl: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews', color: '#000' },
+            { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/humitabiphoto/', color: '#C13584' },
+            { lbl: 'TikTok — 動画コンテンツ', href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', color: '#010101' },
+          ].map(({ lbl, href, color }) => (
+            <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', borderRadius: 4, background: C.bg, fontSize: 12, color: C.t1, border: `1px solid ${C.border}` }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }}></span>
+              {lbl}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* お問い合わせ */}
+      <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
+        <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
+        <a href="mailto:humitabiphoto@gmail.com" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all' }}>humitabiphoto@gmail.com</a>
+        <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+      </div>
+    </div>
+  );
+};
+
+
+
+/* ─── 関連記事 ─── */
+const RelatedArticles = () => (
+  <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: 20, marginBottom: 24 }}>
+    <div style={{ borderLeft: `4px solid ${C.accent}`, paddingLeft: 10, marginBottom: 16 }}>
+      <span style={{ fontSize: 15, fontWeight: 700, color: C.t1 }}>関連記事</span>
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {RELATED.map((item, i) => (
+        <a key={i} href={item.href || '#'} style={{ display: 'flex', gap: 12, padding: '10px 0', textDecoration: 'none', borderBottom: i < RELATED.length - 1 ? `1px solid ${C.border}` : 'none', alignItems: 'center' }}
+          onMouseEnter={e => e.currentTarget.querySelector('.rel-title').style.color = C.sub}
+          onMouseLeave={e => e.currentTarget.querySelector('.rel-title').style.color = C.t1}
+        >
+          {item.src
+            ? <img src={item.src} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: 80, height: 56, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
+            : <div style={{ width: 80, height: 56, background: C.mainLight, borderRadius: 3, flexShrink: 0 }} />
+          }
+          <div style={{ flex: 1 }}>
+            <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 2, background: CAT_COLORS[item.cat] || C.main, color: '#fff' }}>{item.cat}</span>
+            <div className="rel-title" style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.5, color: C.t1, marginTop: 4, transition: 'color 0.15s' }}>{item.title}</div>
+            <div style={{ fontSize: 11, color: C.t3, marginTop: 3 }}>{item.time}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+);
+
+/* ─── シェアボタン ─── */
+const ShareBar = ({ title, href }) => {
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(24);
+  const enc = encodeURIComponent;
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(href || '')}`;
+  const lineUrl  = `https://line.me/R/msg/text/?${enc(title + ' ' + (href || ''))}`;
+
+  return (
+    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 8 }}>
+      <button onClick={() => { setLiked(!liked); setLikes(p => liked ? p-1 : p+1); }} style={{
+        display: 'flex', alignItems: 'center', gap: 5, padding: '8px 16px',
+        borderRadius: 20, border: `1px solid ${liked ? C.accent : C.border}`,
+        background: liked ? '#FFF4EA' : C.white, color: liked ? C.accent : C.t2,
+        fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+        transition: 'all 0.2s',
+      }}>
+        <span style={{ fontSize: 16 }}>{liked ? '♥' : '♡'}</span> いいね {likes}
+      </button>
+      <a href={tweetUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 20, border: `1px solid ${C.border}`, background: C.white, color: C.t1, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}
+        onMouseEnter={e => { e.currentTarget.style.background='#000'; e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='#000'; }}
+        onMouseLeave={e => { e.currentTarget.style.background=C.white; e.currentTarget.style.color=C.t1; e.currentTarget.style.borderColor=C.border; }}
+      >
+        <span style={{ fontWeight: 900 }}>𝕏</span> X でシェア
+      </a>
+      <a href={lineUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 20, border: '1px solid #06C755', background: C.white, color: '#06C755', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}
+        onMouseEnter={e => { e.currentTarget.style.background='#06C755'; e.currentTarget.style.color='#fff'; }}
+        onMouseLeave={e => { e.currentTarget.style.background=C.white; e.currentTarget.style.color='#06C755'; }}
+      >
+        LINE で送る
+      </a>
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════
+   MAIN APP
+══════════════════════════════════ */
+function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <div>
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {/* パンくずリスト */}
+      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ maxWidth: 1160, margin: '0 auto', padding: '8px 16px', display: 'flex', gap: 6, alignItems: 'center', fontSize: 12, color: C.t3, flexWrap: 'wrap' }}>
+          <a href="index.html" style={{ color: C.sub }}>トップ</a>
+          <span>›</span>
+          <a href={`index.html?cat=${ARTICLE.cat}`} style={{ color: C.sub }}>{ARTICLE.cat}</a>
+          <span>›</span>
+          <span style={{ color: C.t1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320 }}>{ARTICLE.title}</span>
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 1160, margin: '0 auto', padding: '24px 16px 0' }}>
+        <div className="layout-grid">
+
+            {/* ─── 記事ヘッダー ─── */}
+            <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '24px 24px 20px', marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+
+              {/* カテゴリ・バッジ */}
+              <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
+                <Badge color={CAT_COLORS[ARTICLE.cat] || C.main}>{ARTICLE.cat}</Badge>
+                {ARTICLE.badge && (
+                  <Badge color={ARTICLE.badge === '速報' ? C.accent : ARTICLE.badge === '独自' ? '#6B3FA0' : C.sub}>{ARTICLE.badge}</Badge>
+                )}
+              </div>
+
+              {/* タイトル */}
+              <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, lineHeight: 1.5, color: C.t1, marginBottom: 16 }}>
+                {/* ↓ ここを実際の記事タイトルに変更してください */}
+                {ARTICLE.title}
+              </h1>
+
+              {/* メタ情報 */}
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap', marginBottom: 16, paddingBottom: 16, borderBottom: `1px solid ${C.border}` }}>
+                <div style={{ display: 'flex', gap: 12, fontSize: 11, color: C.t3 }}>
+                  <span>📅 {ARTICLE.published}</span>
+                  {ARTICLE.updated && <span>🔄 更新 {ARTICLE.updated}</span>}
+                </div>
+              </div>
+
+              {/* シェアボタン（上部） */}
+              <ShareBar title={ARTICLE.title} href={ARTICLE.href} />
+            </div>
+
+            {/* ─── アイキャッチ画像 ─── */}
+            <div style={{ background: C.white, borderRadius: 0, overflow: 'hidden', marginBottom: 0 }}>
+              <figure style={{ margin: 0 }}>
+                <img
+                  src={ARTICLE.src}
+                  alt={ARTICLE.title}
+                  onError={e => { e.currentTarget.src=''; e.currentTarget.style.display='none'; }}
+                  style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block' }}
+                />
+                {ARTICLE.caption && (
+                  <figcaption style={{ fontSize: 12, color: C.t3, padding: '8px 24px', background: '#F8F9FC', borderBottom: `1px solid ${C.border}`, lineHeight: 1.6 }}>
+                    {ARTICLE.caption}
+                  </figcaption>
+                )}
+              </figure>
+            </div>
+
+            {/* ─── 記事本文 ─── */}
+            <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '28px 28px 24px', marginBottom: 16, borderTopLeftRadius: 0, borderTopRightRadius: 0 }} className="article-body">
+
+              {/*
+              ================================================================
+              ↓↓↓  ここから下が記事本文です。必要に応じて書き換えてください  ↓↓↓
+              ================================================================
+              */}
+
+              <p>
+                肥薩おれんじ鉄道の観光列車「おれんじ食堂」を使用した特別ツアー運行が、2026年4月25日（金）・26日（土）の2日間にわたって実施された。今回の特別運行では、「おれんじ食堂」が通常は乗り入れない<strong>JR九州 指宿枕崎線の枕崎駅へ初めて入線</strong>し、ツアー参加客は普段と異なる列車の旅を満喫した。
+              </p>
+
+              <h2>枕崎駅への初入線　ツアー客に歓声</h2>
+
+              <p>
+                「おれんじ食堂」は、熊本〜川内間を走る肥薩おれんじ鉄道の観光列車として2013年に運行開始。車内では沿線食材を使った料理が提供され、景色とともに食を楽しめる列車として人気を集めている。
+              </p>
+
+              <div className="info-box">
+                <div className="info-box-title">📋 運行概要</div>
+                <p>
+                  ツアー名：「おれんじ食堂で行く！枕崎の旅」<br />
+                  運行日：2026年4月25日（金）・26日（土）<br />
+                  区間：川内駅〜枕崎駅（指宿枕崎線経由）<br />
+                  主催：肥薩おれんじ鉄道・JR九州共同企画
+                </p>
+              </div>
+
+              <p>
+                今回の企画では、JR九州との共同運行により、八代〜川内間を走るおれんじ鉄道の車両がJR九州の指宿枕崎線区間に乗り入れた。枕崎駅への到着時には、ホームで待ち構えた鉄道ファンや地元住民から歓声が上がった。
+              </p>
+
+              <h2>沿線の食と景色を楽しむ特別企画</h2>
+
+              <p>
+                車内では出水市の「タコめし」や枕崎の「カツオのたたき」など沿線食材を使った料理が振る舞われ、参加者は眼前に広がる錦江湾の景色とともに食事を楽しんだ。参加者からは「普段乗れない列車で来れて感激した」「料理もおいしく、最高の旅だった」という声が聞かれた。
+              </p>
+
+              <blockquote>
+                「今後も地域の方々と協力しながら、このような特別運行を続けていきたい。公共交通の楽しさをより多くの方に知っていただくきっかけになれば。」
+                <br /><span style={{ fontSize: 11, color: '#6A7A9E', marginTop: 4, display: 'inline-block' }}>— 肥薩おれんじ鉄道 担当者コメント</span>
+              </blockquote>
+
+              <h2>指宿枕崎線の現状と今後</h2>
+
+              <p>
+                指宿枕崎線、特に山川〜枕崎間は全国的にも屈指の過疎路線で、JR九州は同区間について沿線自治体との存廃協議を検討していると伝えられる。今回のような観光列車との連携企画が、路線の認知向上や利用促進につながることが期待される。
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>区間</th>
+                    <th>距離</th>
+                    <th>1日平均利用者（2025年度）</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>鹿児島中央〜指宿</td><td>約46km</td><td>約2,800人</td></tr>
+                  <tr><td>指宿〜山川</td><td>約8km</td><td>約680人</td></tr>
+                  <tr><td>山川〜枕崎</td><td>約36km</td><td>約130人</td></tr>
+                </tbody>
+              </table>
+
+              <p>
+                「おれんじ食堂」の枕崎乗り入れは今回が初めて。今後の定期的な実施については現時点では未定だが、関係者は手応えを感じているとしており、続報が待たれる。
+              </p>
+
+              {/*
+              ================================================================
+              ↑↑↑  記事本文ここまで  ↑↑↑
+              ================================================================
+              */}
+            </div>
+
+            {/* ─── タグ ─── */}
+            <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '14px 20px', marginBottom: 16 }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: C.t3, marginRight: 4 }}>タグ：</span>
+                {ARTICLE.tags.map(tag => (
+                  <a key={tag} href={`index.html?tag=${encodeURIComponent(tag)}`}
+                    style={{ fontSize: 12, color: C.sub, padding: '3px 10px', borderRadius: 20, border: `1px solid ${C.subLight}`, background: C.mainLight, textDecoration: 'none' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = C.sub; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = C.mainLight; e.currentTarget.style.color = C.sub; }}
+                  >#{tag}</a>
+                ))}
+              </div>
+            </div>
+
+            {/* ─── シェアボタン（下部） ─── */}
+            <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '16px 20px', marginBottom: 16 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: C.t2, marginBottom: 10 }}>この記事をシェアする</div>
+              <ShareBar title={ARTICLE.title} href={ARTICLE.href} />
+            </div>
+
+
+            {/* ─── 関連記事 ─── */}
+            <RelatedArticles />
+
+          {/* ── 右サイドバー ── */}
+          <aside className="sidebar-content" style={{ position: 'relative' }}>
+            <div style={{ position: 'sticky', top: 96 }}>
+              <Sidebar />
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
