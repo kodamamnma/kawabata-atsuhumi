@@ -27,30 +27,46 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
 
-    - name: Setup known_hosts
+    - name: Add server to known_hosts
       run: |
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        ssh-keyscan -p 10022 "${SSH_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
-        chmod 644 ~/.ssh/known_hosts
+        echo "Adding ${SSH_HOST} to known_hosts..."
+        ssh-keyscan -p 10022 -H "${SSH_HOST}" >> ~/.ssh/known_hosts
 
     - name: Test SSH connection
       run: |
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
-        ssh -o ConnectTimeout=10 -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful'"
+        echo "Testing SSH connection to ${SSH_USER}@${SSH_HOST}..."
+        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
 
     - name: Ensure target theme directory exists on remote
       run: |
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
         THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "mkdir -p \"${THEME_PATH}\""
+        echo "Creating directory: ${THEME_PATH}"
+        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "mkdir -p '${THEME_PATH}' && ls -ld '${THEME_PATH}'"
 
     - name: Rsync theme files to Staging
       run: |
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
         THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        rsync -avzc --delete --exclude='.*' --exclude README.md -e "ssh -p 10022 -o ConnectTimeout=10" ./ "${SSH_USER}@${SSH_HOST}:${THEME_PATH}"
+        echo "Syncing files to ${THEME_PATH}..."
+        rsync -avzc --delete \
+          --exclude='.*' \
+          --exclude='README.md' \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='node_modules' \
+          -e "ssh -p 10022" \
+          ./ "${SSH_USER}@${SSH_HOST}:${THEME_PATH}/"
+
+    - name: Verify deployment
+      run: |
+        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
+        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
+        THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
+        echo "Verifying deployed files..."
+        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "ls -lah '${THEME_PATH}/' | head -20"
