@@ -22,19 +22,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
-
-    - name: Add server to known_hosts
+    - name: Setup SSH key
       run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_STAGING }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -p 10022 -H ${{ secrets.STAGING_SERVER_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Ensure target theme directory exists on remote
+    - name: Test SSH connection
       run: |
-        ssh -p 10022 -o StrictHostKeyChecking=no ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_HOST }} "mkdir -p ${{ secrets.STAGING_THEME_PATH }}"
+        ssh -p 10022 -i ~/.ssh/id_rsa ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_HOST }} "echo 'Connection test successful'"
+
+    - name: Ensure target directory exists
+      run: |
+        ssh -p 10022 -i ~/.ssh/id_rsa ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_HOST }} "mkdir -p ${{ secrets.STAGING_THEME_PATH }}"
 
     - name: Rsync theme files to Staging
       run: |
-        rsync -avzc --delete --exclude='.*' --exclude README.md -e "ssh -p 10022 -o StrictHostKeyChecking=no" ./ ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_HOST }}:${{ secrets.STAGING_THEME_PATH }}
+        rsync -avzc --delete --exclude='.*' --exclude='README.md' -e "ssh -p 10022 -i ~/.ssh/id_rsa" ./ ${{ secrets.STAGING_SERVER_USER }}@${{ secrets.STAGING_SERVER_HOST }}:${{ secrets.STAGING_THEME_PATH }}/
