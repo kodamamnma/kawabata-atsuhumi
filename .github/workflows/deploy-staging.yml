@@ -38,7 +38,8 @@ jobs:
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
         echo "Testing SSH connection to ${SSH_USER}@${SSH_HOST}..."
-        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
+        # ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
+        ssh -vvv -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
 
     - name: Ensure target theme directory exists on remote
       run: |
