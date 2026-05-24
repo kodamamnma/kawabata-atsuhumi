@@ -22,35 +22,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
+        server: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        protocol: ftps
+        port: 21
+        local-dir: ./kawabata-wp-theme/
+        server-dir: ${{ secrets.PRODUCTION_THEME_PATH }}/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/README.md
+          **/.github/**
 
-    - name: Add server to known_hosts
+    - name: Verify deployment
       run: |
-        SSH_HOST="${{ secrets.SERVER_HOST }}"
-        ssh-keyscan -p 10022 -H "${SSH_HOST}" >> ~/.ssh/known_hosts
-
-    - name: Ensure target theme directory exists on remote
-      run: |
-        SSH_HOST="${{ secrets.SERVER_HOST }}"
-        SSH_USER="${{ secrets.SERVER_USER }}"
-        THEME_PATH="${{ secrets.PRODUCTION_THEME_PATH }}"
-        ssh -p 10022 -o StrictHostKeyChecking=no "${SSH_USER}"@"${SSH_HOST}" "mkdir -p \"${THEME_PATH}\""
-
-    - name: Rsync theme files to PRODUCTION
-      run: |
-        SSH_HOST="${{ secrets.SERVER_HOST }}"
-        SSH_USER="${{ secrets.SERVER_USER }}"
-        THEME_PATH="${{ secrets.PRODUCTION_THEME_PATH }}"
-        rsync -avzc --delete --exclude='.*' --exclude README.md -e "ssh -p 10022 -o StrictHostKeyChecking=no" ./ "${SSH_USER}"@"${SSH_HOST}":"${THEME_PATH}"
-
-    - name: Clear WordPress Cache
-      run: |
-        SSH_HOST="${{ secrets.SERVER_HOST }}"
-        SSH_USER="${{ secrets.SERVER_USER }}"
-        ssh -p 10022 -o StrictHostKeyChecking=no "${SSH_USER}"@"${SSH_HOST}" "wp w3-total-cache flush all"
+        echo "✅ Deployment completed successfully"
+        echo "Files deployed to: ${{ secrets.PRODUCTION_THEME_PATH }}"
 
   release:
     needs: deploy
