@@ -22,51 +22,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
-
-    - name: Add server to known_hosts
-      run: |
-        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        echo "Adding ${SSH_HOST} to known_hosts..."
-        ssh-keyscan -p 10022 -H "${SSH_HOST}" >> ~/.ssh/known_hosts
-
-    - name: Test SSH connection
-      run: |
-        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
-        echo "Testing SSH connection to ${SSH_USER}@${SSH_HOST}..."
-        ssh -vvv -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
-
-    - name: Ensure target theme directory exists on remote
-      run: |
-        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
-        THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        echo "Creating directory: ${THEME_PATH}"
-        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "mkdir -p '${THEME_PATH}' && ls -ld '${THEME_PATH}'"
-
-    - name: Rsync theme files to Staging
-      run: |
-        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
-        THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        echo "Syncing files to ${THEME_PATH}..."
-        rsync -avzc --delete \
-          --exclude='.*' \
-          --exclude='README.md' \
-          --exclude='.git' \
-          --exclude='.github' \
-          --exclude='node_modules' \
-          -e "ssh -p 10022" \
-          ./ "${SSH_USER}@${SSH_HOST}:${THEME_PATH}/"
+        server: ${{ secrets.STAGING_SERVER_HOST }}
+        username: ${{ secrets.STAGING_SERVER_USER }}
+        password: ${{ secrets.STAGING_SERVER_PASSWORD }}
+        protocol: ftps
+        port: 21
+        local-dir: ./
+        server-dir: ${{ secrets.STAGING_THEME_PATH }}/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/README.md
+          **/.github/**
 
     - name: Verify deployment
       run: |
-        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
-        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
-        THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        echo "Verifying deployed files..."
-        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "ls -lah '${THEME_PATH}/' | head -20"
+        echo "✅ Deployment completed successfully"
+        echo "Files deployed to: ${{ secrets.STAGING_THEME_PATH }}"
