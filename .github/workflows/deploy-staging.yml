@@ -2,7 +2,7 @@ name: Deploy to Staging
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
   workflow_dispatch:
 
 jobs:
@@ -13,6 +13,7 @@ jobs:
       uses: actions/checkout@v4
     - name: PHP Syntax Check
       uses: ./.github/actions/php-syntax-check
+  
   deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -26,16 +27,46 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
 
+    - name: Add server to known_hosts
+      run: |
+        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
+        echo "Adding ${SSH_HOST} to known_hosts..."
+        ssh-keyscan -p 10022 -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+
+    - name: Test SSH connection
+      run: |
+        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
+        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
+        echo "Testing SSH connection to ${SSH_USER}@${SSH_HOST}..."
+        ssh -vvv -p 10022 "${SSH_USER}@${SSH_HOST}" "echo 'SSH connection successful' && pwd && whoami"
+
     - name: Ensure target theme directory exists on remote
       run: |
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
         THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        ssh -o StrictHostKeyChecking=no "${SSH_USER}"@"${SSH_HOST}" "mkdir -p \"${THEME_PATH}\""
+        echo "Creating directory: ${THEME_PATH}"
+        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "mkdir -p '${THEME_PATH}' && ls -ld '${THEME_PATH}'"
 
     - name: Rsync theme files to Staging
       run: |
         SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
         SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
         THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
-        rsync -avzc --delete --exclude='.*' --exclude README.md -e "ssh -o StrictHostKeyChecking=no" ./ "${SSH_USER}"@"${SSH_HOST}":"${THEME_PATH}"
+        echo "Syncing files to ${THEME_PATH}..."
+        rsync -avzc --delete \
+          --exclude='.*' \
+          --exclude='README.md' \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='node_modules' \
+          -e "ssh -p 10022" \
+          ./ "${SSH_USER}@${SSH_HOST}:${THEME_PATH}/"
+
+    - name: Verify deployment
+      run: |
+        SSH_HOST="${{ secrets.STAGING_SERVER_HOST }}"
+        SSH_USER="${{ secrets.STAGING_SERVER_USER }}"
+        THEME_PATH="${{ secrets.STAGING_THEME_PATH }}"
+        echo "Verifying deployed files..."
+        ssh -p 10022 "${SSH_USER}@${SSH_HOST}" "ls -lah '${THEME_PATH}/' | head -20"
