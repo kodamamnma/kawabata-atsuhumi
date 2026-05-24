@@ -58,6 +58,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Get version from style.css
+      id: version
+      run: |
+        VERSION=$(grep -m 1 -i 'Version:' kawabata-wp-theme/style.css | awk '{print $2}' | tr -d '\r')
+        echo "version-without-v=${VERSION}" >> $GITHUB_OUTPUT
     - name: Release Drafter
       uses: release-drafter/release-drafter@v6
       with:
