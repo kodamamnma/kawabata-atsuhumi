@@ -575,181 +575,204 @@ function App() {
 
       <main style={{ maxWidth: 1160, margin: '0 auto', padding: '20px 16px 0' }}>
         <div className="layout-grid">
-          {/* Hero */}
-          {heroArticle && (
-            <div className="hero-section" style={{ marginBottom: 20 }}>
-              <a href={heroArticle.href || '#'} target={heroArticle.href && heroArticle.href !== '#' ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
-                <div style={{
-                  background: C.white, borderRadius: 4, overflow: 'hidden',
-                  boxShadow: '0 1px 4px rgba(27,58,107,0.10)', cursor: 'pointer',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
-                  onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
-                >
-                  <Img h={240} tone={heroArticle.tone} src={heroArticle.src} style={{ width: '100%' }} />
-                  <div style={{ padding: '14px 16px 18px' }}>
-                    <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
-                      <Badge color={CAT_COLORS[heroArticle.cat] || C.main}>{heroArticle.cat}</Badge>
-                    </div>
-                    <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, lineHeight: 1.4, color: C.t1, marginBottom: 10 }}>
-                      {heroArticle.title}
-                    </div>
-                    {heroArticle.summary && (
-                      <div style={{ fontSize: 13, color: C.t2, lineHeight: 1.75, marginBottom: 8 }}>
-                        {heroArticle.summary}
-                      </div>
-                    )}
-                    <div style={{ fontSize: 11, color: C.t3 }}>{heroArticle.time}</div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          )}
-
-          {/* 特集：2列並び */}
-          <div className="featured-section" style={{ marginBottom: 24 }}>
-            <div className="featured-grid">
-              <div>
-                <div style={{ borderLeft: `4px solid ${C.accent}`, paddingLeft: 10, marginBottom: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>🏠 鹿児島県民に読んでほしい記事</span>
-                </div>
-                <CardV {...PICK_CITIZENS} />
-              </div>
-              <div>
-                <div style={{ borderLeft: `4px solid #6B3FA0`, paddingLeft: 10, marginBottom: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>✍️ 編集長一押しの記事</span>
-                </div>
-                <CardV {...PICK_EDITOR} />
-              </div>
-            </div>
-          </div>
-
-          {/* 最新ニュース */}
-          <div className="latest-news" style={{ marginBottom: 0 }}>
-            <SH color={C.main}>最新ニュース</SH>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
-              {subArticles.slice(0, 4).map((a, i) => <CardH key={i} {...a} />)}
-            </div>
-          </div>
-
-          {/* 広告枠 */}
-          <div className="ad-space" style={{
-            marginBottom: 24, background: C.border, borderRadius: 4,
-            height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: `1px dashed ${C.t3}`,
-          }}>
-            <span style={{ fontSize: 11, color: C.t3, letterSpacing: '0.08em' }}>広 告</span>
-          </div>
-
-          {/* その他の記事 */}
-          {listArticles.length > 0 && (
-            <div className="other-articles">
-              <SH color={C.sub}>その他の記事</SH>
-              <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden', marginBottom: 24 }}>
-                {listArticles.map((a, i) => (
-                  <div key={i} style={{
-                    display: 'flex', gap: 10, padding: '10px 14px',
-                    borderBottom: i < listArticles.length - 1 ? `1px solid ${C.border}` : 'none',
-                    cursor: 'pointer', alignItems: 'flex-start',
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
-                    onMouseLeave={e => e.currentTarget.style.background = C.white}
-                  >
-                    <Badge color={CAT_COLORS[a.cat] || C.main}>{a.cat}</Badge>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.45, color: C.t1 }}>{a.title}</div>
-                      <div style={{ fontSize: 10, color: C.t3, marginTop: 3 }}>{a.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Mission strip */}
-          <div className="mission-banner" style={{
-            background: C.main, borderRadius: 4, padding: '24px 20px', marginBottom: 24,
-            display: 'flex', gap: 20, alignItems: 'center',
-          }}>
-            <div style={{ width: 5, height: 60, background: C.accent, borderRadius: 2, flexShrink: 0 }}></div>
+          {cat !== 'すべて' ? (
             <div>
-              <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                「公共交通と地域文化を世の中へ」
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 16, borderLeft: `4px solid ${C.main}`, paddingLeft: 10 }}>
+                <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 18, fontWeight: 700, color: C.t1 }}>
+                  {cat}
+                </h1>
+                <span style={{ fontSize: 12, color: C.t3 }}>{filtered.length}件</span>
               </div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', lineHeight: 1.75 }}>
-                鹿児島地域交通通信社は、2019年にYouTubeチャンネル「ふみたび」として活動を開始。鹿児島県内の公共交通の面白さと地域文化の魅力を、記事・写真・動画で発信し続けています。
-              </div>
-              <a href="/about/"
-                style={{ display: 'inline-block', marginTop: 12, background: C.accent, color: '#fff', borderRadius: 4, padding: '7px 16px', fontSize: 12, fontWeight: 700 }}>
-                編集長メッセージを読む →
-              </a>
-            </div>
-          </div>
 
-          {/* ジャンル別注目記事 */}
-          <div className="genre-showcase-wrapper">
-            <SH color={C.sub}>ジャンル別　注目記事</SH>
-            <div className="genre-showcase" style={{ marginBottom: 24 }}>
-              {['鉄道','航空','船舶','バス','地域話題'].map(genre => {
-                const art = ALL_ARTICLES.find(a => a.cat === genre);
-                if (!art) return null;
-                const col = CAT_COLORS[genre] || C.main;
-                return (
-                  <a key={genre} href={art.href || 'https://www.humitabitrafficphotonews.com/all-news'} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+              {filtered.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+                  {filtered.map((a, i) => <CardH key={i} {...a} />)}
+                </div>
+              ) : (
+                <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '48px 0', textAlign: 'center', marginBottom: 24 }}>
+                  <div style={{ fontSize: 14, color: C.t3 }}>このカテゴリの記事はまだありません</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Hero */}
+              {heroArticle && (
+                <div className="hero-section" style={{ marginBottom: 20 }}>
+                  <a href={heroArticle.href || '#'} target={heroArticle.href && heroArticle.href !== '#' ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
                     <div style={{
                       background: C.white, borderRadius: 4, overflow: 'hidden',
-                      boxShadow: '0 1px 4px rgba(27,58,107,0.10)', display: 'flex', cursor: 'pointer',
+                      boxShadow: '0 1px 4px rgba(27,58,107,0.10)', cursor: 'pointer',
                     }}
                       onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
                       onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
                     >
-                      <div style={{ width: 5, background: col, flexShrink: 0 }}></div>
-                      <Img h={72} tone={art.tone} src={art.src} style={{ width: 96, flexShrink: 0 }} />
-                      <div style={{ padding: '8px 12px', flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                          <span style={{ fontSize: 11, fontWeight: 700, color: col }}>#{genre}</span>
+                      <Img h={240} tone={heroArticle.tone} src={heroArticle.src} style={{ width: '100%' }} />
+                      <div style={{ padding: '14px 16px 18px' }}>
+                        <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+                          <Badge color={CAT_COLORS[heroArticle.cat] || C.main}>{heroArticle.cat}</Badge>
                         </div>
-                        <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 12, fontWeight: 700, lineHeight: 1.4, color: C.t1,
-                          overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-                          {art.title}
+                        <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, lineHeight: 1.4, color: C.t1, marginBottom: 10 }}>
+                          {heroArticle.title}
                         </div>
-                        <div style={{ fontSize: 10, color: C.t3, marginTop: 4 }}>{art.time}</div>
+                        {heroArticle.summary && (
+                          <div style={{ fontSize: 13, color: C.t2, lineHeight: 1.75, marginBottom: 8 }}>
+                            {heroArticle.summary}
+                          </div>
+                        )}
+                        <div style={{ fontSize: 11, color: C.t3 }}>{heroArticle.time}</div>
                       </div>
                     </div>
                   </a>
-                );
-              })}
-              <a href="/articles/" style={{ textDecoration: 'none' }}>
-                <div style={{
-                  background: C.main, borderRadius: 4, height: 72, display: 'flex',
-                  alignItems: 'center', justifyContent: 'center', cursor: 'pointer', gap: 8,
-                }}
-                  onMouseEnter={e => e.currentTarget.style.background = C.mainDark}
-                  onMouseLeave={e => e.currentTarget.style.background = C.main}
-                >
-                  <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>全記事を見る →</span>
                 </div>
-              </a>
-            </div>
-          </div>
+              )}
 
-          {/* こんな方に読んでほしい */}
-          <div className="target-audience" style={{ background: C.mainLight, borderRadius: 4, padding: '18px 20px', marginBottom: 24, border: `1px solid ${C.subLight}` }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: C.main, marginBottom: 12, letterSpacing: '0.05em' }}>こんな方に読んでほしい</div>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              {[
-                { icon: '🏠', label: '鹿児島県内にお住まいの方', desc: '地元の公共交通ニュースをどこよりも詳しく' },
-                { icon: '✈️', label: '鹿児島に興味がある県外の方', desc: '鹿児島の交通・観光情報を発信中' },
-                { icon: '🚃', label: '乗り物・公共交通が好きな方', desc: '鉄道・バス・船・航空の専門記事が充実' },
-              ].map(({ icon, label, desc }) => (
-                <div key={label} style={{ flex: '1 1 160px', background: C.white, borderRadius: 4, padding: '12px 14px', border: `1px solid ${C.border}` }}>
-                  <div style={{ fontSize: 18, marginBottom: 4 }}>{icon}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: C.main, marginBottom: 3 }}>{label}</div>
-                  <div style={{ fontSize: 11, color: C.t2, lineHeight: 1.6 }}>{desc}</div>
+              {/* 特集：2列並び */}
+              <div className="featured-section" style={{ marginBottom: 24 }}>
+                <div className="featured-grid">
+                  <div>
+                    <div style={{ borderLeft: `4px solid ${C.accent}`, paddingLeft: 10, marginBottom: 10 }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>🏠 鹿児島県民に読んでほしい記事</span>
+                    </div>
+                    <CardV {...PICK_CITIZENS} />
+                  </div>
+                  <div>
+                    <div style={{ borderLeft: `4px solid #6B3FA0`, paddingLeft: 10, marginBottom: 10 }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>✍️ 編集長一押しの記事</span>
+                    </div>
+                    <CardV {...PICK_EDITOR} />
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+
+              {/* 最新ニュース */}
+              <div className="latest-news" style={{ marginBottom: 0 }}>
+                <SH color={C.main}>最新ニュース</SH>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+                  {subArticles.slice(0, 4).map((a, i) => <CardH key={i} {...a} />)}
+                </div>
+              </div>
+
+              {/* 広告枠 */}
+              <div className="ad-space" style={{
+                marginBottom: 24, background: C.border, borderRadius: 4,
+                height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                border: `1px dashed ${C.t3}`,
+              }}>
+                <span style={{ fontSize: 11, color: C.t3, letterSpacing: '0.08em' }}>広 告</span>
+              </div>
+
+              {/* その他の記事 */}
+              {listArticles.length > 0 && (
+                <div className="other-articles">
+                  <SH color={C.sub}>その他の記事</SH>
+                  <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden', marginBottom: 24 }}>
+                    {listArticles.map((a, i) => (
+                      <div key={i} style={{
+                        display: 'flex', gap: 10, padding: '10px 14px',
+                        borderBottom: i < listArticles.length - 1 ? `1px solid ${C.border}` : 'none',
+                        cursor: 'pointer', alignItems: 'flex-start',
+                      }}
+                        onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                        onMouseLeave={e => e.currentTarget.style.background = C.white}
+                      >
+                        <Badge color={CAT_COLORS[a.cat] || C.main}>{a.cat}</Badge>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.45, color: C.t1 }}>{a.title}</div>
+                          <div style={{ fontSize: 10, color: C.t3, marginTop: 3 }}>{a.time}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Mission strip */}
+              <div className="mission-banner" style={{
+                background: C.main, borderRadius: 4, padding: '24px 20px', marginBottom: 24,
+                display: 'flex', gap: 20, alignItems: 'center',
+              }}>
+                <div style={{ width: 5, height: 60, background: C.accent, borderRadius: 2, flexShrink: 0 }}></div>
+                <div>
+                  <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
+                    「公共交通と地域文化を世の中へ」
+                  </div>
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', lineHeight: 1.75 }}>
+                    鹿児島地域交通通信社は、2019年にYouTubeチャンネル「ふみたび」として活動を開始。鹿児島県内の公共交通の面白さと地域文化の魅力を、記事・写真・動画で発信し続けています。
+                  </div>
+                  <a href="/about/"
+                    style={{ display: 'inline-block', marginTop: 12, background: C.accent, color: '#fff', borderRadius: 4, padding: '7px 16px', fontSize: 12, fontWeight: 700 }}>
+                    編集長メッセージを読む →
+                  </a>
+                </div>
+              </div>
+
+              {/* ジャンル別注目記事 */}
+              <div className="genre-showcase-wrapper">
+                <SH color={C.sub}>ジャンル別　注目記事</SH>
+                <div className="genre-showcase" style={{ marginBottom: 24 }}>
+                  {['鉄道','航空','船舶','バス','地域話題'].map(genre => {
+                    const art = ALL_ARTICLES.find(a => a.cat === genre);
+                    if (!art) return null;
+                    const col = CAT_COLORS[genre] || C.main;
+                    return (
+                      <a key={genre} href={art.href || 'https://www.humitabitrafficphotonews.com/all-news'} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                          background: C.white, borderRadius: 4, overflow: 'hidden',
+                          boxShadow: '0 1px 4px rgba(27,58,107,0.10)', display: 'flex', cursor: 'pointer',
+                        }}
+                          onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
+                          onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
+                        >
+                          <div style={{ width: 5, background: col, flexShrink: 0 }}></div>
+                          <Img h={72} tone={art.tone} src={art.src} style={{ width: 96, flexShrink: 0 }} />
+                          <div style={{ padding: '8px 12px', flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                              <span style={{ fontSize: 11, fontWeight: 700, color: col }}>#{genre}</span>
+                            </div>
+                            <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 12, fontWeight: 700, lineHeight: 1.4, color: C.t1,
+                              overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                              {art.title}
+                            </div>
+                            <div style={{ fontSize: 10, color: C.t3, marginTop: 4 }}>{art.time}</div>
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                  <a href="/articles/" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                      background: C.main, borderRadius: 4, height: 72, display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', cursor: 'pointer', gap: 8,
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.background = C.mainDark}
+                      onMouseLeave={e => e.currentTarget.style.background = C.main}
+                    >
+                      <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>全記事を見る →</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              {/* こんな方に読んでほしい */}
+              <div className="target-audience" style={{ background: C.mainLight, borderRadius: 4, padding: '18px 20px', marginBottom: 24, border: `1px solid ${C.subLight}` }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: C.main, marginBottom: 12, letterSpacing: '0.05em' }}>こんな方に読んでほしい</div>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  {[
+                    { icon: '🏠', label: '鹿児島県内にお住まいの方', desc: '地元の公共交通ニュースをどこよりも詳しく' },
+                    { icon: '✈️', label: '鹿児島に興味がある県外の方', desc: '鹿児島の交通・観光情報を発信中' },
+                    { icon: '🚃', label: '乗り物・公共交通が好きな方', desc: '鉄道・バス・船・航空の専門記事が充実' },
+                  ].map(({ icon, label, desc }) => (
+                    <div key={label} style={{ flex: '1 1 160px', background: C.white, borderRadius: 4, padding: '12px 14px', border: `1px solid ${C.border}` }}>
+                      <div style={{ fontSize: 18, marginBottom: 4 }}>{icon}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: C.main, marginBottom: 3 }}>{label}</div>
+                      <div style={{ fontSize: 11, color: C.t2, lineHeight: 1.6 }}>{desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* ── RIGHT SIDEBAR ── */}
           <aside className="sidebar-content">
