@@ -342,7 +342,7 @@
             position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360,
             height: '100%', background: C.white, overflowY: 'auto',
             boxShadow: '-4px 0 24px rgba(15,27,46,0.15)',
-            padding: '20px 0 32px',
+            padding: '48px 0 32px',
           }} onClick={e => e.stopPropagation()}>
             {/* Menu sections */}
             {menuSections.map((section, si) => (
@@ -483,7 +483,7 @@
           <div style={{ padding: '14px' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
             <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
-              「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
+              「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道する個人運営のメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
             </div>
             <a href="about.html" style={{
               display: 'block', textAlign: 'center', background: C.main, color: '#fff',
@@ -611,7 +611,14 @@
     /* ─── WordPressの記事データを本サイトの形式に変換 ─── */
     function mapWpPost(post) {
       const categories = post._embedded?.['wp:term']?.[0] || [];
-      const cat = categories[0]?.name || 'その他';
+      const priorityCats = ['鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題'];
+      let cat = 'その他';
+      for (const pCat of priorityCats) {
+        if (categories.some(c => c.name === pCat)) {
+          cat = pCat;
+          break;
+        }
+      }
       const src = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || null;
       const rawExcerpt = post.excerpt?.rendered || '';
       const summary = rawExcerpt.replace(/<[^>]+>/g, '').replace(/\n/g, '').trim().slice(0, 120) || undefined;

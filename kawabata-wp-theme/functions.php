@@ -81,12 +81,18 @@ add_filter( 'script_loader_tag', function ( $tag, $handle ) {
  * WordPress 投稿を記事配列（JS 用 JSON）として返す。
  */
 function kawabata_get_articles() {
-    $posts = get_posts( [
+    $args = [
         'numberposts' => 20,
         'post_status' => 'publish',
         'orderby'     => 'date',
         'order'       => 'DESC',
-    ] );
+    ];
+
+    if ( is_category() ) {
+        $args['cat'] = get_queried_object_id();
+    }
+
+    $posts = get_posts( $args );
 
     if ( empty( $posts ) ) {
         return [];
@@ -99,9 +105,11 @@ function kawabata_get_articles() {
     foreach ( $posts as $i => $post ) {
         $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
         $cat   = 'その他';
-        foreach ( $terms as $name ) {
-            if ( in_array( $name, $valid_cats, true ) ) {
-                $cat = $name;
+        // 優先順位を考慮してカテゴリを決定（より具体的なカテゴリを優先）
+        $priority_cats = [ '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
+        foreach ( $priority_cats as $priority_cat ) {
+            if ( in_array( $priority_cat, $terms, true ) ) {
+                $cat = $priority_cat;
                 break;
             }
         }
@@ -136,7 +144,15 @@ function kawabata_single_article_data() {
     if ( is_single() ) {
         global $post;
         $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
-        $cat   = ! empty( $terms ) ? $terms[0] : 'その他';
+        $cat   = 'その他';
+        // 優先順位を考慮してカテゴリを決定（より具体的なカテゴリを優先）
+        $priority_cats = [ '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
+        foreach ( $priority_cats as $priority_cat ) {
+            if ( in_array( $priority_cat, $terms, true ) ) {
+                $cat = $priority_cat;
+                break;
+            }
+        }
 
         $article = [
             'cat'       => $cat,

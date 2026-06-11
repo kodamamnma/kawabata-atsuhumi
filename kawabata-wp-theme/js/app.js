@@ -192,7 +192,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360,
         height: '100%', background: C.white, overflowY: 'auto',
         boxShadow: '-4px 0 24px rgba(15,27,46,0.15)',
-        padding: '20px 0 32px',
+        padding: '48px 0 32px',
       }} onClick={e => e.stopPropagation()}>
         {menuSections.map((section, si) => (
           <div key={si} style={{ padding: '0 24px', marginBottom: 24 }}>
@@ -332,7 +332,7 @@ const Sidebar = () => (
       <div style={{ padding: '14px' }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
         <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
-          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
+          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道する個人運営のメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
         </div>
         <a href="/about/" style={{
           display: 'block', textAlign: 'center', background: C.main, color: '#fff',

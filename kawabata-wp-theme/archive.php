@@ -76,11 +76,13 @@ const CategoryNav = ({ active, onChange }) => (
 const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
-      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>当社について</div>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
       <img src={IMGS.corporate} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }} />
       <div style={{ padding: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
-        <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。</div>
+        <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
+          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道する個人運営のメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
+        </div>
         <a href="<?php echo get_permalink(get_page_by_path('about')); ?>" style={{ display: 'block', textAlign: 'center', background: C.main, color: '#fff', borderRadius: 4, padding: '8px 0', fontSize: 12, fontWeight: 700 }}>概要案内を読む →</a>
       </div>
     </div>
@@ -110,7 +112,7 @@ const Sidebar = () => (
 );
 
 function App() {
-  const [cat, setCat] = useState('すべて');
+  const [cat, setCat] = useState(<?php echo is_category() ? json_encode(single_cat_title('', false), JSON_UNESCAPED_UNICODE) : "'すべて'"; ?>);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const filtered = cat === 'すべて' ? ALL_ARTICLES : ALL_ARTICLES.filter(a => a.cat === cat);

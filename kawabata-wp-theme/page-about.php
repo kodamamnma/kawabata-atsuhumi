@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: 当社について
+ * Template Name: 私たちについて
  */
 get_header();
 ?>
@@ -9,12 +9,12 @@ get_header();
 const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
-      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>当社について</div>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
       <Img h={100} src={IMGS.corporate} style={{ width: '100%' }} />
       <div style={{ padding: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
         <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
-          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道するメディアです。
+          「公共交通と地域文化を世の中へ」を目指して、鹿児島県内の公共交通と地域情報を中心に取材・報道する個人運営のメディアです。2019年YouTubeチャンネル「ふみたび」から始まり、2026年に現在の名称へ。
         </div>
         <a href="<?php echo get_permalink(get_page_by_path('about')); ?>" style={{ display: 'block', textAlign: 'center', background: C.main, color: '#fff', borderRadius: 4, padding: '8px 0', fontSize: 12, fontWeight: 700 }}>概要案内を読む →</a>
       </div>
@@ -91,7 +91,7 @@ function App() {
         <div style={{ maxWidth: 1160, margin: '0 auto', padding: '8px 16px', display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, color: C.t3 }}>
           <a href="<?php echo home_url('/'); ?>" style={{ color: C.sub }}>トップ</a>
           <span>›</span>
-          <span style={{ color: C.t1 }}>当社について</span>
+          <span style={{ color: C.t1 }}>私たちについて</span>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ function App() {
         <div className="layout-grid">
 
           <div style={{ marginBottom: 24 }}>
-            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, color: C.t1, marginBottom: 4 }}>当社について</h1>
+            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, color: C.t1, marginBottom: 4 }}>私たちについて</h1>
             <div style={{ fontSize: 12, color: C.t3 }}>About Us</div>
           </div>
 
@@ -171,8 +171,6 @@ function App() {
               <InfoRow label="拠点" value="〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル yokoito事務所内" />
               <InfoRow label="内容" value="鹿児島県内の公共交通・地域情報の取材・撮影・報道。公共交通・鹿児島県内に関する情報発信" />
               <InfoRow label="発足" value="2019年3月9日" />
-              <InfoRow label="資本金" value="非公開" />
-              <InfoRow label="人数" value="非公開" />
               <InfoRow label="FAX" value={<>（確認中・随時更新）<br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせは基本的にメールにて承ります</span></>} />
               <InfoRow label="メール" value={<><a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
             </div>
