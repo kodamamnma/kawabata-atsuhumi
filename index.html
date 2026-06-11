@@ -611,14 +611,7 @@
     /* ─── WordPressの記事データを本サイトの形式に変換 ─── */
     function mapWpPost(post) {
       const categories = post._embedded?.['wp:term']?.[0] || [];
-      const priorityCats = ['鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題'];
-      let cat = 'その他';
-      for (const pCat of priorityCats) {
-        if (categories.some(c => c.name === pCat)) {
-          cat = pCat;
-          break;
-        }
-      }
+      const cat = categories[0]?.name || 'その他';
       const src = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || null;
       const rawExcerpt = post.excerpt?.rendered || '';
       const summary = rawExcerpt.replace(/<[^>]+>/g, '').replace(/\n/g, '').trim().slice(0, 120) || undefined;
