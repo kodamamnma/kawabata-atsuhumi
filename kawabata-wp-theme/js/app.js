@@ -192,7 +192,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360,
         height: '100%', background: C.white, overflowY: 'auto',
         boxShadow: '-4px 0 24px rgba(15,27,46,0.15)',
-        padding: '20px 0 32px',
+        padding: '48px 0 32px',
       }} onClick={e => e.stopPropagation()}>
         {menuSections.map((section, si) => (
           <div key={si} style={{ padding: '0 24px', marginBottom: 24 }}>

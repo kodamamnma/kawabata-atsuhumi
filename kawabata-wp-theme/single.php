@@ -131,7 +131,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
-        <SideHead>当社について</SideHead>
+        <SideHead>私たちについて</SideHead>
         <img src={IMGS.corporate} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 90, objectFit: 'cover', display: 'block' }} />
         <div style={{ padding: 14 }}>
           <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>

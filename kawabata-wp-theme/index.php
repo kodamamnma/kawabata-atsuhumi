@@ -107,7 +107,7 @@ const CardV = ({ cat, title, time, tone = 'a', src, href }) => (
 const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
-      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>当社について</div>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
       <Img h={100} tone="a" src={IMGS.corporate} style={{ width: '100%' }} />
       <div style={{ padding: '14px' }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>

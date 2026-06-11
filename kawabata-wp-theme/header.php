@@ -152,7 +152,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
   ];
   return (
     <div style={{ position: 'fixed', top: 85, left: 0, right: 0, bottom: 0, zIndex: 190, background: 'rgba(15,27,46,0.55)' }} onClick={onClose}>
-      <div style={{ position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360, height: '100%', background: C.white, overflowY: 'auto', boxShadow: '-4px 0 24px rgba(15,27,46,0.15)', padding: '20px 0 32px' }} onClick={e => e.stopPropagation()}>
+      <div style={{ position: 'absolute', top: 0, right: 0, width: '100%', maxWidth: 360, height: '100%', background: C.white, overflowY: 'auto', boxShadow: '-4px 0 24px rgba(15,27,46,0.15)', padding: '48px 0 32px' }} onClick={e => e.stopPropagation()}>
         {menuSections.map((section, si) => (
           <div key={si} style={{ padding: '0 24px', marginBottom: 24 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: C.t3, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10, paddingBottom: 6, borderBottom: `2px solid ${C.border}` }}>{section.title}</div>

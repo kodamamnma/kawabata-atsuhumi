@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: 当社について
+ * Template Name: 私たちについて
  */
 get_header();
 ?>
@@ -9,7 +9,7 @@ get_header();
 const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
-      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>当社について</div>
+      <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
       <Img h={100} src={IMGS.corporate} style={{ width: '100%' }} />
       <div style={{ padding: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
@@ -91,7 +91,7 @@ function App() {
         <div style={{ maxWidth: 1160, margin: '0 auto', padding: '8px 16px', display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, color: C.t3 }}>
           <a href="<?php echo home_url('/'); ?>" style={{ color: C.sub }}>トップ</a>
           <span>›</span>
-          <span style={{ color: C.t1 }}>当社について</span>
+          <span style={{ color: C.t1 }}>私たちについて</span>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ function App() {
         <div className="layout-grid">
 
           <div style={{ marginBottom: 24 }}>
-            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, color: C.t1, marginBottom: 4 }}>当社について</h1>
+            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 22, fontWeight: 700, color: C.t1, marginBottom: 4 }}>私たちについて</h1>
             <div style={{ fontSize: 12, color: C.t3 }}>About Us</div>
           </div>
 
