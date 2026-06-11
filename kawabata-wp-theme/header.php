@@ -7,6 +7,17 @@
 </head>
 <body <?php body_class(); ?>>
 <div id="root"></div>
+<?php
+$categories = get_categories();
+$cat_links = [];
+foreach ( $categories as $category ) {
+    $cat_links[$category->name] = get_category_link( $category->term_id );
+}
+$cat_links['すべて'] = home_url( '/' );
+?>
+<script>
+window.WP_CAT_LINKS = <?php echo json_encode( $cat_links, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?>;
+</script>
 <script type="text/babel">
 const { useState, useEffect } = React;
 
@@ -125,13 +136,24 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
     {
       title: 'カテゴリ',
       items: [
-        { label: 'すべての記事', action: () => { onCategoryChange && onCategoryChange('すべて'); onClose(); } },
-        { label: '🚃 鉄道',    action: () => { onCategoryChange && onCategoryChange('鉄道'); onClose(); } },
-        { label: '✈️ 航空',    action: () => { onCategoryChange && onCategoryChange('航空'); onClose(); } },
-        { label: '🚢 船舶',    action: () => { onCategoryChange && onCategoryChange('船舶'); onClose(); } },
-        { label: '🚌 バス',    action: () => { onCategoryChange && onCategoryChange('バス'); onClose(); } },
-        { label: '📍 地域話題', action: () => { onCategoryChange && onCategoryChange('地域話題'); onClose(); } },
-      ],
+        { label: 'すべての記事', catName: 'すべて' },
+        { label: '🚃 鉄道',    catName: '鉄道' },
+        { label: '✈️ 航空',    catName: '航空' },
+        { label: '🚢 船舶',    catName: '船舶' },
+        { label: '🚌 バス',    catName: 'バス' },
+        { label: '📍 地域話題', catName: '地域話題' },
+      ].map(item => ({
+        label: item.label,
+        action: () => {
+          if (onCategoryChange) {
+            onCategoryChange(item.catName);
+          } else {
+            const links = window.WP_CAT_LINKS || {};
+            window.location.href = links[item.catName] || '<?php echo home_url("/"); ?>';
+          }
+          onClose();
+        }
+      })),
     },
     {
       title: 'コンテンツ',

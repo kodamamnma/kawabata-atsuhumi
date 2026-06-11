@@ -153,9 +153,12 @@ function kawabata_single_article_data() {
                 break;
             }
         }
+        $cat_id = get_cat_ID( $cat );
+        $cat_link = $cat_id ? get_category_link( $cat_id ) : home_url( '/' );
 
         $article = [
             'cat'       => $cat,
+            'cat_link'  => $cat_link,
             'title'     => get_the_title(),
             'published' => get_the_date( 'Y年n月j日 H:i' ),
             'updated'   => get_the_modified_date( 'Y年n月j日 H:i' ),

@@ -24,6 +24,7 @@
 /* ─── WordPress から渡される個別記事データ ─── */
 const ARTICLE = (typeof ARTICLE_DATA !== 'undefined') ? ARTICLE_DATA : {
   cat: '鉄道',
+  cat_link: '#',
   badge: null,
   title: '記事タイトル',
   published: '',
@@ -179,7 +180,7 @@ function App() {
         <div style={{ maxWidth: 1160, margin: '0 auto', padding: '8px 16px', display: 'flex', gap: 6, alignItems: 'center', fontSize: 12, color: C.t3, flexWrap: 'wrap' }}>
           <a href="<?php echo home_url('/'); ?>" style={{ color: C.sub }}>トップ</a>
           <span>›</span>
-          <a href="<?php echo get_post_type_archive_link('post'); ?>" style={{ color: C.sub }}>{ARTICLE.cat}</a>
+          <a href={ARTICLE.cat_link} style={{ color: C.sub }}>{ARTICLE.cat}</a>
           <span>›</span>
           <span style={{ color: C.t1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320 }}>{ARTICLE.title}</span>
         </div>
