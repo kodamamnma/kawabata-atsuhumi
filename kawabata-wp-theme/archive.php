@@ -112,7 +112,7 @@ const Sidebar = () => (
 );
 
 function App() {
-  const [cat, setCat] = useState('<?php echo is_category() ? esc_js( single_cat_title( '', false ) ) : 'すべて'; ?>');
+  const [cat, setCat] = useState('すべて');
   const [menuOpen, setMenuOpen] = useState(false);
 
   const filtered = cat === 'すべて' ? ALL_ARTICLES : ALL_ARTICLES.filter(a => a.cat === cat);
