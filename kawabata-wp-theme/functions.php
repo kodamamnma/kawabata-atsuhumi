@@ -81,7 +81,7 @@ add_filter( 'script_loader_tag', function ( $tag, $handle ) {
  * WordPress 投稿を記事配列（JS 用 JSON）として返す。
  */
 function kawabata_get_articles() {
-    $posts = get_posts( [
+    $args = [
         'numberposts' => 25,
         'post_status' => 'publish',
         'orderby'     => 'date',
