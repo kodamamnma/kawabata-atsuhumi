@@ -347,19 +347,11 @@ function App() {
             </div>
           </div>
 
-          <div className="latest-news" style={{ marginBottom: 0 }}>
+          <div className="latest-news" style={{ marginBottom: 24 }}>
             <SH color={C.main}>最新ニュース</SH>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
               {subArticles.slice(0, 4).map((a, i) => <CardH key={i} {...a} />)}
             </div>
-          </div>
-
-          <div className="ad-space" style={{
-            marginBottom: 24, background: C.border, borderRadius: 4,
-            height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: `1px dashed ${C.t3}`,
-          }}>
-            <span style={{ fontSize: 11, color: C.t3, letterSpacing: '0.08em' }}>広 告</span>
           </div>
 
           {listArticles.length > 0 && (
