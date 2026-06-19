@@ -172,10 +172,8 @@ function App() {
               <InfoRow label="拠点" value="〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル yokoito事務所内" />
               <InfoRow label="内容" value="鹿児島県内の公共交通・地域情報の取材・撮影・報道。公共交通・鹿児島県内に関する情報発信" />
               <InfoRow label="発足" value="2019年3月9日" />
-              <InfoRow label="資本金" value="非公開" />
-              <InfoRow label="人数" value="非公開" />
               <InfoRow label="FAX" value="050-3183-9452" />
-              <InfoRow label="メール" value={<><a href="kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
+              <InfoRow label="メール" value={<><a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
             </div>
           </div>
 
