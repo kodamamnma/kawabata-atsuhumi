@@ -37,7 +37,7 @@ const Sidebar = () => (
     <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
       <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
       <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
-      <a href="mailto:humitabiphoto@gmail.com" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all' }}>humitabiphoto@gmail.com</a>
+      <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all' }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
     </div>
   </div>
@@ -175,7 +175,7 @@ function App() {
               <InfoRow label="資本金" value="非公開" />
               <InfoRow label="人数" value="非公開" />
               <InfoRow label="FAX" value="050-3183-9452" />
-              <InfoRow label="メール" value={<><a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
+              <InfoRow label="メール" value={<><a href="kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
             </div>
           </div>
 
