@@ -49,7 +49,7 @@ function App() {
             <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 70 }}>運営者：</span>鹿児島地域交通通信社　代表 川畑篤史</div>
             <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 70 }}>所在地：</span>〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル yokoito事務所内</div>
             <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 70 }}>電話番号：</span>080-4205-3515</div>
-            <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 70 }}>E-MAIL：</span><a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a></div>
+            <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 70 }}>E-MAIL：</span><a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a></div>
           </div>
         </div>
 
