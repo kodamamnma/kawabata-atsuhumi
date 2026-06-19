@@ -145,6 +145,8 @@ function kawabata_single_article_data() {
         global $post;
         $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
         $cat   = ! empty( $terms ) ? $terms[0] : 'その他';
+        $cat_obj = get_term_by( 'name', $cat, 'category' );
+        $cat_link = $cat_obj ? get_category_link( $cat_obj->term_id ) : '#';
 
         $article = [
             'cat'       => $cat,
