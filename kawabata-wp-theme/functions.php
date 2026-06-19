@@ -86,7 +86,13 @@ function kawabata_get_articles() {
         'post_status' => 'publish',
         'orderby'     => 'date',
         'order'       => 'DESC',
-    ] );
+    ];
+
+    if ( is_category() ) {
+        $args['cat'] = get_queried_object_id();
+    }
+
+    $posts = get_posts( $args );
 
     if ( empty( $posts ) ) {
         return [];
@@ -138,18 +144,11 @@ function kawabata_single_article_data() {
     if ( is_single() ) {
         global $post;
         $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
-        $cat   = 'その他';
-        // 優先順位を考慮してカテゴリを決定（より具体的なカテゴリを優先）
-        $priority_cats = [ '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
-        foreach ( $priority_cats as $priority_cat ) {
-            if ( in_array( $priority_cat, $terms, true ) ) {
-                $cat = $priority_cat;
-                break;
-            }
-        }
+        $cat   = ! empty( $terms ) ? $terms[0] : 'その他';
 
         $article = [
             'cat'       => $cat,
+            'cat_link'  => $cat_link,
             'title'     => get_the_title(),
             'published' => get_the_date( 'Y年n月j日 H:i' ),
             'updated'   => get_the_modified_date( 'Y年n月j日 H:i' ),
