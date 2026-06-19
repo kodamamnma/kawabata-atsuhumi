@@ -82,7 +82,7 @@ add_filter( 'script_loader_tag', function ( $tag, $handle ) {
  */
 function kawabata_get_articles() {
     $posts = get_posts( [
-        'numberposts' => 50,
+        'numberposts' => 25,
         'post_status' => 'publish',
         'orderby'     => 'date',
         'order'       => 'DESC',

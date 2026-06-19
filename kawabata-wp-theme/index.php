@@ -367,20 +367,22 @@ function App() {
               <SH color={C.sub}>その他の記事</SH>
               <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden', marginBottom: 24 }}>
                 {listArticles.map((a, i) => (
-                  <div key={i} style={{
-                    display: 'flex', gap: 10, padding: '10px 14px',
-                    borderBottom: i < listArticles.length - 1 ? `1px solid ${C.border}` : 'none',
-                    cursor: 'pointer', alignItems: 'flex-start',
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.background = C.bg}
-                    onMouseLeave={e => e.currentTarget.style.background = C.white}
-                  >
-                    <Badge color={CAT_COLORS[a.cat] || C.main}>{a.cat}</Badge>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.45, color: C.t1 }}>{a.title}</div>
-                      <div style={{ fontSize: 10, color: C.t3, marginTop: 3 }}>{a.time}</div>
+                  <a key={i} href={a.href || '#'} style={{ textDecoration: 'none', display: 'block', color: 'inherit' }}>
+                    <div style={{
+                      display: 'flex', gap: 10, padding: '10px 14px',
+                      borderBottom: i < listArticles.length - 1 ? `1px solid ${C.border}` : 'none',
+                      cursor: 'pointer', alignItems: 'flex-start',
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.background = C.bg}
+                      onMouseLeave={e => e.currentTarget.style.background = C.white}
+                    >
+                      <Badge color={CAT_COLORS[a.cat] || C.main}>{a.cat}</Badge>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.45, color: C.t1 }}>{a.title}</div>
+                        <div style={{ fontSize: 10, color: C.t3, marginTop: 3 }}>{a.time}</div>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>

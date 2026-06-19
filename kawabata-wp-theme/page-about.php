@@ -79,7 +79,7 @@ function App() {
     { year: '2023', events: [{ month: '3月', text: '七隈線博多延伸特集掲載', accent: true }, { month: '4月', text: '本格的に記事を掲載開始' }, { month: '9月', text: 'YouTube・TikTok開始' }, { month: '10月', text: 'YouTubeチャンネル「ふみたび」を合併し、史旅編集・交通報道の管轄へ・ホームページ公開', accent: true }] },
     { year: '2024', events: [{ month: '3月', text: '一部記事有料化、noteへ本格的に記事をUP、ふみたびYouTubeチャンネルを改名し史旅編集・交通報道へ' }] },
     { year: '2025', events: [{ month: '7月', text: 'ドメインを取得し、公式コーポレートサイト・ニュースサイトを公開（7月16日）', accent: true }] },
-    { year: '2026', events: [{ month: '3月', text: '名称を史旅編集・交通報道から「鹿児島地域交通通信社」へ変更', accent: true }] },
+    { year: '2026', events: [{ month: '3月', text: '名称を史旅編集・交通報道から「鹿児島地域交通通信社」へ変更', accent: true }, { month: '6月', text: 'ホームページ・ニュースサイトリニューアル', accent: true }] },
   ];
 
   return (
@@ -168,10 +168,11 @@ function App() {
             <div style={{ borderTop: `1px solid ${C.border}` }}>
               <InfoRow label="名称" value={<>鹿児島地域交通通信社<br /><span style={{ fontSize: 11, color: C.t3 }}>（かごしまちいきこうつうつうしんしゃ）</span></>} />
               <InfoRow label="代表者" value="川畑 篤史" />
+              <InfoRow label="運用形態" value="個人運営メディア" />
               <InfoRow label="拠点" value="〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル yokoito事務所内" />
               <InfoRow label="内容" value="鹿児島県内の公共交通・地域情報の取材・撮影・報道。公共交通・鹿児島県内に関する情報発信" />
               <InfoRow label="発足" value="2019年3月9日" />
-              <InfoRow label="FAX" value={<>（確認中・随時更新）<br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせは基本的にメールにて承ります</span></>} />
+              <InfoRow label="FAX" value="050-3183-9452" />
               <InfoRow label="メール" value={<><a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a><br /><span style={{ fontSize: 11, color: C.t3 }}>※お問い合わせはメールを優先してご利用ください</span></>} />
             </div>
           </div>
