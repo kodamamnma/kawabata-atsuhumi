@@ -169,7 +169,7 @@ function App() {
               <InfoRow label="名称" value={<>鹿児島地域交通通信社<br /><span style={{ fontSize: 11, color: C.t3 }}>（かごしまちいきこうつうつうしんしゃ）</span></>} />
               <InfoRow label="代表者" value="川畑 篤史" />
               <InfoRow label="運用形態" value="個人運営メディア" />
-              <InfoRow label="拠点" value="〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル yokoito事務所内" />
+              <InfoRow label="拠点" value="〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル ヨコチャレの事務所内" />
               <InfoRow label="内容" value="鹿児島県内の公共交通・地域情報の取材・撮影・報道。公共交通・鹿児島県内に関する情報発信" />
               <InfoRow label="発足" value="2019年3月9日" />
               <InfoRow label="FAX" value="050-3183-9452" />

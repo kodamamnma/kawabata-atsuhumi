@@ -29,19 +29,19 @@ function App() {
             基本方針 / 報道指針 / 利用規約 / プライバシーポリシー
           </h1>
           <div style={{ fontSize: 13, color: C.t2, lineHeight: 1.6 }}>
-            鹿児島地域交通通信の基本姿勢、ご利用規約、および個人情報の取り扱い方針です。
+            鹿児島地域交通通信社の基本姿勢、ご利用規約、および個人情報の取り扱い方針です。
           </div>
         </div>
 
         <div style={{ background: C.white, borderRadius: 8, boxShadow: '0 2px 12px rgba(27,58,107,0.06)', padding: '40px 32px' }}>
           
-          {/* === 鹿児島地域交通通信について === */}
+          {/* === 鹿児島地域交通通信社について === */}
           <div style={{ marginBottom: 32 }}>
             <h2 style={{ fontSize: 16, fontFamily: "'Noto Serif JP',serif", fontWeight: 700, color: C.main, borderLeft: `4px solid ${C.accent}`, paddingLeft: 12, marginBottom: 14 }}>
-              鹿児島地域交通通信について
+              鹿児島地域交通通信社について
             </h2>
             <p style={{ fontSize: 13, color: C.t2, lineHeight: 1.9, margin: 0 }}>
-              鹿児島地域交通通信は、鹿児島県内の公共交通と地域文化・イベントに関する動向を、迅速かつ客観的にお伝えするメディアです。
+              鹿児島地域交通通信社は、鹿児島県内の公共交通と地域文化・イベントに関する動向を、迅速かつ客観的にお伝えするメディアです。
             </p>
           </div>
 
@@ -83,10 +83,10 @@ function App() {
               ■ 運営者情報
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, color: C.t2, lineHeight: 1.7 }}>
-              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>媒体名:</span>鹿児島地域交通通信</div>
+              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>媒体名:</span>鹿児島地域交通通信社</div>
               <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>代表者・編集責任者:</span>川畑 篤史</div>
-              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>所在地:</span>鹿児島県鹿児島市</div>
-              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>お問い合わせ:</span><a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a></div>
+              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>所在地:</span>〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル ヨコチャレの事務所内</div>
+              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>お問い合わせ:</span><a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a></div>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ function App() {
               利用規約
             </h2>
             <p style={{ fontSize: 13, color: C.t2, lineHeight: 1.9, marginBottom: 24 }}>
-              この利用規約（以下、「本規約」といいます。）は、鹿児島地域交通通信（以下、「当メディア」といいます。）が提供するウェブサイトおよび関連サービス（以下、「本サービス」といいます。）の利用条件を定めるものです。本サービスをご利用になる読者の皆様（以下、「ユーザー」といいます。）は、本規約に同意したものとみなします。
+              この利用規約（以下、「本規約」といいます。）は、鹿児島地域交通通信社（以下、「当メディア」といいます。）が提供するウェブサイトおよび関連サービス（以下、「本サービス」といいます。）の利用条件を定めるものです。本サービスをご利用になる読者の皆様（以下、「ユーザー」といいます。）は、本規約に同意したものとみなします。
             </p>
 
             {[
@@ -155,7 +155,7 @@ function App() {
               プライバシーポリシー
             </h2>
             <p style={{ fontSize: 13, color: C.t2, lineHeight: 1.9, marginBottom: 24 }}>
-              鹿児島地域交通通信（以下、「当メディア」といいます。）は、ユーザーの皆様の個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
+              鹿児島地域交通通信社（以下、「当メディア」といいます。）は、ユーザーの皆様の個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
             </p>
 
             {[
@@ -205,9 +205,10 @@ function App() {
                 )}
                 {clause.address && (
                   <div style={{ marginTop: 10, padding: '12px 16px', background: C.bg, borderRadius: 4, fontSize: 13, color: C.t2, lineHeight: 1.75 }}>
-                    <div>媒体名：鹿児島地域交通通信</div>
+                    <div>媒体名：鹿児島地域交通通信社</div>
                     <div>代表者：川畑 篤史</div>
-                    <div>Eメールアドレス：<a href="mailto:humitabiphoto@gmail.com" style={{ color: C.sub }}>humitabiphoto@gmail.com</a></div>
+                    <div>所在地：〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル ヨコチャレの事務所内</div>
+                    <div>Eメールアドレス：<a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a></div>
                   </div>
                 )}
               </div>

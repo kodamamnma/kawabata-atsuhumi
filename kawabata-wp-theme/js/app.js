@@ -240,11 +240,11 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
           }}>
             <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>E-MAIL</div>
-            <a href="mailto:humitabiphoto@gmail.com" style={{
+            <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{
               display: 'block', background: C.accent, color: '#fff', borderRadius: 6,
               padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center',
               wordBreak: 'break-all', textDecoration: 'none',
-            }}>humitabiphoto@gmail.com</a>
+            }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
             <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
           </div>
         </div>
@@ -366,11 +366,11 @@ const Sidebar = () => (
     <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
       <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
       <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
-      <a href="mailto:humitabiphoto@gmail.com" style={{
+      <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{
         display: 'block', background: C.accent, color: '#fff', borderRadius: 4,
         padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center',
         wordBreak: 'break-all',
-      }}>humitabiphoto@gmail.com</a>
+      }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
     </div>
   </div>
@@ -429,7 +429,7 @@ const Footer = () => (
       </div>
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>© 鹿児島地域交通通信社 All Rights Reserved.</div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>E-MAIL: humitabiphoto@gmail.com</div>
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>E-MAIL: kagoshimaregionaltransport@kagoshima-news.jp</div>
       </div>
     </div>
   </footer>
