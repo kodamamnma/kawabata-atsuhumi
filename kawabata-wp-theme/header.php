@@ -4,6 +4,19 @@
   <meta charset="<?php bloginfo( 'charset' ); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-2831019593005123">
+  <?php if ( is_front_page() ) : ?>
+  <meta name="description" content="鹿児島地域交通通信社は、鹿児島県内の公共交通（鉄道・バス・船舶・航空）と地域文化を取材・報道する個人運営メディアです。鹿児島の交通ニュースをどこよりも詳しくお届けします。">
+  <meta name="keywords" content="鹿児島地域交通通信社,鹿児島,交通,ニュース,鉄道,バス,船舶,航空,地域情報,公共交通">
+  <meta property="og:title" content="鹿児島地域交通通信社 | 公共交通と地域文化を世の中へ">
+  <meta property="og:description" content="鹿児島県内の公共交通（鉄道・バス・船舶・航空）と地域文化を取材・報道するメディアです。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="鹿児島地域交通通信社">
+  <meta name="twitter:description" content="鹿児島県内の公共交通（鉄道・バス・船舶・航空）と地域文化を取材・報道するメディアです。">
+  <?php else : ?>
+  <meta name="description" content="<?php echo esc_attr( get_bloginfo( 'description' ) ); ?>">
+  <?php endif; ?>
   <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
