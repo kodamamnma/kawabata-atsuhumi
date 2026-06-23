@@ -169,3 +169,56 @@ function kawabata_single_article_data() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'kawabata_single_article_data' );
+
+/**
+ * 投稿編集画面にピックアップ記事設定メタボックスを追加。
+ */
+function kawabata_register_metabox() {
+    add_meta_box(
+        'kawabata_pickup',
+        'ピックアップ設定',
+        'kawabata_metabox_html',
+        'post',
+        'side',
+        'default'
+    );
+}
+add_action( 'add_meta_boxes', 'kawabata_register_metabox' );
+
+function kawabata_metabox_html( $post ) {
+    $badge = get_post_meta( $post->ID, 'kawabata_badge', true );
+    wp_nonce_field( 'kawabata_badge_nonce', 'kawabata_badge_nonce' );
+    ?>
+    <p style="margin:0 0 6px;font-weight:bold;">トップページに表示する枠を選択：</p>
+    <label style="display:block;margin-bottom:6px;">
+        <input type="radio" name="kawabata_badge" value="citizens" <?php checked( $badge, 'citizens' ); ?>>
+        🏠 鹿児島県民に読んでほしい記事
+    </label>
+    <label style="display:block;margin-bottom:6px;">
+        <input type="radio" name="kawabata_badge" value="editor" <?php checked( $badge, 'editor' ); ?>>
+        ✍️ 編集長一押しの記事
+    </label>
+    <label style="display:block;">
+        <input type="radio" name="kawabata_badge" value="" <?php checked( $badge, '' ); ?>>
+        （なし）
+    </label>
+    <?php
+}
+
+function kawabata_save_metabox( $post_id ) {
+    if (
+        ! isset( $_POST['kawabata_badge_nonce'] ) ||
+        ! wp_verify_nonce( $_POST['kawabata_badge_nonce'], 'kawabata_badge_nonce' ) ||
+        ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ||
+        ! current_user_can( 'edit_post', $post_id )
+    ) {
+        return;
+    }
+    $value = isset( $_POST['kawabata_badge'] ) ? sanitize_text_field( $_POST['kawabata_badge'] ) : '';
+    if ( $value === '' ) {
+        delete_post_meta( $post_id, 'kawabata_badge' );
+    } else {
+        update_post_meta( $post_id, 'kawabata_badge', $value );
+    }
+}
+add_action( 'save_post', 'kawabata_save_metabox' );
