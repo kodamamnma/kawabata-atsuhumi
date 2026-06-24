@@ -265,8 +265,8 @@ const ALL_ARTICLES = (typeof WP_ARTICLES !== 'undefined' && Array.isArray(WP_ART
   ? WP_ARTICLES
   : STATIC_ARTICLES;
 
-const PICK_CITIZENS = ALL_ARTICLES.find(a => a.badge === 'citizens') || ALL_ARTICLES[0];
-const PICK_EDITOR   = ALL_ARTICLES.find(a => a.badge === 'editor')   || ALL_ARTICLES[1];
+const PICK_CITIZENS = ALL_ARTICLES.find(a => a.cat === '鹿児島県民に読んでほしい記事') || ALL_ARTICLES[0];
+const PICK_EDITOR   = ALL_ARTICLES.find(a => a.cat === '編集長一押しの記事') || ALL_ARTICLES[1];
 
 /* ─── App ─── */
 function App() {

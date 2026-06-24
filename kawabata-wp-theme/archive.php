@@ -5,10 +5,12 @@ const { useState } = React;
 
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
-  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', 'その他': C.t2,
+  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D',
+  '鹿児島県民に読んでほしい記事': C.accent, '編集長一押しの記事': '#6B3FA0',
+  'その他': C.t2,
 };
 
-const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント'];
+const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '鹿児島県民に読んでほしい記事', '編集長一押しの記事'];
 
 const IMGS = {
   corporate: '<?php echo get_template_directory_uri(); ?>/images/corporate.jpg',
