@@ -98,7 +98,7 @@ function kawabata_get_articles() {
         return [];
     }
 
-    $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント' ];
+    $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '鹿児島県民に読んでほしい記事', '編集長一押しの記事' ];
     $tones      = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
     $articles   = [];
 
@@ -106,7 +106,7 @@ function kawabata_get_articles() {
         $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
         $cat   = 'その他';
         // 優先順位を考慮してカテゴリを決定（より具体的なカテゴリを優先）
-        $priority_cats = [ '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
+        $priority_cats = [ '鹿児島県民に読んでほしい記事', '編集長一押しの記事', '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
         foreach ( $priority_cats as $priority_cat ) {
             if ( in_array( $priority_cat, $terms, true ) ) {
                 $cat = $priority_cat;
