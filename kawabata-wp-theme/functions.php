@@ -103,13 +103,31 @@ function kawabata_get_articles() {
     $articles   = [];
 
     foreach ( $posts as $i => $post ) {
-        $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
+        $post_categories = wp_get_post_terms( $post->ID, 'category' );
         $cat   = 'その他';
-        // 優先順位を考慮してカテゴリを決定（より具体的なカテゴリを優先）
-        $priority_cats = [ '鹿児島県民に読んでほしい記事', '編集長一押しの記事', '鉄道', '航空', '船舶', 'バス', '鹿児島のイベント', '地域話題' ];
-        foreach ( $priority_cats as $priority_cat ) {
-            if ( in_array( $priority_cat, $terms, true ) ) {
-                $cat = $priority_cat;
+        
+        // 優先順位を考慮してカテゴリを決定（スラッグまたは日本語名で判定）
+        $priority_rules = [
+            [ 'name' => '鹿児島県民に読んでほしい記事', 'slug' => 'kagoshima' ],
+            [ 'name' => '編集長一押しの記事', 'slug' => 'henshutyo' ],
+            [ 'name' => '鉄道', 'slug' => 'railway' ],
+            [ 'name' => '航空', 'slug' => 'aviation' ],
+            [ 'name' => '船舶', 'slug' => 'ship' ],
+            [ 'name' => 'バス', 'slug' => 'bus' ],
+            [ 'name' => '鹿児島のイベント', 'slug' => 'event' ],
+            [ 'name' => '地域話題', 'slug' => 'topic' ]
+        ];
+
+        foreach ( $priority_rules as $rule ) {
+            $matched = false;
+            foreach ( $post_categories as $term ) {
+                if ( $term->slug === $rule['slug'] || $term->name === $rule['name'] ) {
+                    $cat = $rule['name']; // 表示・JS用にテーマの正式な日本語名に統一
+                    $matched = true;
+                    break;
+                }
+            }
+            if ( $matched ) {
                 break;
             }
         }
@@ -143,9 +161,47 @@ function kawabata_get_articles() {
 function kawabata_single_article_data() {
     if ( is_single() ) {
         global $post;
-        $terms = wp_get_post_terms( $post->ID, 'category', [ 'fields' => 'names' ] );
-        $cat   = ! empty( $terms ) ? $terms[0] : 'その他';
+        $post_categories = wp_get_post_terms( $post->ID, 'category' );
+        
+        $cat = 'その他';
+        $priority_rules = [
+            [ 'name' => '鹿児島県民に読んでほしい記事', 'slug' => 'kagoshima' ],
+            [ 'name' => '編集長一押しの記事', 'slug' => 'henshutyo' ],
+            [ 'name' => '鉄道', 'slug' => 'railway' ],
+            [ 'name' => '航空', 'slug' => 'aviation' ],
+            [ 'name' => '船舶', 'slug' => 'ship' ],
+            [ 'name' => 'バス', 'slug' => 'bus' ],
+            [ 'name' => '鹿児島のイベント', 'slug' => 'event' ],
+            [ 'name' => '地域話題', 'slug' => 'topic' ]
+        ];
+
+        foreach ( $priority_rules as $rule ) {
+            $matched = false;
+            foreach ( $post_categories as $term ) {
+                if ( $term->slug === $rule['slug'] || $term->name === $rule['name'] ) {
+                    $cat = $rule['name'];
+                    $matched = true;
+                    break;
+                }
+            }
+            if ( $matched ) {
+                break;
+            }
+        }
+
+        // 優先ルールにヒットしなかった場合は、最初のカテゴリの名前（あれば）を使用
+        if ( $cat === 'その他' && ! empty( $post_categories ) ) {
+            $cat = $post_categories[0]->name;
+        }
+
         $cat_obj = get_term_by( 'name', $cat, 'category' );
+        if ( ! $cat_obj ) {
+            if ( $cat === '鹿児島県民に読んでほしい記事' ) {
+                $cat_obj = get_term_by( 'slug', 'kagoshima', 'category' );
+            } elseif ( $cat === '編集長一押しの記事' ) {
+                $cat_obj = get_term_by( 'slug', 'henshutyo', 'category' );
+            }
+        }
         $cat_link = $cat_obj ? get_category_link( $cat_obj->term_id ) : '#';
 
         $article = [
