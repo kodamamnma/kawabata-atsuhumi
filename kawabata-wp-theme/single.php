@@ -78,7 +78,7 @@ const RelatedArticles = () => (
             onMouseLeave={e => e.currentTarget.querySelector('.rel-title').style.color = C.t1}
           >
             {item.src
-              ? <img src={item.src} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: 80, height: 56, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
+              ? <img src={item.src} alt={item.title} onError={e => e.currentTarget.style.display='none'} style={{ width: 80, height: 56, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
               : <div style={{ width: 80, height: 56, background: C.mainLight, borderRadius: 3, flexShrink: 0 }} />
             }
             <div style={{ flex: 1 }}>
@@ -114,7 +114,7 @@ const Sidebar = () => {
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
               {item.src
-                ? <img src={item.src} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: 64, height: 46, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
+                ? <img src={item.src} alt={item.title} onError={e => e.currentTarget.style.display='none'} style={{ width: 64, height: 46, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
                 : <div style={{ width: 64, height: 46, background: C.mainLight, borderRadius: 3, flexShrink: 0 }} />
               }
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -133,7 +133,7 @@ const Sidebar = () => {
       </div>
       <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
         <SideHead>私たちについて</SideHead>
-        <img src={IMGS.corporate} alt="" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 90, objectFit: 'cover', display: 'block' }} />
+        <img src={IMGS.corporate} alt="鹿児島地域交通通信社の紹介写真" onError={e => e.currentTarget.style.display='none'} style={{ width: '100%', height: 90, objectFit: 'cover', display: 'block' }} />
         <div style={{ padding: 14 }}>
           <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
           <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>

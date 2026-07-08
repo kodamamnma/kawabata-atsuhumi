@@ -4,11 +4,9 @@
   <meta charset="<?php bloginfo( 'charset' ); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-2831019593005123">
-  <?php if ( is_front_page() ) : ?>
-  <meta name="description" content="鹿児島地域交通通信社は、鹿児島県内の公共交通（鉄道・バス・船舶・航空）と地域文化を取材・報道する個人運営メディアです。鹿児島の交通ニュースをどこよりも詳しくお届けします。">
-  <meta name="keywords" content="鹿児島地域交通通信社,鹿児島,交通,ニュース,鉄道,バス,船舶,航空,地域情報,公共交通">
-  <?php endif; ?>
   <?php wp_head(); ?>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2831019593005123"
+     crossorigin="anonymous"></script>
 </head>
 <body <?php body_class(); ?>>
 <div id="root"></div>
@@ -57,7 +55,7 @@ const IMGS = {
 };
 
 /* ─── Img ─── */
-const Img = ({ h, tone = 'a', style = {}, src }) => {
+const Img = ({ h, tone = 'a', style = {}, src, alt = '' }) => {
   const pals = {
     a: ['#b8c8d8','#d8e4ec'], b: ['#b8c8b8','#d4e0d4'], c: ['#c8c4b4','#e0dcd0'],
     d: ['#c4b8c8','#dcd4e0'], e: ['#b8c0d0','#ced8e4'], f: ['#c8b8a8','#e0d4c4'],
@@ -65,7 +63,7 @@ const Img = ({ h, tone = 'a', style = {}, src }) => {
   const [c1, c2] = pals[tone] || pals.a;
   const [err, setErr] = React.useState(false);
   if (src && !err) {
-    return <img src={src} onError={() => setErr(true)}
+    return <img src={src} alt={alt} onError={() => setErr(true)}
       style={{ height: h, flexShrink: 0, objectFit: 'cover', display: 'block', ...style }} />;
   }
   return <div style={{ height: h, background: `linear-gradient(135deg,${c1},${c2})`, flexShrink: 0, ...style }} />;

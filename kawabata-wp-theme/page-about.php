@@ -10,7 +10,7 @@ const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
       <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
-      <Img h={100} src={IMGS.corporate} style={{ width: '100%' }} />
+      <Img h={100} src={IMGS.corporate} alt="鹿児島地域交通通信社の紹介写真" style={{ width: '100%' }} />
       <div style={{ padding: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
         <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
@@ -104,7 +104,7 @@ function App() {
           </div>
 
           <div style={{ background: C.main, borderRadius: 4, overflow: 'hidden', marginBottom: 24, display: 'flex', gap: 0 }}>
-            <Img h={200} src={IMGS.corporate} style={{ width: '45%' }} />
+            <Img h={200} src={IMGS.corporate} alt="鹿児島地域交通通信社の取材風景" style={{ width: '45%' }} />
             <div style={{ flex: 1, padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', marginBottom: 8 }}>MISSION</div>
               <div style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 18, fontWeight: 700, color: '#fff', lineHeight: 1.5, marginBottom: 12 }}>「公共交通と地域文化を世の中へ」</div>
@@ -121,7 +121,7 @@ function App() {
           <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '20px', marginBottom: 20 }}>
             <SH color={C.accent}>編集長メッセージ</SH>
             <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginBottom: 16 }}>
-              <Img h={120} src={IMGS.editor} style={{ width: 96, borderRadius: 4, flexShrink: 0 }} />
+              <Img h={120} src={IMGS.editor} alt="編集長 川畑篤史" style={{ width: 96, borderRadius: 4, flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 2 }}>川畑 篤史</div>
                 <div style={{ fontSize: 11, color: C.t3, marginBottom: 8 }}>鹿児島地域交通通信社 編集長</div>

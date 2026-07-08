@@ -68,7 +68,7 @@ const CardH = ({ cat, title, time, tone = 'a', summary, src, href }) => (
       onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
       onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
     >
-      <Img h={92} tone={tone} src={src} style={{ width: 120 }} />
+      <Img h={92} tone={tone} src={src} alt={title} style={{ width: 120 }} />
       <div style={{ padding: '10px 13px', flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', gap: 5, marginBottom: 5, flexWrap: 'wrap' }}>
           <Badge color={CAT_COLORS[cat] || C.main}>{cat}</Badge>
@@ -91,7 +91,7 @@ const CardV = ({ cat, title, time, tone = 'a', src, href }) => (
       onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
       onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
     >
-      <Img h={116} tone={tone} src={src} style={{ width: '100%' }} />
+      <Img h={116} tone={tone} src={src} alt={title} style={{ width: '100%' }} />
       <div style={{ padding: '10px 12px 13px' }}>
         <div style={{ display: 'flex', gap: 5, marginBottom: 5 }}>
           <Badge color={CAT_COLORS[cat] || C.main}>{cat}</Badge>
@@ -108,7 +108,7 @@ const Sidebar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
       <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>私たちについて</div>
-      <Img h={100} tone="a" src={IMGS.corporate} style={{ width: '100%' }} />
+      <Img h={100} tone="a" src={IMGS.corporate} alt="鹿児島地域交通通信社の紹介写真" style={{ width: '100%' }} />
       <div style={{ padding: '14px' }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 6 }}>鹿児島地域交通通信社</div>
         <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.75, marginBottom: 12 }}>
@@ -310,7 +310,7 @@ function App() {
                   onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
                   onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
                 >
-                  <Img h={240} tone={heroArticle.tone} src={heroArticle.src} style={{ width: '100%' }} />
+                  <Img h={240} tone={heroArticle.tone} src={heroArticle.src} alt={heroArticle.title} style={{ width: '100%' }} />
                   <div style={{ padding: '14px 16px 18px' }}>
                     <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
                       <Badge color={CAT_COLORS[heroArticle.cat] || C.main}>{heroArticle.cat}</Badge>
@@ -416,7 +416,7 @@ function App() {
                       onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
                     >
                       <div style={{ width: 5, background: col, flexShrink: 0 }}></div>
-                      <Img h={72} tone={art.tone} src={art.src} style={{ width: 96, flexShrink: 0 }} />
+                      <Img h={72} tone={art.tone} src={art.src} alt={art.title} style={{ width: 96, flexShrink: 0 }} />
                       <div style={{ padding: '8px 12px', flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                           <span style={{ fontSize: 11, fontWeight: 700, color: col }}>#{genre}</span>
