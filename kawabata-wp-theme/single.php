@@ -3,8 +3,8 @@
 <style>
 /* 記事本文スタイル */
 .article-body p { font-size: 15px; line-height: 2.0; color: #1a2940; margin-bottom: 20px; }
-.article-body h2 { font-family: 'Noto Serif JP', serif; font-size: 19px; font-weight: 700; color: var(--main); margin: 32px 0 14px; padding: 10px 16px; border-left: 4px solid var(--accent); background: var(--main-light); border-radius: 0 4px 4px 0; }
-.article-body h3 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 700; color: var(--text-1); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+.article-body h2 { font-family: 'Noto Serif JP', serif; font-size: 19px; font-weight: 700; color: var(--accent); margin: 32px 0 14px; padding: 10px 16px; border-left: 4px solid var(--accent); background: var(--main-light); border-radius: 0 4px 4px 0; }
+.article-body h3 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 700; color: var(--sub); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
 .article-body figure { margin: 24px 0; }
 .article-body figure img { width: 100%; border-radius: 4px; display: block; }
 .article-body figcaption { font-size: 12px; color: var(--text-3); margin-top: 6px; text-align: center; line-height: 1.6; }
