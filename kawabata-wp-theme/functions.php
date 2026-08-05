@@ -98,7 +98,7 @@ function kawabata_get_articles() {
         return [];
     }
 
-    $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '鹿児島県民に読んでほしい記事', '編集長一押しの記事' ];
+    $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察', '鹿児島県民に読んでほしい記事', '編集長一押しの記事' ];
     $tones      = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
     $articles   = [];
 
@@ -107,6 +107,7 @@ function kawabata_get_articles() {
         $cat   = 'その他';
         
         $priority_names = [
+            '記者考察',
             '鹿児島県民に読んでほしい記事',
             '編集長一押しの記事',
             '鉄道',
@@ -159,6 +160,7 @@ function kawabata_single_article_data() {
         
         $cat = 'その他';
         $priority_names = [
+            '記者考察',
             '鹿児島県民に読んでほしい記事',
             '編集長一押しの記事',
             '鉄道',

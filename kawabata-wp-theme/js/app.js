@@ -48,6 +48,7 @@ const Badge = ({ children, color, outline = false, small = false }) => {
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
   'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D',
+  '記者考察': '#C2185B',
   '鹿児島県民に読んでほしい記事': C.accent, '編集長一押しの記事': '#6B3FA0',
   'その他': C.t2,
 };
@@ -164,6 +165,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         { label: '🚢 船舶', action: () => { onCategoryChange('船舶'); onClose(); } },
         { label: '🚌 バス', action: () => { onCategoryChange('バス'); onClose(); } },
         { label: '📍 地域話題', action: () => { onCategoryChange('地域話題'); onClose(); } },
+        { label: '📝 記者考察', action: () => { onCategoryChange('記者考察'); onClose(); } },
         { label: '🏠 鹿児島県民に読んでほしい記事', action: () => { onCategoryChange('鹿児島県民に読んでほしい記事'); onClose(); } },
         { label: '✍️ 編集長一押しの記事', action: () => { onCategoryChange('編集長一押しの記事'); onClose(); } },
       ],
@@ -260,7 +262,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
 /* ═══════════════════════════════════
    CATEGORY NAV
 ══════════════════════════════════ */
-const CATS = ['すべて','鉄道','航空','船舶','バス','地域話題','鹿児島のイベント','鹿児島県民に読んでほしい記事','編集長一押しの記事'];
+const CATS = ['すべて','鉄道','航空','船舶','バス','地域話題','鹿児島のイベント','記者考察','鹿児島県民に読んでほしい記事','編集長一押しの記事'];
 const CategoryNav = ({ active, onChange }) => (
   <nav style={{ background: C.white, borderBottom: `1px solid ${C.border}`, overflowX: 'auto' }}>
     <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex' }}>

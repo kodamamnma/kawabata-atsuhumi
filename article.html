@@ -187,7 +187,7 @@ const IMGS = {
 
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
-  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', 'その他': C.t2,
+  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', '記者考察': '#C2185B', 'その他': C.t2,
 };
 
 /* ─── 記事データ（テンプレート。実際の記事に書き換えてください） ─── */
@@ -300,6 +300,7 @@ const MobileMenu = ({ open, onClose }) => {
         { label: '🚢 船舶', href: 'index.html?cat=船舶' },
         { label: '🚌 バス', href: 'index.html?cat=バス' },
         { label: '📍 地域話題', href: 'index.html?cat=地域話題' },
+        { label: '📝 記者考察', href: 'index.html?cat=記者考察' },
       ],
     },
     {

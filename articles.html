@@ -74,10 +74,10 @@ const C = {
 
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
-  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', 'その他': C.t2,
+  'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D', '記者考察': '#C2185B', 'その他': C.t2,
 };
 
-const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント'];
+const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察'];
 
 const WIX = 'https://static.wixstatic.com/media/';
 const IMGS = {
@@ -299,6 +299,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         { label: '🚢 船舶', action: () => { onCategoryChange('船舶'); onClose(); } },
         { label: '🚌 バス', action: () => { onCategoryChange('バス'); onClose(); } },
         { label: '📍 地域話題', action: () => { onCategoryChange('地域話題'); onClose(); } },
+        { label: '📝 記者考察', action: () => { onCategoryChange('記者考察'); onClose(); } },
       ],
     },
     {

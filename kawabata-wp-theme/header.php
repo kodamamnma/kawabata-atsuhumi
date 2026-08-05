@@ -36,11 +36,12 @@ const C = {
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
   'バス': C.sub, '地域話題': '#6B3FA0', '鹿児島のイベント': '#B85E0D',
+  '記者考察': '#C2185B',
   '鹿児島県民に読んでほしい記事': C.accent, '編集長一押しの記事': '#6B3FA0',
   'その他': C.t2,
 };
 
-const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '鹿児島県民に読んでほしい記事', '編集長一押しの記事'];
+const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察', '鹿児島県民に読んでほしい記事', '編集長一押しの記事'];
 
 /* ─── Images ─── */
 const WIX = 'https://static.wixstatic.com/media/';
@@ -147,6 +148,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         { label: '🚢 船舶',    catName: '船舶' },
         { label: '🚌 バス',    catName: 'バス' },
         { label: '📍 地域話題', catName: '地域話題' },
+        { label: '📝 記者考察', catName: '記者考察' },
         { label: '🏠 鹿児島県民に読んでほしい記事', catName: '鹿児島県民に読んでほしい記事' },
         { label: '✍️ 編集長一押しの記事', catName: '編集長一押しの記事' },
       ].map(item => ({
