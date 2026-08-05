@@ -2,9 +2,13 @@
 
 <style>
 /* 記事本文スタイル */
-.article-body p { font-size: 15px; line-height: 2.0; color: #1a2940; margin-bottom: 20px; }
-.article-body h2 { font-family: 'Noto Serif JP', serif; font-size: 19px; font-weight: 700; color: var(--accent); margin: 32px 0 14px; padding: 10px 16px; border-left: 4px solid var(--accent); background: var(--main-light); border-radius: 0 4px 4px 0; }
-.article-body h3 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 700; color: var(--sub); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+.article-body { font-size: 16px; }
+.article-body p { font-size: 16px; line-height: 2.1; color: #1a2940; margin-bottom: 24px; }
+.article-body h2 { font-family: 'Noto Serif JP', serif; font-size: 21px; font-weight: 700; color: var(--accent); margin: 40px 0 16px; padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--main-light); border-radius: 0 4px 4px 0; scroll-margin-top: 96px; }
+.article-body h3 { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 700; color: var(--sub); margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border); scroll-margin-top: 96px; }
+/* 目次リンク */
+.toc-list a { color: var(--sub); text-decoration: none; transition: color 0.15s; }
+.toc-list a:hover { color: var(--accent); }
 .article-body figure { margin: 24px 0; }
 .article-body figure img { width: 100%; border-radius: 4px; display: block; }
 .article-body figcaption { font-size: 12px; color: var(--text-3); margin-top: 6px; text-align: center; line-height: 1.6; }
@@ -168,8 +172,48 @@ const Sidebar = () => {
 };
 
 function App() {
+  const { useRef } = React;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [toc, setToc] = useState([]);
+  const articleBodyRef = useRef(null);
   const pageUrl = window.location.href;
+
+  useEffect(() => {
+    const container = articleBodyRef.current;
+    if (!container) return;
+
+    /* 見出しから目次を自動生成 */
+    const headings = container.querySelectorAll('h2, h3');
+    const items = [];
+    headings.forEach((h, i) => {
+      const id = `toc-heading-${i}`;
+      h.id = id;
+      items.push({ id, text: h.textContent, level: h.tagName === 'H2' ? 2 : 3 });
+    });
+    setToc(items);
+
+    /* 読みやすさのため、段落が3行を超えるごとに1行分の余白を自動で追加 */
+    const applyReadableSpacing = () => {
+      container.querySelectorAll('p').forEach(p => {
+        const lineHeight = parseFloat(getComputedStyle(p).lineHeight) || 34;
+        const lines = Math.round(p.clientHeight / lineHeight);
+        const extraLines = Math.floor(lines / 3);
+        p.style.marginBottom = `${24 + extraLines * lineHeight}px`;
+      });
+    };
+    applyReadableSpacing();
+
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(applyReadableSpacing, 200);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      clearTimeout(resizeTimer);
+    };
+  }, [ARTICLE.content]);
 
   return (
     <div>
@@ -196,10 +240,18 @@ function App() {
                 <Badge color={ARTICLE.badge === '速報' ? C.accent : ARTICLE.badge === '独自' ? '#6B3FA0' : C.sub}>{ARTICLE.badge}</Badge>
               )}
             </div>
-            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, lineHeight: 1.5, color: C.t1, marginBottom: 16 }}>
+            <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 'clamp(22px,4.2vw,34px)', fontWeight: 800, lineHeight: 1.5, letterSpacing: '-0.01em', color: C.t1, marginBottom: 16 }}>
               {ARTICLE.title}
             </h1>
             <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap', marginBottom: 16, paddingBottom: 16, borderBottom: `1px solid ${C.border}` }}>
+              {ARTICLE.author && (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <div style={{ width: 30, height: 30, borderRadius: '50%', background: C.mainLight, color: C.main, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, flexShrink: 0 }}>
+                    {ARTICLE.author.charAt(0)}
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>{ARTICLE.author}</span>
+                </div>
+              )}
               <div style={{ display: 'flex', gap: 12, fontSize: 11, color: C.t3 }}>
                 <span>📅 {ARTICLE.published}</span>
                 {ARTICLE.updated && <span>🔄 更新 {ARTICLE.updated}</span>}
@@ -224,7 +276,34 @@ function App() {
             </figure>
           </div>
 
-          <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '28px 28px 24px', marginBottom: 16, borderTopLeftRadius: 0, borderTopRightRadius: 0 }} className="article-body"
+          {toc.length > 0 && (
+            <div style={{ background: C.white, padding: '20px 28px', borderBottom: `1px solid ${C.border}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 700, color: C.main, marginBottom: 12 }}>
+                <span style={{ width: 4, height: 16, background: C.accent, borderRadius: 2, display: 'inline-block' }}></span>
+                目次
+              </div>
+              <ol className="toc-list" style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {toc.map((item, i) => (
+                  <li key={item.id} style={{ paddingLeft: item.level === 3 ? 20 : 0 }}>
+                    <a
+                      href={`#${item.id}`}
+                      style={{ display: 'flex', gap: 8, fontSize: 13.5, lineHeight: 1.6 }}
+                      onClick={e => {
+                        e.preventDefault();
+                        const target = document.getElementById(item.id);
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      <span style={{ color: C.t3, flexShrink: 0 }}>{i + 1}.</span>
+                      <span>{item.text}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          <div ref={articleBodyRef} style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '28px 28px 24px', marginBottom: 16, borderTopLeftRadius: 0, borderTopRightRadius: 0 }} className="article-body"
             dangerouslySetInnerHTML={{ __html: ARTICLE.content }}
           />
 
