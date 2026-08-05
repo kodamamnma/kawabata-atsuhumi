@@ -64,6 +64,31 @@ const ShareBar = ({ title, href }) => {
   );
 };
 
+/* ─── TocCard ─── */
+const TocCard = ({ toc }) => (
+  <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
+    <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>目次</div>
+    <ol className="toc-list" style={{ margin: 0, padding: '14px 16px', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {toc.map((item, i) => (
+        <li key={item.id} style={{ paddingLeft: item.level === 3 ? 16 : 0 }}>
+          <a
+            href={`#${item.id}`}
+            style={{ display: 'flex', gap: 6, fontSize: 13, lineHeight: 1.6 }}
+            onClick={e => {
+              e.preventDefault();
+              const target = document.getElementById(item.id);
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+          >
+            <span style={{ color: C.t3, flexShrink: 0 }}>{i + 1}.</span>
+            <span>{item.text}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+);
+
 /* ─── RelatedArticles ─── */
 const RELATED_ARTICLES = (typeof WP_ARTICLES !== 'undefined' && Array.isArray(WP_ARTICLES))
   ? WP_ARTICLES.filter(a => a.cat === ARTICLE.cat).slice(0, 3)
@@ -276,33 +301,6 @@ function App() {
             </figure>
           </div>
 
-          {toc.length > 0 && (
-            <div style={{ background: C.white, padding: '20px 28px', borderBottom: `1px solid ${C.border}` }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 700, color: C.main, marginBottom: 12 }}>
-                <span style={{ width: 4, height: 16, background: C.accent, borderRadius: 2, display: 'inline-block' }}></span>
-                目次
-              </div>
-              <ol className="toc-list" style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {toc.map((item, i) => (
-                  <li key={item.id} style={{ paddingLeft: item.level === 3 ? 20 : 0 }}>
-                    <a
-                      href={`#${item.id}`}
-                      style={{ display: 'flex', gap: 8, fontSize: 13.5, lineHeight: 1.6 }}
-                      onClick={e => {
-                        e.preventDefault();
-                        const target = document.getElementById(item.id);
-                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }}
-                    >
-                      <span style={{ color: C.t3, flexShrink: 0 }}>{i + 1}.</span>
-                      <span>{item.text}</span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
-
           <div ref={articleBodyRef} style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '28px 28px 24px', marginBottom: 16, borderTopLeftRadius: 0, borderTopRightRadius: 0 }} className="article-body"
             dangerouslySetInnerHTML={{ __html: ARTICLE.content }}
           />
@@ -328,7 +326,8 @@ function App() {
           <RelatedArticles />
 
           <aside className="sidebar-content" style={{ position: 'relative' }}>
-            <div style={{ position: 'sticky', top: 96 }}>
+            <div style={{ position: 'sticky', top: 96, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {toc.length > 0 && <TocCard toc={toc} />}
               <Sidebar />
             </div>
           </aside>
