@@ -50,10 +50,13 @@ function kawabata_enqueue() {
     );
 
     // WordPress の投稿データを JS に渡す
-    $articles = kawabata_get_articles();
+    $paged  = max( 1, (int) ( get_query_var( 'paged' ) ?: get_query_var( 'page' ) ?: 1 ) );
+    $result = kawabata_get_articles( $paged );
     wp_add_inline_script(
         'kawabata-babel',
-        'var WP_ARTICLES = ' . wp_json_encode( $articles ?: [] ) . ';',
+        'var WP_ARTICLES = ' . wp_json_encode( $result['articles'] ?: [] ) . ';'
+        . 'var WP_CURRENT_PAGE = ' . (int) $paged . ';'
+        . 'var WP_MAX_PAGES = ' . (int) $result['max_pages'] . ';',
         'after'
     );
 }
@@ -80,22 +83,24 @@ add_filter( 'script_loader_tag', function ( $tag, $handle ) {
 /**
  * WordPress 投稿を記事配列（JS 用 JSON）として返す。
  */
-function kawabata_get_articles() {
+function kawabata_get_articles( $paged = 1 ) {
     $args = [
-        'numberposts' => 25,
-        'post_status' => 'publish',
-        'orderby'     => 'date',
-        'order'       => 'DESC',
+        'posts_per_page' => 25,
+        'paged'          => $paged,
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
     ];
 
     if ( is_category() ) {
         $args['cat'] = get_queried_object_id();
     }
 
-    $posts = get_posts( $args );
+    $query = new WP_Query( $args );
+    $posts = $query->posts;
 
     if ( empty( $posts ) ) {
-        return [];
+        return [ 'articles' => [], 'max_pages' => $query->max_num_pages ];
     }
 
     $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察', '鹿児島県民に読んでほしい記事', '編集長一押しの記事' ];
@@ -147,7 +152,7 @@ function kawabata_get_articles() {
         ];
     }
 
-    return $articles;
+    return [ 'articles' => $articles, 'max_pages' => $query->max_num_pages ];
 }
 
 /**

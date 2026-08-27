@@ -1,7 +1,15 @@
-<?php get_header(); ?>
+<?php
+$kawabata_page_link_template = get_pagenum_link( 999999999 );
+get_header();
+?>
 
 <script type="text/babel">
 const { useState } = React;
+
+const CURRENT_PAGE = typeof WP_CURRENT_PAGE !== 'undefined' ? WP_CURRENT_PAGE : 1;
+const MAX_PAGES = typeof WP_MAX_PAGES !== 'undefined' ? WP_MAX_PAGES : 1;
+const PAGE_LINK_TEMPLATE = <?php echo wp_json_encode( $kawabata_page_link_template ); ?>;
+const pageHref = n => PAGE_LINK_TEMPLATE.replace('999999999', n);
 
 const CAT_COLORS = {
   '鉄道': C.main, '航空': '#0D5F7E', '船舶': '#1A6B4A',
@@ -63,6 +71,26 @@ const CardH = ({ cat, title, time, badge, tone = 'a', summary, src, href }) => (
     </div>
   </a>
 );
+
+/* ─── Pagination ─── */
+const Pagination = ({ current, max }) => {
+  if (max <= 1) return null;
+  const pages = Array.from({ length: max }, (_, i) => i + 1);
+  const linkStyle = active => ({
+    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+    minWidth: 32, height: 32, padding: '0 8px', borderRadius: 4,
+    fontSize: 12, fontWeight: active ? 700 : 500, textDecoration: 'none',
+    color: active ? '#fff' : C.t2, background: active ? C.main : C.white,
+    border: `1px solid ${active ? C.main : C.border}`,
+  });
+  return (
+    <nav style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center', margin: '8px 0 24px' }}>
+      {current > 1 && <a href={pageHref(current - 1)} style={linkStyle(false)}>‹ 前へ</a>}
+      {pages.map(n => <a key={n} href={pageHref(n)} style={linkStyle(n === current)}>{n}</a>)}
+      {current < max && <a href={pageHref(current + 1)} style={linkStyle(false)}>次へ ›</a>}
+    </nav>
+  );
+};
 
 /* ─── CategoryNav ─── */
 const CategoryNav = ({ active, onChange }) => (
@@ -146,14 +174,16 @@ function App() {
             </div>
 
             {filtered.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 10 }}>
                 {filtered.map((a, i) => <CardH key={i} {...a} />)}
               </div>
             ) : (
-              <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '48px 0', textAlign: 'center', marginBottom: 24 }}>
+              <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '48px 0', textAlign: 'center', marginBottom: 10 }}>
                 <div style={{ fontSize: 14, color: C.t3 }}>このカテゴリの記事はまだありません</div>
               </div>
             )}
+
+            {cat === 'すべて' && <Pagination current={CURRENT_PAGE} max={MAX_PAGES} />}
           </div>
 
           <aside className="sidebar-content">
