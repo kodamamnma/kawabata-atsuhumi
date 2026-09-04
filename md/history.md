@@ -2,6 +2,13 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-09-05（GA4二重計測の原因除去：gtag.js直書き削除）
+
+- **`header.php` に直書きされていた `gtag.js`（測定ID `G-KZX3J6LMHK`）を削除**（`kawabata-wp-theme/header.php`）
+  - GTM（`GTM-T6RB6ZMF`）側で既に同一測定ID `G-KZX3J6LMHK` の「GA4 - 基本設定」タグを作成・公開済みだったため、`<head>`内の直書きgtagスニペットと合わせて同一プロパティへ`page_view`が二重送信されていた。
+  - `<head>`のGTMスニペット・`<body>`直後のnoscriptは残し、`gtag.js`のasyncスクリプトタグと`gtag('config', ...)`初期化ブロックのみを削除。
+  - 残る計測経路: GTMの`GTM-T6RB6ZMF`（残す）／Site Kit経由`G-BQB0HD1LN5`（別途接続解除が必要、フェーズ1-3-1）。この2つの整理が完了すれば`page_view`は1回になる見込み。DebugViewでの実機確認は未実施。
+
 ## 2026-09-05（公式SNSアカウントURL変更）
 
 - **X・InstagramのアカウントURLを新HP用に変更**（`kawabata-wp-theme/` 全ファイル、ルート直下 `*.html` 全ファイル、`md/CLAUDE.md`）
