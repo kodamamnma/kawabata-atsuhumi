@@ -121,8 +121,8 @@ const Sidebar = () => (
       <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>公式SNS・メディア</div>
       <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {[
-          { lbl: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews', color: '#000' },
-          { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/humitabiphoto/', color: '#C13584' },
+          { lbl: 'X（旧Twitter）', href: 'https://x.com/kagoshimanewsjp', color: '#000' },
+          { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/kagoshimanewsjp/', color: '#C13584' },
           { lbl: 'TikTok — 動画コンテンツ', href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', color: '#010101' },
           { lbl: 'note — 過去の交通記事', href: 'https://note.com/humitabinewsphot', color: '#1A1A1A' },
         ].map(({ lbl, href, color }) => (

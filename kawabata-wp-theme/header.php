@@ -129,7 +129,7 @@ const Header = ({ menuOpen, setMenuOpen }) => (
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontSize: 'clamp(8px,2.5vw,11px)', whiteSpace: 'nowrap' }}>公共交通と地域文化を世の中へ</span>
         <div style={{ display: 'flex', gap: 16 }}>
-          {[['X', 'https://twitter.com/humitabphotnews'], ['Instagram', 'https://www.instagram.com/humitabiphoto/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
+          {[['X', 'https://x.com/kagoshimanewsjp'], ['Instagram', 'https://www.instagram.com/kagoshimanewsjp/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
             <a key={lbl} href={href} target="_blank" rel="noreferrer" onClick={() => track('sns_click', { method: lbl })} style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px,2.5vw,11px)' }}>{lbl}</a>
           ))}
         </div>
@@ -203,9 +203,9 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
     {
       title: '公式SNS・メディア',
       items: [
-        { label: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews',             dot: '#000',    method: 'X' },
+        { label: 'X（旧Twitter）', href: 'https://x.com/kagoshimanewsjp',             dot: '#000',    method: 'X' },
         { label: 'note',           href: 'https://note.com/humitabinewsphot',                dot: '#1A1A1A', method: 'note' },
-        { label: 'Instagram',      href: 'https://www.instagram.com/humitabiphoto/',          dot: '#C13584', method: 'Instagram' },
+        { label: 'Instagram',      href: 'https://www.instagram.com/kagoshimanewsjp/',          dot: '#C13584', method: 'Instagram' },
         { label: 'TikTok',         href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', dot: '#010101', method: 'TikTok' },
       ],
     },
@@ -264,8 +264,8 @@ const Footer = () => (
       </div>
       <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
         {[
-          ['X（旧Twitter）', 'https://twitter.com/humitabphotnews', 'sns_click', 'X'],
-          ['Instagram',      'https://www.instagram.com/humitabiphoto/', 'sns_click', 'Instagram'],
+          ['X（旧Twitter）', 'https://x.com/kagoshimanewsjp', 'sns_click', 'X'],
+          ['Instagram',      'https://www.instagram.com/kagoshimanewsjp/', 'sns_click', 'Instagram'],
           ['TikTok',         'https://www.tiktok.com/@humitabitrafficnewsphoto', 'sns_click', 'TikTok'],
           ['お問い合わせ',       '<?php echo home_url("/contact/"); ?>', 'contact_click', 'page'],
           ['プライバシーポリシー', '<?php echo home_url("/privacy/"); ?>'],

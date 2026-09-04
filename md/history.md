@@ -2,6 +2,13 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-09-05（公式SNSアカウントURL変更）
+
+- **X・InstagramのアカウントURLを新HP用に変更**（`kawabata-wp-theme/` 全ファイル、ルート直下 `*.html` 全ファイル、`md/CLAUDE.md`）
+  - X: `https://twitter.com/humitabphotnews` → `https://x.com/kagoshimanewsjp`
+  - Instagram: `https://www.instagram.com/humitabiphoto/` → `https://www.instagram.com/kagoshimanewsjp/`
+  - `header.php`/`footer.php`相当のSNSリンク（Header上部・MobileMenu・Footer）だけでなく、各テンプレート（`index.php`/`archive.php`/`single.php`/`page-about.php`）内のLikeShare欄、および旧プロトタイプの `*.html` 一式、未使用の `js/app.js`、`md/CLAUDE.md`の外部リンク表まで同一URLを使い回していたため、置換漏れがないか `humitabphotnews`/`humitabiphoto` で全文検索して確認した。TikTok・note・メールアドレスは変更対象外（据え置き）。
+
 ## 2026-09-05（GA4/GTM計測改善 フェーズ2・追加修正）
 
 - **FooterのSNSリンク配列にお問い合わせ・プライバシーポリシーが混在していた点を修正**（`kawabata-wp-theme/header.php`）

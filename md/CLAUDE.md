@@ -186,9 +186,9 @@ const IMGS = {
 
 | 媒体 | URL |
 |---|---|
-| X (Twitter) | `https://twitter.com/humitabphotnews` |
+| X (Twitter) | `https://x.com/kagoshimanewsjp` |
 | note | `https://note.com/humitabinewsphot` |
-| Instagram | `https://www.instagram.com/humitabiphoto/` |
+| Instagram | `https://www.instagram.com/kagoshimanewsjp/` |
 | TikTok | `https://www.tiktok.com/@humitabitrafficnewsphoto` |
 | コーポレートサイト | `https://www.humitabitrafficnews.com/` |
 | ニュースサイト概要 | `https://www.humitabitrafficphotonews.com/about-3` |

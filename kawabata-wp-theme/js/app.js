@@ -109,7 +109,7 @@ const Header = ({ onSearch, searchOpen, setSearchOpen, searchQuery, setSearchQue
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontSize: 'clamp(8px, 2.5vw, 11px)', whiteSpace: 'nowrap' }}>公共交通と地域文化を世の中へ</span>
         <div style={{ display: 'flex', gap: 16 }}>
-          {[['X (Twitter)', 'https://twitter.com/humitabphotnews'], ['Instagram', 'https://www.instagram.com/humitabiphoto/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
+          {[['X (Twitter)', 'https://x.com/kagoshimanewsjp'], ['Instagram', 'https://www.instagram.com/kagoshimanewsjp/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
             <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px, 2.5vw, 11px)' }}>{lbl}</a>
           ))}
         </div>
@@ -180,9 +180,9 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
     {
       title: '公式SNS・メディア',
       items: [
-        { label: 'X（旧Twitter）— 交通速報', href: 'https://twitter.com/humitabphotnews', dot: '#000' },
+        { label: 'X（旧Twitter）— 交通速報', href: 'https://x.com/kagoshimanewsjp', dot: '#000' },
         { label: 'note — 過去の交通記事', href: 'https://note.com/humitabinewsphot', dot: '#1A1A1A' },
-        { label: 'Instagram — 写真・動画', href: 'https://www.instagram.com/humitabiphoto/', dot: '#C13584' },
+        { label: 'Instagram — 写真・動画', href: 'https://www.instagram.com/kagoshimanewsjp/', dot: '#C13584' },
         { label: 'TikTok — 動画コンテンツ', href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', dot: '#010101' },
       ],
     },
@@ -352,8 +352,8 @@ const Sidebar = () => (
       <div style={{ background: C.main, color: '#fff', padding: '10px 14px', fontSize: 13, fontWeight: 700 }}>公式SNS・メディア</div>
       <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {[
-          { lbl: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews', color: '#000' },
-          { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/humitabiphoto/', color: '#C13584' },
+          { lbl: 'X（旧Twitter）', href: 'https://x.com/kagoshimanewsjp', color: '#000' },
+          { lbl: 'Instagram — 写真・動画', href: 'https://www.instagram.com/kagoshimanewsjp/', color: '#C13584' },
           { lbl: 'TikTok — 動画コンテンツ', href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', color: '#010101' },
         ].map(({ lbl, href, color }) => (
           <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{
@@ -424,8 +424,8 @@ const Footer = () => (
       </div>
       <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
         {[
-          ['X（旧Twitter）', 'https://twitter.com/humitabphotnews'],
-          ['Instagram', 'https://www.instagram.com/humitabiphoto/'],
+          ['X（旧Twitter）', 'https://x.com/kagoshimanewsjp'],
+          ['Instagram', 'https://www.instagram.com/kagoshimanewsjp/'],
           ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto'],
           ['お問い合わせ', '/contact/'],
           ['プライバシーポリシー', '/privacy/'],
