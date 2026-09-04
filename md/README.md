@@ -26,6 +26,7 @@ kawabata-wp-theme/
 ├── footer.php            共通フッター
 ├── index.php             トップページ
 ├── archive.php           記事一覧・カテゴリアーカイブ（ページネーションあり、2026-08-28〜）
+├── page-articles.php     固定ページ「記事一覧」（スラッグ articles）用。中身は archive.php を require するのみ
 ├── single.php             個別記事ページ
 ├── page-about.php         「私たちについて」固定ページ
 ├── page-contact.php       「お問い合わせ」固定ページ
@@ -59,11 +60,12 @@ kawabata-wp-theme/
 ## デプロイ構成（GitHub Actions / FTP）
 
 - `.github/workflows/deploy-production.yml` / `deploy-staging.yml` が `SamKirkland/FTP-Deploy-Action` で `kawabata-wp-theme/` 配下のみをFTPデプロイする（`.git` / `.github` / `README.md` は除外）。
-- 本番・ステージングは同一レンタルサーバー・同一FTPアカウントを想定し、接続情報は共通シークレット、デプロイ先パスのみ分離:
-  - `FTP_SERVER` / `FTP_USERNAME` / `FTP_PASSWORD`（共通）
-  - `PRODUCTION_THEME_PATH`（例: `/public_html/wp-content/themes/kawabata-wp-theme/`）
-  - `STAGING_THEME_PATH`（例: `/public_html/test/wp-content/themes/kawabata-wp-theme/`）
+- 実際の接続先シークレット（`.github/workflows/deploy-production.yml` / `deploy-staging.yml` で参照）:
+  - 本番: `SERVER_HOST` / `SERVER_USER` / `SERVER_PASSWORD` / `PRODUCTION_THEME_PATH`
+  - ステージング: `STAGING_SERVER_HOST` / `STAGING_SERVER_USER` / `STAGING_SERVER_PASSWORD` / `STAGING_THEME_PATH`
+  - `PRODUCTION_THEME_PATH`（例: `/public_html/wp-content/themes/kawabata-wp-theme/`）、`STAGING_THEME_PATH`（例: `/public_html/test/wp-content/themes/kawabata-wp-theme/`）
   - パスは先頭・末尾に必ず `/` を付ける。
+  - 接続プロトコルは `ftps`（FTP over explicit TLS）・ポート21固定（`FTP-Deploy-Action@v4.3.5`）。
 - ステージング環境を本番と同一データで作る場合、単純なFTPコピーはDB不整合を起こすため、`All-in-One WP Migration` プラグインで `.wpress` としてエクスポート→テスト用WordPressにインポートする方式を使う（エックスサーバー等は「WordPressコピー機能」でも可）。
 
 ## 外部リンク・SNS

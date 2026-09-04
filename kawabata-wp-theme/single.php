@@ -216,28 +216,6 @@ function App() {
       items.push({ id, text: h.textContent, level: h.tagName === 'H2' ? 2 : 3 });
     });
     setToc(items);
-
-    /* 読みやすさのため、段落が3行を超えるごとに1行分の余白を自動で追加 */
-    const applyReadableSpacing = () => {
-      container.querySelectorAll('p').forEach(p => {
-        const lineHeight = parseFloat(getComputedStyle(p).lineHeight) || 34;
-        const lines = Math.round(p.clientHeight / lineHeight);
-        const extraLines = Math.floor(lines / 3);
-        p.style.marginBottom = `${24 + extraLines * lineHeight}px`;
-      });
-    };
-    applyReadableSpacing();
-
-    let resizeTimer;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(applyReadableSpacing, 200);
-    };
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-      clearTimeout(resizeTimer);
-    };
   }, [ARTICLE.content]);
 
   return (
