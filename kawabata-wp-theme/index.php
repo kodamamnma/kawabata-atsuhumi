@@ -60,7 +60,7 @@ const CategoryNav = ({ active, onChange }) => (
 
 /* ─── Article cards ─── */
 const CardH = ({ cat, title, time, tone = 'a', summary, src, href }) => (
-  <a href={href || '#'} target={href && href !== '#' ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none' }}>
+  <a href={href || '#'} target={href && href !== '#' ? '_blank' : undefined} rel="noreferrer" onClick={() => track('article_click', { article_cat: cat })} style={{ textDecoration: 'none' }}>
     <div style={{
       background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)',
       display: 'flex', overflow: 'hidden', cursor: 'pointer',
@@ -83,7 +83,7 @@ const CardH = ({ cat, title, time, tone = 'a', summary, src, href }) => (
 );
 
 const CardV = ({ cat, title, time, tone = 'a', src, href }) => (
-  <a href={href || '#'} target={href && href !== '#' ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none', flex: 1, minWidth: 0, display: 'block' }}>
+  <a href={href || '#'} target={href && href !== '#' ? '_blank' : undefined} rel="noreferrer" onClick={() => track('article_click', { article_cat: cat })} style={{ textDecoration: 'none', flex: 1, minWidth: 0, display: 'block' }}>
     <div style={{
       background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)',
       overflow: 'hidden', cursor: 'pointer', height: '100%',

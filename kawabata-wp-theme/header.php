@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-2831019593005123">
 
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T6RB6ZMF');</script>
+<!-- End Google Tag Manager -->
+
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZX3J6LMHK"></script>
 <script>
@@ -20,6 +28,11 @@
      crossorigin="anonymous"></script>
 </head>
 <body <?php body_class(); ?>>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6RB6ZMF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 <div id="root"></div>
 <?php
 $categories = get_categories();
@@ -34,6 +47,11 @@ window.WP_CAT_LINKS = <?php echo json_encode( $cat_links, JSON_UNESCAPED_SLASHES
 </script>
 <script type="text/babel">
 const { useState, useEffect } = React;
+
+const track = (name, params = {}) => {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: name, ...params });
+};
 
 /* ─── Color tokens ─── */
 const C = {
@@ -112,7 +130,7 @@ const Header = ({ menuOpen, setMenuOpen }) => (
         <span style={{ fontSize: 'clamp(8px,2.5vw,11px)', whiteSpace: 'nowrap' }}>公共交通と地域文化を世の中へ</span>
         <div style={{ display: 'flex', gap: 16 }}>
           {[['X', 'https://twitter.com/humitabphotnews'], ['Instagram', 'https://www.instagram.com/humitabiphoto/'], ['TikTok', 'https://www.tiktok.com/@humitabitrafficnewsphoto']].map(([lbl, href]) => (
-            <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px,2.5vw,11px)' }}>{lbl}</a>
+            <a key={lbl} href={href} target="_blank" rel="noreferrer" onClick={() => track('sns_click', { method: lbl })} style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(8px,2.5vw,11px)' }}>{lbl}</a>
           ))}
         </div>
       </div>
@@ -185,10 +203,10 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
     {
       title: '公式SNS・メディア',
       items: [
-        { label: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews',             dot: '#000' },
-        { label: 'note',           href: 'https://note.com/humitabinewsphot',                dot: '#1A1A1A' },
-        { label: 'Instagram',      href: 'https://www.instagram.com/humitabiphoto/',          dot: '#C13584' },
-        { label: 'TikTok',         href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', dot: '#010101' },
+        { label: 'X（旧Twitter）', href: 'https://twitter.com/humitabphotnews',             dot: '#000',    method: 'X' },
+        { label: 'note',           href: 'https://note.com/humitabinewsphot',                dot: '#1A1A1A', method: 'note' },
+        { label: 'Instagram',      href: 'https://www.instagram.com/humitabiphoto/',          dot: '#C13584', method: 'Instagram' },
+        { label: 'TikTok',         href: 'https://www.tiktok.com/@humitabitrafficnewsphoto', dot: '#010101', method: 'TikTok' },
       ],
     },
   ];
@@ -201,7 +219,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {section.items.map((item, ii) => (
                 item.href ? (
-                  <a key={ii} href={item.href} target="_blank" rel="noreferrer" onClick={onClose} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 6, fontSize: 14, color: C.t1, textDecoration: 'none' }}
+                  <a key={ii} href={item.href} target="_blank" rel="noreferrer" onClick={() => { if (item.method) track('sns_click', { method: item.method }); onClose(); }} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 6, fontSize: 14, color: C.t1, textDecoration: 'none' }}
                     onMouseEnter={e => e.currentTarget.style.background = C.bg}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
@@ -224,7 +242,7 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
           <div style={{ background: C.main, borderRadius: 8, padding: 20, color: '#fff' }}>
             <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>E-MAIL</div>
-            <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 6, padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all', textDecoration: 'none' }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
+            <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" onClick={() => track('contact_click', { method: 'email' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 6, padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all', textDecoration: 'none' }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
             <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
           </div>
         </div>
@@ -246,13 +264,13 @@ const Footer = () => (
       </div>
       <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
         {[
-          ['X（旧Twitter）', 'https://twitter.com/humitabphotnews'],
-          ['Instagram',      'https://www.instagram.com/humitabiphoto/'],
-          ['TikTok',         'https://www.tiktok.com/@humitabitrafficnewsphoto'],
-          ['お問い合わせ',       '<?php echo home_url("/contact/"); ?>'],
+          ['X（旧Twitter）', 'https://twitter.com/humitabphotnews', 'sns_click', 'X'],
+          ['Instagram',      'https://www.instagram.com/humitabiphoto/', 'sns_click', 'Instagram'],
+          ['TikTok',         'https://www.tiktok.com/@humitabitrafficnewsphoto', 'sns_click', 'TikTok'],
+          ['お問い合わせ',       '<?php echo home_url("/contact/"); ?>', 'contact_click', 'page'],
           ['プライバシーポリシー', '<?php echo home_url("/privacy/"); ?>'],
-        ].map(([lbl, href]) => (
-          <a key={lbl} href={href} target="_blank" rel="noreferrer" style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>{lbl}</a>
+        ].map(([lbl, href, evt, method]) => (
+          <a key={lbl} href={href} target="_blank" rel="noreferrer" onClick={evt ? () => track(evt, { method }) : undefined} style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>{lbl}</a>
         ))}
       </div>
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>

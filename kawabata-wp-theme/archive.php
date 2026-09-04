@@ -52,7 +52,7 @@ const LikeShare = ({ title, href }) => {
 
 /* ─── CardH ─── */
 const CardH = ({ cat, title, time, badge, tone = 'a', summary, src, href }) => (
-  <a href={href || '#'} target={href ? '_blank' : undefined} rel="noreferrer" style={{ textDecoration: 'none' }}>
+  <a href={href || '#'} target={href ? '_blank' : undefined} rel="noreferrer" onClick={() => track('article_click', { article_cat: cat })} style={{ textDecoration: 'none' }}>
     <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', display: 'flex', overflow: 'hidden', cursor: 'pointer' }}
       onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
       onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}

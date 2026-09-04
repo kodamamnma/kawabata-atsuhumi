@@ -2,6 +2,23 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-09-05（GA4/GTM計測改善 フェーズ2・追加修正）
+
+- **FooterのSNSリンク配列にお問い合わせ・プライバシーポリシーが混在していた点を修正**（`kawabata-wp-theme/header.php`）
+  - Footerのリンク配列（SNS3件＋お問い合わせ＋プライバシーポリシー）に一律で `sns_click` を割り当てる実装だったため、配列を `[label, href, evt, method]` 形式に変更し、リンクごとに発火するイベント名を明示。
+  - お問い合わせ（`/contact/` への内部リンク）は `contact_click`（`method: 'page'`、MobileMenuのmailto版と区別）に振り分け。プライバシーポリシーは計測対象外のまま維持。
+  - Header/MobileMenu/Footer間で `sns_click` の `method` 値（`X`/`Instagram`/`TikTok`）は表示ラベルの表記揺れ（例: Footerの「X（旧Twitter）」）とは独立してすでに統一済みであることを確認。
+
+## 2026-09-04（GA4/GTM計測改善 フェーズ2）
+
+- **クリック計測の実装**（`kawabata-wp-theme/header.php` / `archive.php` / `index.php`）
+  - サイト全体がReactインラインスタイルでCSSクラスを持たないため、GTMの「クリック - すべての要素」トリガーが使えない。代わりにReactから直接 `dataLayer.push` する方式を採用。
+  - `header.php` の `const { useState, useEffect } = React;` 直後に共通 `track(name, params)` 関数を追加。
+  - `contact_click`（`method: 'email'`）: MobileMenu内のお問い合わせmailtoリンク。
+  - `sns_click`（`method`: `X`/`Instagram`/`TikTok`/`note`）: Header上部・MobileMenu・Footerの各SNSリンク。MobileMenuの項目定義に `method` フィールドを追加し、ラベル文言（「X（旧Twitter）」等）と計測値を分離した。
+  - `article_click`（`article_cat: cat`）: `archive.php`・`index.php` の `CardH`/`CardV` 記事カードの外側リンク。`single.php` には現状カードコンポーネントが存在しないため対象外（関連記事リンクは未実装＝フェーズ6の課題）。
+  - GTM側（トリガー・変数・タグ、キーイベント登録、カスタムディメンション登録）はGTM/GA4管理画面での作業のため未着手。次のステップとして必要。
+
 ## 2026-09-04
 
 - **記事一覧ページ：ページネーションが本番で一切機能していなかった不具合を修正**（`kawabata-wp-theme`）
