@@ -85,7 +85,7 @@ function App() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, color: C.t2, lineHeight: 1.7 }}>
               <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>媒体名:</span>鹿児島地域交通通信社</div>
               <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>代表者・編集責任者:</span>川畑 篤史</div>
-              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>所在地:</span>〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル ヨコチャレの事務所内</div>
+              <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>所在地:</span>〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル 304 緯-yokoito-事務所</div>
               <div><span style={{ fontWeight: 700, color: C.t1, display: 'inline-block', width: 150 }}>お問い合わせ:</span><a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a></div>
             </div>
           </div>
@@ -211,7 +211,7 @@ function App() {
                   <div style={{ marginTop: 10, padding: '12px 16px', background: C.bg, borderRadius: 4, fontSize: 13, color: C.t2, lineHeight: 1.75 }}>
                     <div>媒体名：鹿児島地域交通通信社</div>
                     <div>代表者：川畑 篤史</div>
-                    <div>所在地：〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル ヨコチャレの事務所内</div>
+                    <div>所在地：〒892-0816 鹿児島県鹿児島市山下町17-4 第一照国ビル 304 緯-yokoito-事務所</div>
                     <div>Eメールアドレス：<a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{ color: C.sub }}>kagoshimaregionaltransport@kagoshima-news.jp</a></div>
                   </div>
                 )}
