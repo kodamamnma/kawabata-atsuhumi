@@ -265,7 +265,7 @@ const Footer = () => (
         ))}
       </div>
       <div style={{ marginBottom: 20 }}>
-        <a href="https://www.google.com/preferences/source?q=www.kagoshima-news.jp" target="_blank" rel="noreferrer">
+        <a href="https://www.google.com/preferences/source?q=kagoshima-news.jp" target="_blank" rel="noreferrer">
           <img src={IMGS.googlePreferredBadge} alt="Googleで優先ソースとして追加" style={{ height: 36 }} />
         </a>
       </div>
