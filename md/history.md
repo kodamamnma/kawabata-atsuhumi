@@ -2,6 +2,14 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-09-11（Google「優先ソースに追加」バッジをフッターに設置）
+
+- **フッターにGoogle優先ソース（Preferred Sources）ディープリンクバッジを追加**（`kawabata-wp-theme/header.php`）
+  - Google公式ドキュメント（[優先ソース | Google 検索セントラル](https://developers.google.com/search/docs/appearance/preferred-sources?hl=ja#deeplink)）記載の2方式（`publisher.js`によるJS自動生成ボタン／画像+リンクによるディープリンク方式）のうち、`kawabata-wp-theme/JA/`に既に配置済みだった公式バッジ画像（light/dark、JA localized）を活かすためディープリンク方式を採用。`publisher.js`のscriptタグは追加していない（ディープリンク方式ではJS不要なため）。
+  - `IMGS`に`googlePreferredBadge`（`JA/google_preferred_source_badge_dark_JA.png`）を追加。フッター背景が`C.mainDark`（濃紺）のため、暗い背景向けのdark版バッジ（白文字・黒背景）を選定。
+  - 共通`Footer`コンポーネント（`header.php`）のSNS/リンク行と著作権行の間に、`https://www.google.com/preferences/source?q=www.kagoshima-news.jp`へのリンク付きバッジ画像を追加。`Footer`は全PHPテンプレート（`index.php`/`archive.php`/`single.php`/`page-about.php`/`page-contact.php`/`page-privacy.php`）から共通で呼ばれるため全ページに反映される。
+  - ルート直下の旧プロトタイプ`*.html`一式は対象外（クライアント確認の結果、本番稼働中の`kawabata-wp-theme`のみに反映する方針）。同期不整合がある点に留意。
+
 ## 2026-09-06（プライバシーポリシーにAdSense条項を追加）
 
 - **プライバシーポリシー：アクセス解析ツール条文を更新し、第三者配信広告（Google AdSense）に関する条文を新規追加**（`kawabata-wp-theme/page-privacy.php`、`privacy.html`）

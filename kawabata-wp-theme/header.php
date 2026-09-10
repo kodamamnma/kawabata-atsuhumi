@@ -72,6 +72,7 @@ const IMGS = {
   corporate:     WIX + '5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg/v1/fill/w_600,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg',
   banner:        WIX + '5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg/v1/fill/w_1200,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg',
   editor:        '<?php echo get_template_directory_uri(); ?>/images/editor.jpg',
+  googlePreferredBadge: '<?php echo get_template_directory_uri(); ?>/JA/google_preferred_source_badge_dark_JA.png',
 };
 
 /* ─── Img ─── */
@@ -262,6 +263,11 @@ const Footer = () => (
         ].map(([lbl, href, evt, method]) => (
           <a key={lbl} href={href} target="_blank" rel="noreferrer" onClick={evt ? () => track(evt, { method }) : undefined} style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>{lbl}</a>
         ))}
+      </div>
+      <div style={{ marginBottom: 20 }}>
+        <a href="https://www.google.com/preferences/source?q=www.kagoshima-news.jp" target="_blank" rel="noreferrer">
+          <img src={IMGS.googlePreferredBadge} alt="Googleで優先ソースとして追加" style={{ height: 36 }} />
+        </a>
       </div>
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>© 鹿児島地域交通通信社 All Rights Reserved.</div>
