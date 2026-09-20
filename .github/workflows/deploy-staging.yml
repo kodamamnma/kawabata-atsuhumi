@@ -30,7 +30,7 @@ jobs:
         password: ${{ secrets.STAGING_SERVER_PASSWORD }}
         protocol: ftps
         port: 21
-        local-dir: ./kawabata-wp-theme/
+        local-dir: ./php/
         server-dir: ${{ secrets.STAGING_THEME_PATH }}/
         exclude: |
           **/.git*

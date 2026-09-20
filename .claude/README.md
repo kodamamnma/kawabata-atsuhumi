@@ -12,14 +12,14 @@
 
 2つの実装が同居している。
 
-- ルート直下の `*.html`（`index.html` / `articles.html` / `article.html` / `about.html` / `contact.html` / `privacy.html`）
-  静的HTML＋React（`@babel/standalone`）による初期プロトタイプ。`kawabata-wp-theme/` の各PHPテンプレートは、これらのHTMLファイルのReactコードを元に作成された（例: `articles.html` → `archive.php`、`article.html` → `single.php`、`about.html` → `page-about.php`、`contact.html` → `page-contact.php`、`privacy.html` → `page-privacy.php`）。仕様変更時にどちらか一方だけ直して不整合を起こさないよう注意する。
-- `kawabata-wp-theme/` — **本番で稼働中のWordPressテーマ**。実質的にこちらが正。
+- `html/` の `*.html`（`index.html` / `articles.html` / `article.html` / `about.html` / `contact.html` / `privacy.html`）
+  静的HTML＋React（`@babel/standalone`）による初期プロトタイプ。`php/` の各PHPテンプレートは、これらのHTMLファイルのReactコードを元に作成された（例: `articles.html` → `archive.php`、`article.html` → `single.php`、`about.html` → `page-about.php`、`contact.html` → `page-contact.php`、`privacy.html` → `page-privacy.php`）。仕様変更時にどちらか一方だけ直して不整合を起こさないよう注意する。
+- `php/` — **本番で稼働中のWordPressテーマ**。実質的にこちらが正。
 
-### kawabata-wp-theme/ ファイル構成（現状）
+### php/ ファイル構成（現状）
 
 ```
-kawabata-wp-theme/
+php/
 ├── style.css          テーマ情報・CSS
 ├── functions.php       テーマ設定、記事データ取得（kawabata_get_articles）、SRI付与、ピックアップ設定メタボックス
 ├── header.php           共通ヘッダー（<head>、カラートークン C、Header/MobileMenu/Img/Badge等の共通コンポーネント）
@@ -50,7 +50,7 @@ kawabata-wp-theme/
   define('WP_CACHE', false);
   ```
 - 投稿 → カテゴリー に以下を作成しておく必要がある: `鉄道` / `航空` / `船舶` / `バス` / `地域話題` / `鹿児島のイベント` / `記者考察`（`鹿児島県民に読んでほしい記事` / `編集長一押しの記事` は記事ごとのピックアップ設定メタボックスから付与）
-- サイドバーの会社紹介画像は `kawabata-wp-theme/images/corporate.jpg` を配置すると表示される（未配置の場合は非表示にフォールバック）
+- サイドバーの会社紹介画像は `php/images/corporate.jpg` を配置すると表示される（未配置の場合は非表示にフォールバック）
 - キャッシュ系・JS圧縮系プラグインはReact/Babelインライン実行と競合しやすいため無効化推奨
 
 ## 有効化プラグイン
@@ -59,7 +59,7 @@ kawabata-wp-theme/
 
 ## デプロイ構成（GitHub Actions / FTP）
 
-- `.github/workflows/deploy-production.yml` / `deploy-staging.yml` が `SamKirkland/FTP-Deploy-Action` で `kawabata-wp-theme/` 配下のみをFTPデプロイする（`.git` / `.github` / `README.md` は除外）。
+- `.github/workflows/deploy-production.yml` / `deploy-staging.yml` が `SamKirkland/FTP-Deploy-Action` で `php/` 配下のみをFTPデプロイする（`.git` / `.github` / `README.md` は除外）。
 - 実際の接続先シークレット（`.github/workflows/deploy-production.yml` / `deploy-staging.yml` で参照）:
   - 本番: `SERVER_HOST` / `SERVER_USER` / `SERVER_PASSWORD` / `PRODUCTION_THEME_PATH`
   - ステージング: `STAGING_SERVER_HOST` / `STAGING_SERVER_USER` / `STAGING_SERVER_PASSWORD` / `STAGING_THEME_PATH`
