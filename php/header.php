@@ -13,6 +13,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-T6RB6ZMF');</script>
 <!-- End Google Tag Manager -->
 
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "yr4kwjdxbj");
+  </script>
+  <!-- End Microsoft Clarity -->
+
   <?php wp_head(); ?>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2831019593005123"
      crossorigin="anonymous"></script>
