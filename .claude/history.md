@@ -2,6 +2,23 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-10-04（お問い合わせメールアドレス変更）
+
+- **メールアドレスを `kagoshimaregionaltransport@kagoshima-news.jp` → `info@kagoshima-news.jp` に変更**（`php/` 全テンプレート、`php/js/app.js`、`html/` 全ファイル、`.claude/CLAUDE.md`）
+  - 対象: `php/header.php`（MobileMenu）、`index.php`/`archive.php`/`single.php`/`page-about.php`（サイドバー等）、`page-privacy.php`（お問い合わせ・Eメールアドレス欄）、未使用の `js/app.js`、旧プロトタイプ `html/*.html` 一式。`mailto:` と表示テキストの両方を置換。
+  - `.claude/CLAUDE.md` の外部リンク表に残っていた旧アドレス `humitabiphoto@gmail.com` も新アドレスに更新。
+  - 置換後、旧アドレスで全文検索し残存なしを確認（過去の history.md の記述は除く）。
+- 未対応・留意点: `info@kagoshima-news.jp` の受信設定（メールボックス／転送）が有効かは未確認。
+
+## 2026-10-04（トップ記事画像の高解像度化・全体表示）
+
+- **トップ記事（hero）の画像が荒く、切り抜かれていた点を修正**（`php/functions.php`、`php/index.php`）
+  - 原因: 記事データの `src` は `medium`（約300px）サイズで、hero ではそれを全幅・高さ240px固定・`objectFit: 'cover'` で表示していたため、引き伸ばしで荒くなり、上下左右も切り抜かれていた。
+  - `kawabata_format_article()` に `src_large`（`large` サイズ、既定で最大1024px）を追加し、hero のみ `src_large` を使用（無い場合は `src` にフォールバック）。カード類は従来どおり `medium`。
+  - hero 画像を `height: auto` / `objectFit: 'contain'` にして切り抜かずに全体表示。高さは最小240px・最大480px（縦長写真で間延びしないため）。余白は `C.bg`。
+  - ピックアップ2枠の配置（hero の下・最新ニュースの上、2列。1件のみなら半分の幅）は現状維持（クライアント確認済み）。
+- 未対応・留意点: 実機での表示確認は未実施。`large` サイズはWordPress「設定 → メディア」の値に依存。CLAUDE.md の「記事データ構造」に `src_large` は未記載。
+
 ## 2026-10-04（トップページのピックアップ枠をメタボックス設定のみで決定するよう修正）
 
 - **「編集長一押しの記事」枠に指定記事が出ず、最新記事が表示される不具合を修正**（`php/functions.php`、`php/index.php`）

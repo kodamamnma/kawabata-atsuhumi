@@ -142,11 +142,11 @@ const Sidebar = () => (
     <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
       <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
       <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
-      <a href="mailto:kagoshimaregionaltransport@kagoshima-news.jp" style={{
+      <a href="mailto:info@kagoshima-news.jp" style={{
         display: 'block', background: C.accent, color: '#fff', borderRadius: 4,
         padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center',
         wordBreak: 'break-all',
-      }}>kagoshimaregionaltransport@kagoshima-news.jp</a>
+      }}>info@kagoshima-news.jp</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
     </div>
   </div>
@@ -311,7 +311,9 @@ function App() {
                   onMouseEnter={e => e.currentTarget.style.boxShadow = '0 4px 12px rgba(27,58,107,0.16)'}
                   onMouseLeave={e => e.currentTarget.style.boxShadow = '0 1px 4px rgba(27,58,107,0.10)'}
                 >
-                  <Img h={240} tone={heroArticle.tone} src={heroArticle.src} alt={heroArticle.title} style={{ width: '100%' }} />
+                  {/* 写真の全体を見せるため切り抜かずに縮小表示。縦長写真で間延びしないよう高さに上限を設ける */}
+                  <Img h={240} tone={heroArticle.tone} src={heroArticle.src_large || heroArticle.src} alt={heroArticle.title}
+                    style={{ width: '100%', height: 'auto', minHeight: 240, maxHeight: 480, objectFit: 'contain', background: C.bg }} />
                   <div style={{ padding: '14px 16px 18px' }}>
                     <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
                       <Badge color={CAT_COLORS[heroArticle.cat] || C.main}>{heroArticle.cat}</Badge>

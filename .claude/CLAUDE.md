@@ -195,7 +195,7 @@ const IMGS = {
 | 全記事 | `https://www.humitabitrafficphotonews.com/all-news` |
 | 概要案内 | `about.html` |
 | 編集長メッセージ | `https://www.humitabitrafficnews.com/史旅編集-交通報道について` |
-| メール | `humitabiphoto@gmail.com` |
+| メール | `info@kagoshima-news.jp` |
 
 外部リンクは必ず `target="_blank" rel="noreferrer"` を付与する。
 

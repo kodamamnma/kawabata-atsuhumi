@@ -156,6 +156,8 @@ function kawabata_format_article( $post, $i = 0 ) {
         'badge'   => $badge,
         'summary' => $excerpt ?: null,
         'src'     => $thumb,
+        // トップ記事の大画像用。medium（約300px）を全幅に引き伸ばすと荒くなるため
+        'src_large' => get_the_post_thumbnail_url( $post->ID, 'large' ) ?: null,
         'href'    => get_permalink( $post->ID ),
     ];
 }
