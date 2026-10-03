@@ -122,7 +122,7 @@ function kawabata_format_article( $post, $i = 0 ) {
     $cat   = 'その他';
     
     $priority_names = [
-        '記者考察',
+        '記者のひとりごと',
         '鉄道',
         '航空',
         '船舶',
@@ -190,7 +190,7 @@ function kawabata_single_article_data() {
         
         $cat = 'その他';
         $priority_names = [
-            '記者考察',
+            '記者のひとりごと',
             '鉄道',
             '航空',
             '船舶',
