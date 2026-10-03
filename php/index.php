@@ -265,7 +265,7 @@ const ALL_ARTICLES = (typeof WP_ARTICLES !== 'undefined' && Array.isArray(WP_ART
   ? WP_ARTICLES
   : STATIC_ARTICLES;
 
-// ピックアップ設定で選ばれた記事のみ表示し、未選択の枠は非表示にする
+// 各カテゴリの最新記事を表示し、該当記事が無い枠は非表示にする
 const PICK_CITIZENS = (typeof WP_PICK_CITIZENS !== 'undefined' && WP_PICK_CITIZENS) || null;
 const PICK_EDITOR   = (typeof WP_PICK_EDITOR !== 'undefined' && WP_PICK_EDITOR) || null;
 

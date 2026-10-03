@@ -57,8 +57,8 @@ function kawabata_enqueue() {
         'var WP_ARTICLES = ' . wp_json_encode( $result['articles'] ?: [] ) . ';'
         . 'var WP_CURRENT_PAGE = ' . (int) $paged . ';'
         . 'var WP_MAX_PAGES = ' . (int) $result['max_pages'] . ';'
-        . 'var WP_PICK_CITIZENS = ' . wp_json_encode( kawabata_get_pick( 'citizens' ) ) . ';'
-        . 'var WP_PICK_EDITOR = ' . wp_json_encode( kawabata_get_pick( 'editor' ) ) . ';',
+        . 'var WP_PICK_CITIZENS = ' . wp_json_encode( kawabata_get_pick( 'kagoshima' ) ) . ';'
+        . 'var WP_PICK_EDITOR = ' . wp_json_encode( kawabata_get_pick( 'henshutyo' ) ) . ';',
         'after'
     );
 }
@@ -163,10 +163,10 @@ function kawabata_format_article( $post, $i = 0 ) {
 }
 
 /**
- * ピックアップ設定（kawabata_badge）で選ばれた記事を1件返す（なければ null）。
+ * 指定カテゴリ（スラッグ）の最新記事を1件返す（なければ null）。
  * 最新25件に含まれない古い記事も選べるよう、一覧とは別に取得する。
  */
-function kawabata_get_pick( $badge ) {
+function kawabata_get_pick( $cat_slug ) {
     $posts = get_posts( [
         'posts_per_page'      => 1,
         'post_status'         => 'publish',
@@ -174,8 +174,7 @@ function kawabata_get_pick( $badge ) {
         'order'               => 'DESC',
         'ignore_sticky_posts' => true,
         'no_found_rows'       => true,
-        'meta_key'            => 'kawabata_badge',
-        'meta_value'          => $badge,
+        'category_name'       => $cat_slug,
     ] );
     return $posts ? kawabata_format_article( $posts[0], 1 ) : null;
 }
@@ -237,70 +236,3 @@ function kawabata_single_article_data() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'kawabata_single_article_data' );
-
-/**
- * 投稿編集画面にピックアップ記事設定メタボックスを追加。
- */
-function kawabata_register_metabox() {
-    add_meta_box(
-        'kawabata_pickup',
-        'ピックアップ設定',
-        'kawabata_metabox_html',
-        'post',
-        'side',
-        'default'
-    );
-}
-add_action( 'add_meta_boxes', 'kawabata_register_metabox' );
-
-function kawabata_metabox_html( $post ) {
-    $badge = get_post_meta( $post->ID, 'kawabata_badge', true );
-    wp_nonce_field( 'kawabata_badge_nonce', 'kawabata_badge_nonce' );
-    ?>
-    <p style="margin:0 0 6px;font-weight:bold;">トップページに表示する枠を選択：</p>
-    <label style="display:block;margin-bottom:6px;">
-        <input type="radio" name="kawabata_badge" value="citizens" <?php checked( $badge, 'citizens' ); ?>>
-        🏠 鹿児島県民に読んでほしい記事
-    </label>
-    <label style="display:block;margin-bottom:6px;">
-        <input type="radio" name="kawabata_badge" value="editor" <?php checked( $badge, 'editor' ); ?>>
-        ✍️ 編集長一押しの記事
-    </label>
-    <label style="display:block;">
-        <input type="radio" name="kawabata_badge" value="" <?php checked( $badge, '' ); ?>>
-        （なし）
-    </label>
-    <?php
-}
-
-function kawabata_save_metabox( $post_id ) {
-    if (
-        ! isset( $_POST['kawabata_badge_nonce'] ) ||
-        ! wp_verify_nonce( $_POST['kawabata_badge_nonce'], 'kawabata_badge_nonce' ) ||
-        ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ||
-        ! current_user_can( 'edit_post', $post_id ) ||
-        wp_is_post_revision( $post_id )
-    ) {
-        return;
-    }
-    $value = isset( $_POST['kawabata_badge'] ) ? sanitize_text_field( $_POST['kawabata_badge'] ) : '';
-    if ( $value === '' ) {
-        delete_post_meta( $post_id, 'kawabata_badge' );
-    } else {
-        // 各枠に選ばれる記事を常に1件にするため、同じ枠の他の記事から設定を外す
-        $others = get_posts( [
-            'post_type'      => 'post',
-            'post_status'    => 'any',
-            'posts_per_page' => -1,
-            'fields'         => 'ids',
-            'post__not_in'   => [ $post_id ],
-            'meta_key'       => 'kawabata_badge',
-            'meta_value'     => $value,
-        ] );
-        foreach ( $others as $other_id ) {
-            delete_post_meta( $other_id, 'kawabata_badge', $value );
-        }
-        update_post_meta( $post_id, 'kawabata_badge', $value );
-    }
-}
-add_action( 'save_post', 'kawabata_save_metabox' );
