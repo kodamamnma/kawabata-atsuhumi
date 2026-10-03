@@ -19,7 +19,7 @@ const CAT_COLORS = {
   'その他': C.t2,
 };
 
-const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察', '鹿児島県民に読んでほしい記事', '編集長一押しの記事'];
+const CATS = ['すべて', '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察'];
 
 const IMGS = {
   corporate: '<?php echo get_template_directory_uri(); ?>/images/corporate.jpg',

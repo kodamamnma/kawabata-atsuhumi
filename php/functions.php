@@ -56,7 +56,9 @@ function kawabata_enqueue() {
         'kawabata-babel',
         'var WP_ARTICLES = ' . wp_json_encode( $result['articles'] ?: [] ) . ';'
         . 'var WP_CURRENT_PAGE = ' . (int) $paged . ';'
-        . 'var WP_MAX_PAGES = ' . (int) $result['max_pages'] . ';',
+        . 'var WP_MAX_PAGES = ' . (int) $result['max_pages'] . ';'
+        . 'var WP_PICK_CITIZENS = ' . wp_json_encode( kawabata_get_pick( 'citizens' ) ) . ';'
+        . 'var WP_PICK_EDITOR = ' . wp_json_encode( kawabata_get_pick( 'editor' ) ) . ';',
         'after'
     );
 }
@@ -103,56 +105,77 @@ function kawabata_get_articles( $paged = 1 ) {
         return [ 'articles' => [], 'max_pages' => $query->max_num_pages ];
     }
 
-    $valid_cats = [ '鉄道', '航空', '船舶', 'バス', '地域話題', '鹿児島のイベント', '記者考察', '鹿児島県民に読んでほしい記事', '編集長一押しの記事' ];
-    $tones      = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
-    $articles   = [];
-
+    $articles = [];
     foreach ( $posts as $i => $post ) {
-        $post_categories = wp_get_post_terms( $post->ID, 'category' );
-        $cat   = 'その他';
-        
-        $priority_names = [
-            '記者考察',
-            '鹿児島県民に読んでほしい記事',
-            '編集長一押しの記事',
-            '鉄道',
-            '航空',
-            '船舶',
-            'バス',
-            '鹿児島のイベント',
-            '地域話題',
-        ];
-
-        foreach ( $priority_names as $name ) {
-            foreach ( $post_categories as $term ) {
-                if ( $term->name === $name ) {
-                    $cat = $name;
-                    break 2;
-                }
-            }
-        }
-
-        $thumb = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: null;
-
-        $excerpt = has_excerpt( $post->ID )
-            ? strip_tags( get_the_excerpt( $post ) )
-            : wp_trim_words( strip_tags( $post->post_content ), 60, '' );
-
-        $badge = get_post_meta( $post->ID, 'kawabata_badge', true ) ?: null;
-
-        $articles[] = [
-            'cat'     => $cat,
-            'title'   => $post->post_title,
-            'time'    => mysql2date( 'n月j日 H:i', $post->post_date ),
-            'tone'    => $tones[ $i % 6 ],
-            'badge'   => $badge,
-            'summary' => $excerpt ?: null,
-            'src'     => $thumb,
-            'href'    => get_permalink( $post->ID ),
-        ];
+        $articles[] = kawabata_format_article( $post, $i );
     }
 
     return [ 'articles' => $articles, 'max_pages' => $query->max_num_pages ];
+}
+
+/**
+ * 投稿1件を記事配列（JS 用）に整形する。
+ */
+function kawabata_format_article( $post, $i = 0 ) {
+    $tones           = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
+    $post_categories = wp_get_post_terms( $post->ID, 'category' );
+    $cat   = 'その他';
+    
+    $priority_names = [
+        '記者考察',
+        '鉄道',
+        '航空',
+        '船舶',
+        'バス',
+        '鹿児島のイベント',
+        '地域話題',
+    ];
+
+    foreach ( $priority_names as $name ) {
+        foreach ( $post_categories as $term ) {
+            if ( $term->name === $name ) {
+                $cat = $name;
+                break 2;
+            }
+        }
+    }
+
+    $thumb = get_the_post_thumbnail_url( $post->ID, 'medium' ) ?: null;
+
+    $excerpt = has_excerpt( $post->ID )
+        ? strip_tags( get_the_excerpt( $post ) )
+        : wp_trim_words( strip_tags( $post->post_content ), 60, '' );
+
+    $badge = get_post_meta( $post->ID, 'kawabata_badge', true ) ?: null;
+
+    return [
+        'cat'     => $cat,
+        'title'   => $post->post_title,
+        'time'    => mysql2date( 'n月j日 H:i', $post->post_date ),
+        'tone'    => $tones[ $i % 6 ],
+        'badge'   => $badge,
+        'summary' => $excerpt ?: null,
+        'src'     => $thumb,
+        'href'    => get_permalink( $post->ID ),
+    ];
+}
+
+/**
+ * ピックアップ設定（kawabata_badge）で選ばれた記事を1件返す（なければ null）。
+ * 最新25件に含まれない古い記事も選べるよう、一覧とは別に取得する。
+ */
+function kawabata_get_pick( $badge ) {
+    $posts = get_posts( [
+        'posts_per_page'      => 1,
+        'post_status'         => 'publish',
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'ignore_sticky_posts' => true,
+        'no_found_rows'       => true,
+        'meta_key'            => 'kawabata_badge',
+        'meta_value'          => $badge,
+    ] );
+    return $posts ? kawabata_format_article( $posts[0], 1 ) : null;
 }
 
 /**
@@ -166,8 +189,6 @@ function kawabata_single_article_data() {
         $cat = 'その他';
         $priority_names = [
             '記者考察',
-            '鹿児島県民に読んでほしい記事',
-            '編集長一押しの記事',
             '鉄道',
             '航空',
             '船舶',
@@ -255,7 +276,8 @@ function kawabata_save_metabox( $post_id ) {
         ! isset( $_POST['kawabata_badge_nonce'] ) ||
         ! wp_verify_nonce( $_POST['kawabata_badge_nonce'], 'kawabata_badge_nonce' ) ||
         ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ||
-        ! current_user_can( 'edit_post', $post_id )
+        ! current_user_can( 'edit_post', $post_id ) ||
+        wp_is_post_revision( $post_id )
     ) {
         return;
     }
@@ -263,6 +285,19 @@ function kawabata_save_metabox( $post_id ) {
     if ( $value === '' ) {
         delete_post_meta( $post_id, 'kawabata_badge' );
     } else {
+        // 各枠に選ばれる記事を常に1件にするため、同じ枠の他の記事から設定を外す
+        $others = get_posts( [
+            'post_type'      => 'post',
+            'post_status'    => 'any',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'post__not_in'   => [ $post_id ],
+            'meta_key'       => 'kawabata_badge',
+            'meta_value'     => $value,
+        ] );
+        foreach ( $others as $other_id ) {
+            delete_post_meta( $other_id, 'kawabata_badge', $value );
+        }
         update_post_meta( $post_id, 'kawabata_badge', $value );
     }
 }

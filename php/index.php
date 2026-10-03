@@ -265,8 +265,9 @@ const ALL_ARTICLES = (typeof WP_ARTICLES !== 'undefined' && Array.isArray(WP_ART
   ? WP_ARTICLES
   : STATIC_ARTICLES;
 
-const PICK_CITIZENS = ALL_ARTICLES.find(a => a.cat === '鹿児島県民に読んでほしい記事') || ALL_ARTICLES[0];
-const PICK_EDITOR   = ALL_ARTICLES.find(a => a.cat === '編集長一押しの記事') || ALL_ARTICLES[1];
+// ピックアップ設定で選ばれた記事のみ表示し、未選択の枠は非表示にする
+const PICK_CITIZENS = (typeof WP_PICK_CITIZENS !== 'undefined' && WP_PICK_CITIZENS) || null;
+const PICK_EDITOR   = (typeof WP_PICK_EDITOR !== 'undefined' && WP_PICK_EDITOR) || null;
 
 /* ─── App ─── */
 function App() {
@@ -330,22 +331,28 @@ function App() {
             </div>
           )}
 
+          {(PICK_CITIZENS || PICK_EDITOR) && (
           <div className="featured-section" style={{ marginBottom: 24 }}>
             <div className="featured-grid">
+              {PICK_CITIZENS && (
               <div>
                 <div style={{ borderLeft: `4px solid ${C.accent}`, paddingLeft: 10, marginBottom: 10 }}>
                   <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>🏠 鹿児島県民に読んでほしい記事</span>
                 </div>
                 <CardV {...PICK_CITIZENS} />
               </div>
+              )}
+              {PICK_EDITOR && (
               <div>
                 <div style={{ borderLeft: `4px solid #6B3FA0`, paddingLeft: 10, marginBottom: 10 }}>
                   <span style={{ fontSize: 13, fontWeight: 700, color: C.t1 }}>✍️ 編集長一押しの記事</span>
                 </div>
                 <CardV {...PICK_EDITOR} />
               </div>
+              )}
             </div>
           </div>
+          )}
 
           <div className="latest-news" style={{ marginBottom: 24 }}>
             <SH color={C.main}>最新ニュース</SH>
