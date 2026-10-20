@@ -81,7 +81,7 @@ const IMGS = {
   kirishima:     WIX + '5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp/v1/fill/w_600,h_400,al_c,q_90,enc_avif,quality_auto/5c3d68_eafce25422044b07b1990ea4b0c99d90~mv2.webp',
   corporate:     WIX + '5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg/v1/fill/w_600,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_37f490f2219240859901a9958b0c1d92~mv2.jpg',
   banner:        WIX + '5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg/v1/fill/w_1200,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg',
-  editor:        '<?php echo get_template_directory_uri(); ?>/images/editor.jpg',
+  editor:        '<?php echo get_template_directory_uri(); ?>/representative_top.webp',
   googlePreferredBadge: '<?php echo get_template_directory_uri(); ?>/JA/google_preferred_source_badge_dark_JA.png',
 };
 

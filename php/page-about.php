@@ -120,9 +120,10 @@ function App() {
 
           <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '20px', marginBottom: 20 }}>
             <SH color={C.accent}>編集長メッセージ</SH>
-            <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginBottom: 16 }}>
-              <Img h={120} src={IMGS.editor} alt="編集長 川畑篤史" style={{ width: 96, borderRadius: 4, flexShrink: 0 }} />
-              <div>
+            {/* スマホ幅では写真の右に文字を詰め込まず、写真の下へ回り込ませる */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-start', marginBottom: 16 }}>
+              <Img h={160} src={IMGS.editor} alt="編集長 川畑篤史" style={{ width: 240, maxWidth: '100%', borderRadius: 4, flexShrink: 0 }} />
+              <div style={{ flex: '1 1 200px' }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: C.main, marginBottom: 2 }}>川畑 篤史</div>
                 <div style={{ fontSize: 11, color: C.t3, marginBottom: 8 }}>鹿児島地域交通通信社 編集長</div>
                 <div style={{ fontSize: 12, color: C.t2, lineHeight: 1.8 }}>ご覧いただきありがとうございます。鹿児島地域交通通信社の川畑と申します。</div>
