@@ -91,7 +91,7 @@ const TocCard = ({ toc }) => (
 
 /* ─── RelatedArticles ─── */
 const RELATED_ARTICLES = (typeof WP_ARTICLES !== 'undefined' && Array.isArray(WP_ARTICLES))
-  ? WP_ARTICLES.filter(a => a.cat === ARTICLE.cat).slice(0, 3)
+  ? WP_ARTICLES.filter(a => a.cat === ARTICLE.cat && a.href !== ARTICLE.href).slice(0, 3)
   : [];
 
 const RelatedArticles = () => (
@@ -157,7 +157,7 @@ const Sidebar = () => {
           ))}
         </div>
         <div style={{ padding: '8px 14px 12px' }}>
-          <a href="<?php echo home_url('/'); ?>" style={{ display: 'block', textAlign: 'center', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, padding: '7px 0', fontSize: 12, color: C.sub, fontWeight: 700 }}>記事一覧を見る →</a>
+          <a href="<?php echo home_url('/articles/'); ?>" style={{ display: 'block', textAlign: 'center', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, padding: '7px 0', fontSize: 12, color: C.sub, fontWeight: 700 }}>記事一覧を見る →</a>
         </div>
       </div>
       <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', overflow: 'hidden' }}>
@@ -188,9 +188,9 @@ const Sidebar = () => {
       </div>
       <div style={{ background: C.main, borderRadius: 4, padding: 16, color: '#fff' }}>
         <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
-        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>E-MAIL</div>
-        <a href="mailto:info@kagoshima-news.jp" style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all' }}>info@kagoshima-news.jp</a>
-        <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>情報提供・取材のご依頼</div>
+        <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'sidebar' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
+        <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
       </div>
     </div>
   );
@@ -283,10 +283,11 @@ function App() {
             dangerouslySetInnerHTML={{ __html: ARTICLE.content }}
           />
 
+          {(ARTICLE.tags || []).length > 0 && (
           <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '14px 20px', marginBottom: 16 }}>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               <span style={{ fontSize: 12, fontWeight: 700, color: C.t3, marginRight: 4 }}>タグ：</span>
-              {(ARTICLE.tags || []).map(tag => (
+              {ARTICLE.tags.map(tag => (
                 <a key={tag} href={`/?tag=${encodeURIComponent(tag)}`}
                   style={{ fontSize: 12, color: C.sub, padding: '3px 10px', borderRadius: 20, border: `1px solid ${C.subLight}`, background: C.mainLight, textDecoration: 'none' }}
                   onMouseEnter={e => { e.currentTarget.style.background = C.sub; e.currentTarget.style.color = '#fff'; }}
@@ -295,6 +296,7 @@ function App() {
               ))}
             </div>
           </div>
+          )}
 
           <div style={{ background: C.white, borderRadius: 4, boxShadow: '0 1px 4px rgba(27,58,107,0.10)', padding: '16px 20px', marginBottom: 16 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.t2, marginBottom: 10 }}>この記事をシェアする</div>

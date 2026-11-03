@@ -240,9 +240,9 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
         <div style={{ padding: '0 24px' }}>
           <div style={{ background: C.main, borderRadius: 8, padding: 20, color: '#fff' }}>
             <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4 }}>お問い合わせ</div>
-            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>E-MAIL</div>
-            <a href="mailto:info@kagoshima-news.jp" onClick={() => track('contact_click', { method: 'email' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 6, padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center', wordBreak: 'break-all', textDecoration: 'none' }}>info@kagoshima-news.jp</a>
-            <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>お電話での対応は行っておりません。</div>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>情報提供・取材のご依頼</div>
+            <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'menu' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 6, padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
+            <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
           </div>
         </div>
       </div>

@@ -219,6 +219,8 @@ function kawabata_single_article_data() {
             'cat'       => $cat,
             'cat_link'  => $cat_link,
             'title'     => get_the_title(),
+            // 関連記事から閲覧中の記事自身を除外するための照合キー
+            'href'      => get_permalink( $post->ID ),
             'published' => get_the_date( 'Y年n月j日 H:i' ),
             'updated'   => get_the_modified_date( 'Y年n月j日 H:i' ),
             'author'    => get_the_author(),

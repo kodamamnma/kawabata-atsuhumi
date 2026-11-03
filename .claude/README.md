@@ -35,6 +35,7 @@ php/
 └── top-template.png       参考画像
 ```
 
+- `plugins/kawabata-contact-form/` — 自作プラグイン「鹿児島地域交通通信社 お問い合わせフォーム」（2026-11-03〜）。`page-contact.php` のフォームの受信処理を担う（下記「有効化プラグイン」参照）。
 - サイドバーは独立ファイル化されておらず、各テンプレート内に `Sidebar` コンポーネントとして直接実装されている。
 - `404.php` は未作成（現状はWordPress標準の404挙動に依存）。
 
@@ -57,6 +58,11 @@ php/
 ## 有効化プラグイン
 
 - **All in One SEO (AIOSEO) 4.9.9** — 記事ごとの title/description/canonical/OGP/Twitter Card/JSON-LD、および `sitemap.xml` 系を自動生成。テーマ側で同等の機能を重複実装しないこと（[history.md](history.md) 2026-07-08参照）。
+- **鹿児島地域交通通信社 お問い合わせフォーム 1.0.0**（自作・`plugins/kawabata-contact-form/`）
+  - `POST /wp-json/kawabata/v1/contact` で受信し、管理画面「お問い合わせ」に非公開投稿として保存したうえで `info@kagoshima-news.jp` へ通知メール（Reply-To＝送信者）。メール送信の成否は一覧の「通知メール」列で確認できる。
+  - ご用件のキー（`tip` / `coverage` / `usage` / `ad` / `feedback` / `other`）はプラグインの `kcf_types()` と `page-contact.php` の `INQUIRY_TYPES` で一致させる。送信成功時にテーマ側で `contact_submit`（`inquiry_type`）を dataLayer に送る。
+  - ボット対策：見えない入力欄（`website`）、表示から3秒未満の送信の破棄、同一IP10件／10分の制限。
+  - **GitHub Actions のデプロイ対象外**（`php/` のみ配信のため）。フォルダをzipにして「プラグイン → 新規追加 → アップロード」で入れ、有効化する。
 
 ## デプロイ構成（GitHub Actions / FTP）
 
