@@ -2,6 +2,24 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-11-03（Claude Code が AGENTS.md を自動で読むよう設定）
+
+- **`.claude/CLAUDE.md` を新規作成し、`@AGENTS.md` で `.claude/AGENTS.md` を読み込むようにした**。Claude Code はセッション開始時に `.claude/CLAUDE.md` を自動で読み、そこから AGENTS.md も読み込まれる。規約は AGENTS.md だけに書き、CLAUDE.md には追記しない。
+- 未対応・留意点: Codex 等の他エージェントはリポジトリ直下の `AGENTS.md` を探すため、引き続き自動では読まれない。初回の読み込み時に、外部ファイル読み込みの許可を求める確認が出る場合がある。
+
+## 2026-11-03（CLAUDE.md を削除し、AGENTS.md を .claude/ へ移動）
+
+- **`.claude/CLAUDE.md` を削除し、リポジトリ直下の `AGENTS.md` を `.claude/AGENTS.md` に移動**（クライアント判断）
+  - `AGENTS.md` 内の統合元の説明・ファイル構成表・history へのリンクを移動後のパスに修正。`README.md` の `CLAUDE.md` 参照2か所を `AGENTS.md` に変更。
+- 未対応・留意点: Claude Code はプロジェクトの `CLAUDE.md` を自動で読むが、`.claude/AGENTS.md` は自動では読まない。Codex 等もリポジトリ直下の `AGENTS.md` を読む仕様のため、`.claude/` 内では自動読み込みされない。上位の `HP/.claude/CLAUDE.md`（共通ルール）は引き続き読み込まれる。削除した `.claude/CLAUDE.md` は git の履歴から復元できる（未コミット）。
+
+## 2026-11-03（AGENTS.md を作り直し）
+
+- **`AGENTS.md` を、`HP/.claude/CLAUDE.md`（全案件共通の作業ルール）と `.claude/CLAUDE.md`（サイト規約＋汎用デザイン規約）を統合した内容に作り直し**
+  - 旧 `AGENTS.md` は `.claude/CLAUDE.md` とタイトル以外同一だったため、Claude以外のエージェントが読めない共通作業ルールを第1部として取り込んだ。衝突時の優先順位（サイト規約 → 作業ルール → 汎用規約）を明記。
+  - 実装と食い違っていた記述をコード・READMEに合わせて修正：単一HTML構成 → WordPressテーマ `php/` が正／記事データは `WP_ARTICLES` 等で受け渡し（`src_large` 含む）／レスポンシブは767pxで実装済み（タブレット専用は未実装）／`style.css` のレイアウト用クラス／`CATS` が `header.php`・`archive.php` の2か所にある点／お問い合わせは /contact/ に統一し mailto 不使用／自作プラグイン。存在しない `Breaking` コンポーネントの記述は削除。
+- 未対応・留意点: `.claude/CLAUDE.md` は変更していない（古い記述が残ったまま）。同じ修正を反映するかは要確認。
+
 ## 2026-11-03（お問い合わせフォームの受信処理・用件別フォーム・mailto廃止）
 
 - **自作プラグイン「鹿児島地域交通通信社 お問い合わせフォーム」を新規作成**（`plugins/kawabata-contact-form/kawabata-contact-form.php`）
