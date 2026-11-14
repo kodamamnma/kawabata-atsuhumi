@@ -145,6 +145,7 @@ const Sidebar = () => (
       <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'sidebar' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
     </div>
+    <AdSlot height={180} style={{ marginBottom: 0 }} />
   </div>
 );
 
@@ -352,12 +353,14 @@ function App() {
           </div>
           )}
 
-          <div className="latest-news" style={{ marginBottom: 24 }}>
+          <div className="latest-news" style={{ marginBottom: 0 }}>
             <SH color={C.main}>最新ニュース</SH>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
               {subArticles.slice(0, 4).map((a, i) => <CardH key={i} {...a} />)}
             </div>
           </div>
+
+          <AdSlot height={90} />
 
           {listArticles.length > 0 && (
             <div className="other-articles">

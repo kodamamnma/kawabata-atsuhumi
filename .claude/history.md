@@ -2,6 +2,14 @@
 
 このファイルは、プロジェクトの変更履歴を時系列（最新順）で記録するものです。
 
+## 2026-11-14（企業広告募集用のグレー広告枠を設置）
+
+- **共通コンポーネント `AdSlot` を追加し、各ページに企業広告募集用のグレー広告枠を設置**（`php/header.php`、`php/index.php`、`php/single.php`、`php/archive.php`、`php/page-about.php`）
+  - `header.php` に `AdSlot` コンポーネント（背景 `C.border`、破線枠 `C.t3`、ラベル「広 告」＋「広告掲載募集中（お問い合わせはこちら）」）を実装。クリック時は `/contact/?type=ad`（お問い合わせフォームの「広告・タイアップのご相談」選択状態）へ遷移し、`contact_click`（`method: 'ad_slot'`）を dataLayer に送信する。
+  - 配置箇所：①トップページ（`index.php`）の「最新ニュース」と「その他の記事」の間（高さ90px）、②記事詳細ページ（`single.php`）の下部シェアバーと「関連記事」の間（高さ100px）、③記事一覧ページ（`archive.php`）の一覧・ページネーション下（高さ90px）、④各ページの右サイドバー（`index.php` / `single.php` / `archive.php` / `page-about.php`）のお問い合わせボックス下（高さ180px）。
+- 未対応・留意点:
+  - 実際の企業バナー画像が入稿された際は、`AdSlot` に画像URL・リンク先URLを渡す形に拡張するか該当箇所を差し替える。`html/` プロトタイプは未変更。
+
 ## 2026-11-03（Claude Code が AGENTS.md を自動で読むよう設定）
 
 - **`.claude/CLAUDE.md` を新規作成し、`@AGENTS.md` で `.claude/AGENTS.md` を読み込むようにした**。Claude Code はセッション開始時に `.claude/CLAUDE.md` を自動で読み、そこから AGENTS.md も読み込まれる。規約は AGENTS.md だけに書き、CLAUDE.md には追記しない。

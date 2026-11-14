@@ -203,6 +203,7 @@ const CAT_COLORS = {
 | `Img` | header.php | 画像（src失敗時はグラデーションプレースホルダー） |
 | `Badge` | header.php | カテゴリ・ラベルバッジ |
 | `SH` | header.php | セクション見出し（左ボーダー付き） |
+| `AdSlot` | header.php | 広告枠（グレープレースホルダー・`/contact/?type=ad` への導線） |
 | `Header` | header.php | ページヘッダー（ハンバーガーメニューボタン含む） |
 | `MobileMenu` | header.php | メニューオーバーレイ（カテゴリ・概要・SNS・お問い合わせ） |
 | `Footer` | header.php | フッター |

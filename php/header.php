@@ -123,6 +123,32 @@ const SH = ({ children, color = C.main, extra }) => (
   </div>
 );
 
+/* ─── AdSlot（企業広告募集用のグレー枠。クリックで広告相談フォームへ遷移） ─── */
+const AdSlot = ({ height = 90, label = '広 告', subText = '広告掲載募集中（お問い合わせはこちら）', className = 'ad-space', style = {} }) => (
+  <a
+    href="<?php echo home_url('/contact/?type=ad'); ?>"
+    className={className}
+    onClick={() => track('contact_click', { method: 'ad_slot' })}
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 4,
+      height,
+      marginBottom: 24,
+      background: C.border,
+      borderRadius: 4,
+      border: `1px dashed ${C.t3}`,
+      textDecoration: 'none',
+      ...style,
+    }}
+  >
+    <span style={{ fontSize: 12, fontWeight: 700, color: C.t2, letterSpacing: '0.08em' }}>{label}</span>
+    {subText && <span style={{ fontSize: 11, color: C.t3 }}>{subText}</span>}
+  </a>
+);
+
 /* ─── Header ─── */
 const Header = ({ menuOpen, setMenuOpen }) => (
   <header style={{ background: C.white, borderBottom: `4px solid ${C.main}`, position: 'sticky', top: 0, zIndex: 200 }}>

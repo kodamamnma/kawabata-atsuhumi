@@ -40,6 +40,7 @@ const Sidebar = () => (
       <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'sidebar' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
     </div>
+    <AdSlot height={180} style={{ marginBottom: 0 }} />
   </div>
 );
 
