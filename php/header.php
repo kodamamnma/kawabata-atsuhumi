@@ -157,6 +157,16 @@ const AdSlot = ({ height = 90, ratio, label = '広 告', subText = '広告掲載
   </div>
 );
 
+/* ─── SidebarAds（サイドバーの広告枠。300×250 を縦に並べ、見出しは全体で1つ） ─── */
+const SidebarAds = ({ count = 5 }) => (
+  <div>
+    <SponsorLabel />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {Array.from({ length: count }, (_, i) => <AdSlot key={i} ratio="6 / 5" sponsor={false} style={{ marginBottom: 0 }} />)}
+    </div>
+  </div>
+);
+
 /* ─── PreferredSourceBadge（Google 検索で当サイトを優先ソースに追加してもらう公式バッジ） ─── */
 const PreferredSourceBadge = ({ dark = false, method }) => (
   <a href="https://www.google.com/preferences/source?q=kagoshima-news.jp" target="_blank" rel="noreferrer"

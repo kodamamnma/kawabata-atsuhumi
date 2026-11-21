@@ -196,7 +196,7 @@ const Sidebar = () => {
       <div style={{ textAlign: 'center' }}>
         <PreferredSourceBadge method="sidebar" />
       </div>
-      <AdSlot height={180} style={{ marginBottom: 0 }} />
+      <SidebarAds />
     </div>
   );
 };
@@ -313,7 +313,8 @@ function App() {
           <RelatedArticles />
 
           <aside className="sidebar-content" style={{ position: 'relative' }}>
-            <div style={{ position: 'sticky', top: 96, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* 広告5枠で画面より縦に長くなり、固定表示だと下の枠が見えなくなるため sticky をやめている */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {toc.length > 0 && <TocCard toc={toc} />}
               <Sidebar />
             </div>

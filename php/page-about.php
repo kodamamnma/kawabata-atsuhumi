@@ -43,7 +43,7 @@ const Sidebar = () => (
     <div style={{ textAlign: 'center' }}>
       <PreferredSourceBadge method="sidebar" />
     </div>
-    <AdSlot height={180} style={{ marginBottom: 0 }} />
+    <SidebarAds />
   </div>
 );
 

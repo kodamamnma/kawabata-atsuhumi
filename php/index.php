@@ -148,7 +148,7 @@ const Sidebar = () => (
     <div style={{ textAlign: 'center' }}>
       <PreferredSourceBadge method="sidebar" />
     </div>
-    <AdSlot height={180} style={{ marginBottom: 0 }} />
+    <SidebarAds />
   </div>
 );
 
@@ -355,14 +355,6 @@ function App() {
             </div>
           </div>
           )}
-
-          {/* ▼ スポンサー広告（300×250 を PC は2列×2段、スマホは1列で4枠） */}
-          <div className="sponsor-ads" style={{ marginBottom: 24 }}>
-            <SponsorLabel />
-            <div className="ad-grid">
-              {[0, 1, 2, 3].map(i => <AdSlot key={i} ratio="6 / 5" sponsor={false} style={{ marginBottom: 0 }} />)}
-            </div>
-          </div>
 
           <AdSlot height={90} />
 

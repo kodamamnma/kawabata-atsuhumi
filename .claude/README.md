@@ -22,7 +22,7 @@
 php/
 ├── style.css          テーマ情報・CSS
 ├── functions.php       テーマ設定、記事データ取得（kawabata_get_articles）、SRI付与
-├── header.php           共通ヘッダー（<head>、カラートークン C、Header/MobileMenu/Img/Badge/SH/SponsorLabel/AdSlot/PreferredSourceBadge等の共通コンポーネント）
+├── header.php           共通ヘッダー（<head>、カラートークン C、Header/MobileMenu/Img/Badge/SH/SponsorLabel/AdSlot/SidebarAds/PreferredSourceBadge等の共通コンポーネント）
 ├── footer.php            共通フッター
 ├── index.php             トップページ
 ├── archive.php           記事一覧・カテゴリアーカイブ（ページネーションあり、2026-08-28〜）

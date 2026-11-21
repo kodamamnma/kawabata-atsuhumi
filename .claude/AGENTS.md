@@ -205,6 +205,7 @@ const CAT_COLORS = {
 | `SH` | header.php | セクション見出し（左ボーダー付き） |
 | `SponsorLabel` | header.php | 広告枠の上の「スポンサー広告欄」表記 |
 | `AdSlot` | header.php | 広告枠（「スポンサー広告欄」＋グレープレースホルダー・`/contact/?type=ad` への導線）。`sponsor={false}` で見出しなし、`ratio="6 / 5"` で300×250の縦横比 |
+| `SidebarAds` | header.php | サイドバーの広告枠（「スポンサー広告欄」＋300×250 の `AdSlot` を5つ） |
 | `PreferredSourceBadge` | header.php | Google「優先するソースとして追加」の公式バッジ（白背景用。`dark` で暗い背景用） |
 | `Header` | header.php | ページヘッダー（ハンバーガーメニューボタン含む） |
 | `MobileMenu` | header.php | メニューオーバーレイ（カテゴリ・概要・SNS・お問い合わせ） |
@@ -217,7 +218,7 @@ const CAT_COLORS = {
 ### スタイル指定
 
 - 部品の見た目は**インラインスタイル**で書く（`C` を使う）。
-- `style.css` に置くのは、リセット・フォント・変数・リンク色と、メディアクエリが必要なレイアウト用クラス（`.layout-grid` / `.sidebar-content` / `.featured-grid` / `.genre-showcase` / `.ad-grid`）のみ。新しいクラスは、インラインでは書けないレスポンシブ対応に限って追加する。
+- `style.css` に置くのは、リセット・フォント・変数・リンク色と、メディアクエリが必要なレイアウト用クラス（`.layout-grid` / `.sidebar-content` / `.featured-grid` / `.genre-showcase`）のみ。新しいクラスは、インラインでは書けないレスポンシブ対応に限って追加する。
 - 記事本文（WordPressの投稿HTML）の装飾は `single.php` 冒頭の `<style>`（`.article-body` 配下）で行う。
 - ホバー効果は `onMouseEnter` / `onMouseLeave` で `e.currentTarget.style` を直接操作する。直接DOM操作はホバー効果のみに限定する。
 
