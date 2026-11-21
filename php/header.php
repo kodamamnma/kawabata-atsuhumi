@@ -83,6 +83,7 @@ const IMGS = {
   banner:        WIX + '5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg/v1/fill/w_1200,h_400,al_c,q_80,enc_avif,quality_auto/5c3d68_7689e252580e4cc7a76481f5a9ddf184~mv2.jpg',
   editor:        '<?php echo get_template_directory_uri(); ?>/representative_top.webp',
   googlePreferredBadge: '<?php echo get_template_directory_uri(); ?>/JA/google_preferred_source_badge_dark_JA.png',
+  googlePreferredBadgeLight: '<?php echo get_template_directory_uri(); ?>/JA/google_preferred_source_badge_light_JA.png',
 };
 
 /* ─── Img ─── */
@@ -123,29 +124,46 @@ const SH = ({ children, color = C.main, extra }) => (
   </div>
 );
 
+/* ─── SponsorLabel（広告枠の上の「スポンサー広告欄」表記） ─── */
+// 複数の枠を並べる場所では見出しを1つにまとめたいので、枠本体（AdSlot）と分けている
+const SponsorLabel = () => (
+  <div style={{ fontSize: 11, fontWeight: 700, color: C.t3, letterSpacing: '0.08em', marginBottom: 6 }}>スポンサー広告欄</div>
+);
+
 /* ─── AdSlot（企業広告募集用のグレー枠。クリックで広告相談フォームへ遷移） ─── */
-const AdSlot = ({ height = 90, label = '広 告', subText = '広告掲載募集中（お問い合わせはこちら）', className = 'ad-space', style = {} }) => (
-  <a
-    href="<?php echo home_url('/contact/?type=ad'); ?>"
-    className={className}
-    onClick={() => track('contact_click', { method: 'ad_slot' })}
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 4,
-      height,
-      marginBottom: 24,
-      background: C.border,
-      borderRadius: 4,
-      border: `1px dashed ${C.t3}`,
-      textDecoration: 'none',
-      ...style,
-    }}
-  >
-    <span style={{ fontSize: 12, fontWeight: 700, color: C.t2, letterSpacing: '0.08em' }}>{label}</span>
-    {subText && <span style={{ fontSize: 11, color: C.t3 }}>{subText}</span>}
+// ratio を渡すと高さ固定ではなく縦横比で表示する（300×250 の入稿バナーを幅に合わせて縮めるため）
+const AdSlot = ({ height = 90, ratio, label = '広 告', subText = '広告掲載募集中（お問い合わせはこちら）', className = 'ad-space', sponsor = true, style = {} }) => (
+  <div className={className} style={{ marginBottom: 24, ...style }}>
+    {sponsor && <SponsorLabel />}
+    <a
+      href="<?php echo home_url('/contact/?type=ad'); ?>"
+      onClick={() => track('contact_click', { method: 'ad_slot' })}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+        ...(ratio ? { aspectRatio: ratio } : { height }),
+        background: C.border,
+        borderRadius: 4,
+        border: `1px dashed ${C.t3}`,
+        textDecoration: 'none',
+      }}
+    >
+      <span style={{ fontSize: 12, fontWeight: 700, color: C.t2, letterSpacing: '0.08em' }}>{label}</span>
+      {subText && <span style={{ fontSize: 11, color: C.t3 }}>{subText}</span>}
+    </a>
+  </div>
+);
+
+/* ─── PreferredSourceBadge（Google 検索で当サイトを優先ソースに追加してもらう公式バッジ） ─── */
+const PreferredSourceBadge = ({ dark = false, method }) => (
+  <a href="https://www.google.com/preferences/source?q=kagoshima-news.jp" target="_blank" rel="noreferrer"
+    onClick={() => track('preferred_source_click', { method })}
+    style={{ display: 'inline-block', lineHeight: 0 }}>
+    <img src={dark ? IMGS.googlePreferredBadge : IMGS.googlePreferredBadgeLight} alt="Googleで優先ソースとして追加"
+      width={115} height={36} loading="lazy" style={{ height: 36, width: 'auto' }} />
   </a>
 );
 
@@ -270,6 +288,10 @@ const MobileMenu = ({ open, onClose, onCategoryChange }) => {
             <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'menu' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 6, padding: '10px 14px', fontSize: 13, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
             <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
           </div>
+        </div>
+        {/* スマホではサイドバーが出ないため、メニュー下部を広告の掲載場所にしている */}
+        <div style={{ padding: '24px 24px 0' }}>
+          <AdSlot ratio="6 / 5" style={{ marginBottom: 0 }} />
         </div>
       </div>
     </div>

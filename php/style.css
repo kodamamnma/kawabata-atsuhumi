@@ -34,9 +34,11 @@ button { font-family: inherit; cursor: pointer; }
 .sidebar-content { grid-column: 2; grid-row: 1 / span 20; }
 .featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .genre-showcase { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.ad-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 
 @media screen and (max-width: 767px) {
   .layout-grid { display: flex; flex-direction: column; }
   .sidebar-content { display: none; }
   .featured-grid { grid-template-columns: 1fr; }
+  .ad-grid { grid-template-columns: 1fr; }
 }

@@ -145,6 +145,9 @@ const Sidebar = () => (
       <a href="<?php echo home_url('/contact/'); ?>" onClick={() => track('contact_click', { method: 'sidebar' })} style={{ display: 'block', background: C.accent, color: '#fff', borderRadius: 4, padding: '8px 12px', fontSize: 12, fontWeight: 700, textAlign: 'center', textDecoration: 'none' }}>お問い合わせフォームへ →</a>
       <div style={{ fontSize: 10, opacity: 0.6, marginTop: 8, lineHeight: 1.6 }}>ご連絡はフォームで受け付けています（返信3営業日以内）。</div>
     </div>
+    <div style={{ textAlign: 'center' }}>
+      <PreferredSourceBadge method="sidebar" />
+    </div>
     <AdSlot height={180} style={{ marginBottom: 0 }} />
   </div>
 );
@@ -353,6 +356,16 @@ function App() {
           </div>
           )}
 
+          {/* ▼ スポンサー広告（300×250 を PC は2列×2段、スマホは1列で4枠） */}
+          <div className="sponsor-ads" style={{ marginBottom: 24 }}>
+            <SponsorLabel />
+            <div className="ad-grid">
+              {[0, 1, 2, 3].map(i => <AdSlot key={i} ratio="6 / 5" sponsor={false} style={{ marginBottom: 0 }} />)}
+            </div>
+          </div>
+
+          <AdSlot height={90} />
+
           <div className="latest-news" style={{ marginBottom: 0 }}>
             <SH color={C.main}>最新ニュース</SH>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
@@ -387,6 +400,11 @@ function App() {
               </div>
             </div>
           )}
+
+          {/* スマホではサイドバーが出ないため、メイン欄にも置く */}
+          <div className="preferred-source" style={{ textAlign: 'center', marginBottom: 24 }}>
+            <PreferredSourceBadge method="top" />
+          </div>
 
           <div className="mission-banner" style={{
             background: C.main, borderRadius: 4, padding: '24px 20px', marginBottom: 24,

@@ -137,7 +137,7 @@ html/                   初期プロトタイプ（静的HTML）。本番には�
 
 - バージョンは固定。`functions.php` で読み込み、integrity属性（SRI）を必ず付与する。
 - WordPressプラグイン：**All in One SEO** が title / description / canonical / OGP / JSON-LD / sitemap を出力する。テーマ側で同じ機能を作らない。
-- 計測：GTM（`GTM-T6RB6ZMF`）経由で GA4・Microsoft Clarity。クリック計測は `header.php` の `track(name, params)` で dataLayer に送る（`contact_click` / `sns_click` / `article_click` / `contact_submit`）。
+- 計測：GTM（`GTM-T6RB6ZMF`）経由で GA4・Microsoft Clarity。クリック計測は `header.php` の `track(name, params)` で dataLayer に送る（`contact_click` / `sns_click` / `article_click` / `contact_submit` / `preferred_source_click`）。
 
 ## 2-4. カラートークン
 
@@ -203,7 +203,9 @@ const CAT_COLORS = {
 | `Img` | header.php | 画像（src失敗時はグラデーションプレースホルダー） |
 | `Badge` | header.php | カテゴリ・ラベルバッジ |
 | `SH` | header.php | セクション見出し（左ボーダー付き） |
-| `AdSlot` | header.php | 広告枠（グレープレースホルダー・`/contact/?type=ad` への導線） |
+| `SponsorLabel` | header.php | 広告枠の上の「スポンサー広告欄」表記 |
+| `AdSlot` | header.php | 広告枠（「スポンサー広告欄」＋グレープレースホルダー・`/contact/?type=ad` への導線）。`sponsor={false}` で見出しなし、`ratio="6 / 5"` で300×250の縦横比 |
+| `PreferredSourceBadge` | header.php | Google「優先するソースとして追加」の公式バッジ（白背景用。`dark` で暗い背景用） |
 | `Header` | header.php | ページヘッダー（ハンバーガーメニューボタン含む） |
 | `MobileMenu` | header.php | メニューオーバーレイ（カテゴリ・概要・SNS・お問い合わせ） |
 | `Footer` | header.php | フッター |
@@ -215,7 +217,7 @@ const CAT_COLORS = {
 ### スタイル指定
 
 - 部品の見た目は**インラインスタイル**で書く（`C` を使う）。
-- `style.css` に置くのは、リセット・フォント・変数・リンク色と、メディアクエリが必要なレイアウト用クラス（`.layout-grid` / `.sidebar-content` / `.featured-grid` / `.genre-showcase`）のみ。新しいクラスは、インラインでは書けないレスポンシブ対応に限って追加する。
+- `style.css` に置くのは、リセット・フォント・変数・リンク色と、メディアクエリが必要なレイアウト用クラス（`.layout-grid` / `.sidebar-content` / `.featured-grid` / `.genre-showcase` / `.ad-grid`）のみ。新しいクラスは、インラインでは書けないレスポンシブ対応に限って追加する。
 - 記事本文（WordPressの投稿HTML）の装飾は `single.php` 冒頭の `<style>`（`.article-body` 配下）で行う。
 - ホバー効果は `onMouseEnter` / `onMouseLeave` で `e.currentTarget.style` を直接操作する。直接DOM操作はホバー効果のみに限定する。
 
